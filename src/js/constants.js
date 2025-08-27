@@ -7,4 +7,5 @@ export const API_ENDPOINTS = {
   CATEGORIES: '/products/category-list',
   PRODUCTS_BY_CATEGORY: '/products/category/', */
 };
-export const ITEMS_PER_PAGE = 8;
+export const ARTISTS_PER_PAGE = 8;
+export const FEEDBACKS_PER_QUEUE = 10;

@@ -6,8 +6,8 @@ import './js/storage';
 import './js/header';
 import './js/hero';
 import './js/artists';
+import './js/artists-api';
 import './js/artists-additional';
-import './js/about-us';
 import './js/feedback';
 import './js/footer';
 
