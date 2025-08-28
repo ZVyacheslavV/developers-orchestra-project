@@ -21,6 +21,8 @@ export const initArtistsFilter = async () => {
   }
 };
 
+initArtistsFilter();
+
 document.querySelectorAll('.dropdown').forEach(dropdown => {
   const toggle = dropdown.querySelector('.dropdown-toggle');
   const menu = dropdown.querySelector('.dropdown-menu');
