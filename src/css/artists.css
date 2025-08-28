@@ -1,1 +1,90 @@
 /* Artists */
+
+.artists-header {
+    margin-bottom: 16px;
+}
+
+.artists-eyebrow {
+    font-size: 12px;
+    color: #aaa;
+    margin: 0 0 4px;
+}
+
+.artists-title {
+    font-size: 24px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.artists-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+
+.artist-card {
+    background: #141218;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .06) inset;
+    color: #fff;
+}
+
+.artist-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+}
+
+.artist-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tag {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #1f1b24;
+}
+
+.artist-name {
+    font-size: 18px;
+    margin: 6px 0;
+}
+
+.artist-desc {
+    font-size: 14px;
+    opacity: .85;
+    margin: 0 0 8px;
+}
+
+.artist-cta {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    background: #6e56ff;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+}
+
+@media (min-width: 768px) {
+    .artists-title {
+        font-size: 32px;
+    }
+
+    .artists-list {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}
