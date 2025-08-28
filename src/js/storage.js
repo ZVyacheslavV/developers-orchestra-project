@@ -2,6 +2,8 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
+export const page = { currentPage: 1 };
+
 export function getFromLS(key) {
   try {
     const jsonData = localStorage.getItem(key);

@@ -1,40 +1,73 @@
 /* Artists */
 
 import { getArtists } from './artists-api.js';
+import { refs } from './refs.js';
+import { page } from './storage.js';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-const listEl = document.getElementById('artists-list');
-let page = 1;
+function toastError(message) {
+  iziToast.error({ title: 'Error', message });
+}
 
-async function loadArtists() {
+export async function loadArtists() {
   try {
-    const data = await getArtists(page);
-    renderArtists(data.artists);
-  } catch (err) {
-    console.error('Failed to fetch artists:', err);
+    const { artists } = await getArtists(page.currentPage);
+    renderArtists(artists);
+  } catch {
+    toastError('Failed to fetch artists');
   }
 }
 
-function renderArtists(artists) {
+export function renderArtists(artists = []) {
   const markup = artists
-    .map(a => {
-      return `
-      <li class="artists-item">
-        <div class="artist-card">
-          <img src="${a.strArtistThumb}" alt="${
-        a.strArtist
-      }" class="artist-img" loading="lazy">
-          <ul class="artist-tags">
-            ${a.genres.map(g => `<li class="tag">${g}</li>`).join('')}
-          </ul>
-          <h3 class="artist-name">${a.strArtist}</h3>
-          <p class="artist-desc">${a.strBiographyEN.slice(0, 120)}...</p>
-          <button class="artist-cta" type="button">Learn More</button>
-        </div>
-      </li>`;
-    })
+    .map(
+      ({
+        _id,
+        strArtist = 'Unknown',
+        strArtistThumb,
+        strBiographyEN = '',
+        genres = [],
+      }) => {
+        const img =
+          strArtistThumb || 'https://placehold.co/736x414?text=No+Image';
+
+        return `
+            <li class="artists-item">
+              <div class="artist-card" data-id="${_id}">
+                <img
+                  src="${img}"
+                  alt="${strArtist} — portrait"
+                  class="artist-img"
+                  loading="lazy"
+                  decoding="async"
+                  width="736" height="414"
+                >
+                ${
+                  Array.isArray(genres) && genres.length
+                    ? `<ul class="artist-tags">${genres
+                        .map(g => `<li class="tag">${g}</li>`)
+                        .join('')}</ul>`
+                    : ''
+                }
+
+                <h3 class="artist-name">${strArtist}</h3>
+                ${
+                  strBiographyEN
+                    ? `<p class="artist-desc text-clamp-3">${strBiographyEN}</p>`
+                    : ''
+                }
+
+                <button class="artist-cta" type="button" aria-label="Learn more about ${strArtist}">
+                  Learn More
+                </button>
+              </div>
+            </li>`;
+      }
+    )
     .join('');
 
-  listEl.insertAdjacentHTML('beforeend', markup);
+  refs.artistsList.insertAdjacentHTML('beforeend', markup);
 }
 
 loadArtists();
