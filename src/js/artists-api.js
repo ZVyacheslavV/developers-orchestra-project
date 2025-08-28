@@ -40,13 +40,21 @@ export const getGenres = async () => {
   return data;
 };
 
-export const searchArtist = async (query, page, sorted = '') => {
+export const searchArtist = async (query, page = 1, sorted = 0, genre = '') => {
   const { data } = await axios.get(
     `${
       API_ENDPOINTS.ARTISTS
     }?limit=${ARTISTS_PER_PAGE}&page=${page}&name=${query}${
-      sorted ? `&sortName=${sorted}` : sorted
-    }`
+      sorted === 2 ? `&sortName=desc` : sorted === 1 ? `&sortName=asc` : ''
+    }${genre ? `&genre=${genre}` : ''}`
   );
   return data;
+};
+
+export const addNewFeedback = async (name, rating, descr /* , closeFunc */) => {
+  await axios.post(`${API_ENDPOINTS.FEEDBACKS}`, {
+    name,
+    rating,
+    descr,
+  });
 };
