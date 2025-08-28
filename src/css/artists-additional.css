@@ -42,9 +42,9 @@
 
 .dropdown {
   position: relative;
-  width: 200px;
+  max-width: 200px;
   font-family: sans-serif;
-  margin-bottom: 200px;
+  margin-bottom: 400px;
 }
 
 .dropdown-toggle {
@@ -74,7 +74,7 @@
   content: '▼';
   float: right;
   font-size: 0.7rem;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .dropdown-menu {
@@ -86,10 +86,13 @@
   border-radius: 6px;
   position: absolute;
   width: 100%;
-  max-height: 150px;
+  max-height: 304px;
   overflow-y: auto;
   display: none;
   z-index: 10;
+
+  /* товщина: auto | thin | none */
+  scrollbar-color: var(--color-affair) #222;
 
   border: 1px solid var(--opacity-white-20);
   border-radius: 12px;
