@@ -1,1 +1,111 @@
 /* Artists additional */
+.artists {
+  padding: 64px 16px;
+}
+
+.artists-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.artists-subtitle {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+
+@media only screen and (min-width: 768px) {
+  .artists {
+    padding: 64px 32px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .artists {
+    padding: 112px 64px;
+  }
+
+  .artists-subtitle {
+    font-family: var(--second-family);
+    font-weight: 700;
+    font-size: 84px;
+    line-height: 1.1;
+    max-width: 863px;
+    margin-bottom: 80px;
+  }
+}
+
+.dropdown {
+  position: relative;
+  width: 200px;
+  font-family: sans-serif;
+  margin-bottom: 200px;
+}
+
+.dropdown-toggle {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+
+  border: 1px solid var(--opacity-white-20);
+  border-radius: 12px;
+  padding: 8px 12px;
+  width: 304px;
+  height: 43px;
+
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 150%;
+  color: var(--color-white);
+}
+
+.dropdown-toggle::after {
+  content: '▼';
+  float: right;
+  font-size: 0.7rem;
+  margin-top: 4px;
+}
+
+.dropdown-menu {
+  list-style: none;
+  padding: 0;
+  margin: 5px 0 0;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  position: absolute;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10;
+
+  border: 1px solid var(--opacity-white-20);
+  border-radius: 12px;
+  padding: 8px 12px;
+  width: 304px;
+  /* height: 43px; */
+
+  background: var(--opacity-transparent);
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.dropdown-menu li:hover {
+  background: #222;
+}
