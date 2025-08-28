@@ -3,21 +3,23 @@ import iziToast from 'izitoast';
 import { getGenres } from './artists-api';
 import 'izitoast/dist/css/iziToast.min.css';
 
-try {
-  const genres = await getGenres();
-  const menu = document.querySelector('.dropdown-menu');
+export const initArtistsFilter = async () => {
+  try {
+    const genres = await getGenres();
+    const menu = document.querySelector('.dropdown-menu');
 
-  const markup =
-    '<li data-value="all">All Genres</li>' +
-    genres
-      .map(
-        ({ genre }) => `<li data-value="${genre.toLowerCase()}">${genre}</li>`
-      )
-      .join('');
-  menu.insertAdjacentHTML('beforeend', markup);
-} catch (err) {
-  iziToast.error({ message: `Error while loading genres ${err}` });
-}
+    const markup =
+      '<li data-value="all">All Genres</li>' +
+      genres
+        .map(
+          ({ genre }) => `<li data-value="${genre.toLowerCase()}">${genre}</li>`
+        )
+        .join('');
+    menu.insertAdjacentHTML('beforeend', markup);
+  } catch (err) {
+    iziToast.error({ message: `Error while loading genres ${err}` });
+  }
+};
 
 document.querySelectorAll('.dropdown').forEach(dropdown => {
   const toggle = dropdown.querySelector('.dropdown-toggle');
