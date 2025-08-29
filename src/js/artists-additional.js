@@ -6,7 +6,6 @@ import { refs } from './refs.js';
 export const initArtistsFilter = async () => {
   try {
     const genres = await getGenres();
-
     const markup =
       '<li data-value="all">All Genres</li>' +
       genres
@@ -20,42 +19,41 @@ export const initArtistsFilter = async () => {
   }
 };
 
-//INIT:
+// INIT
 initArtistsFilter();
 
 document.querySelectorAll('.artists-dropdown-genres').forEach(dropdown => {
   const btnGenres = dropdown.querySelector('.dropdown-toggle-genres');
+  const menu = dropdown.querySelector('.dropdown-menu-genres');
 
-  // Handler for remove outside click listener
   const outsideClickHandler = e => {
     if (!dropdown.contains(e.target)) {
-      refs.menuGenres.style.display = 'none';
+      dropdown.classList.remove('open');
       document.removeEventListener('click', outsideClickHandler);
     }
   };
 
-  // Open-close menu
+  // Toggle
   btnGenres.addEventListener('click', e => {
     e.stopPropagation();
-    const isOpenMenuGenres = refs.menuGenres.style.display === 'block';
+    const isOpen = dropdown.classList.contains('open');
+    dropdown.classList.toggle('open');
 
-    // Menu toggle:
-    refs.menuGenres.style.display = isOpenMenuGenres ? 'none' : 'block';
-
-    isOpenMenuGenres
-      ? document.removeEventListener('click', outsideClickHandler)
-      : document.addEventListener('click', outsideClickHandler);
+    if (!isOpen) {
+      document.addEventListener('click', outsideClickHandler);
+    } else {
+      document.removeEventListener('click', outsideClickHandler);
+    }
   });
 
-  // Delegation of events on li
-  refs.menuGenres.addEventListener('click', e => {
+  // Element choosing
+  menu.addEventListener('click', e => {
     const item = e.target.closest('li');
     if (!item) return;
-
-    btnGenres.textContent = item.textContent;
+    btnGenres.querySelector('.dropdown-label').textContent = item.textContent;
     btnGenres.dataset.value = item.dataset.value;
-    refs.menuGenres.style.display = 'none';
 
+    dropdown.classList.remove('open');
     document.removeEventListener('click', outsideClickHandler);
   });
 });
