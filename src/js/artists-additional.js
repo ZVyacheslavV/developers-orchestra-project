@@ -1,12 +1,11 @@
 /* Artists additional */
-import iziToast from 'izitoast';
 import { getGenres } from './artists-api';
-import 'izitoast/dist/css/iziToast.min.css';
+import { toastError } from './helpers';
+import { refs } from './refs.js';
 
 export const initArtistsFilter = async () => {
   try {
     const genres = await getGenres();
-    const menu = document.querySelector('.dropdown-menu');
 
     const markup =
       '<li data-value="all">All Genres</li>' +
@@ -15,34 +14,48 @@ export const initArtistsFilter = async () => {
           ({ genre }) => `<li data-value="${genre.toLowerCase()}">${genre}</li>`
         )
         .join('');
-    menu.insertAdjacentHTML('beforeend', markup);
+    refs.menuGenres.insertAdjacentHTML('beforeend', markup);
   } catch (err) {
-    iziToast.error({ message: `Error while loading genres ${err}` });
+    toastError(`While loading genres ${err}`);
   }
 };
 
+//INIT:
 initArtistsFilter();
 
-document.querySelectorAll('.dropdown').forEach(dropdown => {
-  const toggle = dropdown.querySelector('.dropdown-toggle');
-  const menu = dropdown.querySelector('.dropdown-menu');
+document.querySelectorAll('.artists-dropdown-genres').forEach(dropdown => {
+  const btnGenres = dropdown.querySelector('.dropdown-toggle-genres');
 
-  toggle.addEventListener('click', () => {
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-  });
-
-  menu.querySelectorAll('li').forEach(item => {
-    item.addEventListener('click', () => {
-      toggle.textContent = item.textContent;
-      toggle.dataset.value = item.dataset.value;
-      menu.style.display = 'none';
-    });
-  });
-
-  // закриваємо, якщо клік поза дропдауном
-  document.addEventListener('click', e => {
+  // Handler for remove outside click listener
+  const outsideClickHandler = e => {
     if (!dropdown.contains(e.target)) {
-      menu.style.display = 'none';
+      refs.menuGenres.style.display = 'none';
+      document.removeEventListener('click', outsideClickHandler);
     }
+  };
+
+  // Open-close menu
+  btnGenres.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpenMenuGenres = refs.menuGenres.style.display === 'block';
+
+    // Menu toggle:
+    refs.menuGenres.style.display = isOpenMenuGenres ? 'none' : 'block';
+
+    isOpenMenuGenres
+      ? document.removeEventListener('click', outsideClickHandler)
+      : document.addEventListener('click', outsideClickHandler);
+  });
+
+  // Delegation of events on li
+  refs.menuGenres.addEventListener('click', e => {
+    const item = e.target.closest('li');
+    if (!item) return;
+
+    btnGenres.textContent = item.textContent;
+    btnGenres.dataset.value = item.dataset.value;
+    refs.menuGenres.style.display = 'none';
+
+    document.removeEventListener('click', outsideClickHandler);
   });
 });
