@@ -40,7 +40,7 @@
   }
 }
 
-.dropdown {
+.artists-dropdown-genres {
   position: relative;
   max-width: 200px;
   font-family: sans-serif;
@@ -71,7 +71,7 @@
 }
 
 .dropdown-toggle::after {
-  content: '▼';
+  content: '∨';
   float: right;
   font-size: 0.7rem;
   margin-top: 2px;
