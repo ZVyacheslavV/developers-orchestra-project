@@ -43,9 +43,9 @@
   position: relative;
   max-width: 304px;
   font-family: sans-serif;
+  margin-bottom: 400px;
 }
 
-/* кнопка */
 .dropdown-toggle {
   width: 100%;
   padding: 10px 12px;
@@ -58,7 +58,6 @@
   justify-content: space-between;
   align-items: center;
 
-  font-family: var(--font-family);
   font-size: 18px;
   line-height: 150%;
   transition: border 0.2s ease;
@@ -68,12 +67,11 @@
   border-color: var(--color-affair);
 }
 
-/* Icon */
 .dropdown-icon {
-  transition: transform 0.3s ease;
+  transform-origin: center;
+  fill: #fff;
 }
 
-/* Menu */
 .dropdown-menu {
   list-style: none;
   padding: 8px 0;
@@ -86,16 +84,12 @@
   max-height: 304px;
   overflow-y: auto;
   z-index: 10;
-
   scrollbar-color: var(--color-affair) #222;
 
-  /* Start stage for animation */
+  /* At start is not visible */
   opacity: 0;
-  transform: translateY(-10px);
   pointer-events: none;
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
 .dropdown-menu li {
   padding: 10px 14px;
   cursor: pointer;
@@ -104,17 +98,6 @@
 }
 .dropdown-menu li:hover {
   background: #222;
-}
-
-/* активний стан */
-.artists-dropdown-genres.open .dropdown-icon {
-  transform: rotate(180deg);
-}
-
-.artists-dropdown-genres.open .dropdown-menu {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
 }
 
 /* .artists-dropdown-genres {
