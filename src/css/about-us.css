@@ -1,1 +1,72 @@
 /* About us */
+.about-us {
+  padding-bottom: 64px;
+  padding-top: 64px;
+}
+
+.about-us-img {
+  border-radius: 16px;
+  margin-bottom: 48px;
+  max-width: 280px;
+  width: 100%;
+}
+.about-us-icon {
+  fill: #fff;
+  margin-bottom: 20px;
+}
+.about-us-title {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin-bottom: 20px;
+}
+.about-us-paragraph {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+}
+@media screen and (min-width: 768px) {
+  .about-us-img {
+    margin-bottom: 24px;
+    max-width: 704px;
+  }
+  .about-us-icon {
+    margin-bottom: 24px;
+    width: 80px;
+    height: 80px;
+  }
+  .about-us-title {
+    margin-bottom: 24px;
+  }
+  .about-us-paragraph {
+    font-size: 20px;
+  }
+}
+@media screen and (min-width: 1440px) {
+  .about-us-container {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .about-us {
+    padding-bottom: 112px;
+    padding-top: 112px;
+  }
+  .about-us-img {
+    border-radius: 16px;
+    max-width: 640px;
+    width: 100%;
+  }
+  .about-us-title {
+    font-size: 60px;
+  }
+  .about-us-paragraph {
+    max-width: 640px;
+  }
+}
