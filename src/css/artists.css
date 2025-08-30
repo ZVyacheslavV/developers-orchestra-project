@@ -1,6 +1,7 @@
 /* Artists */
 
 .artist-card {
+    user-select: none;
     cursor: default;
 }
 
@@ -45,6 +46,7 @@
 }
 
 .tag {
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -148,16 +150,36 @@
     }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1440px) {
+
+    .artists-subcontainer {
+        display: grid;
+        grid-template-columns: 304px 1fr;
+        column-gap: 32px;
+        align-items: start;
+        max-width: 1312px;
+        margin-inline: auto;
+        }
+            
+    .artists-search-and-filters {
+        width: 304px;
+        max-width: 304px;
+        position: sticky;
+        top: 112px; /*top*/
+        align-self: start;
+        z-index: 2;
+    }
 
     .artists-list {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 64px 32px;
         margin-top: 0;
-        padding-left: 32px;
+        padding-left: 0;
+        max-width: 976px;
     }
 
     .artist-img {
         aspect-ratio: 472 / 290;
+        border-radius: 16px ;
     }
 }
