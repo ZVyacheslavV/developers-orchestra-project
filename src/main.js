@@ -11,3 +11,4 @@ import './js/feedback';
 
 import './js/artist-details-modal';
 import './js/feedback-modal';
+import './js/button-up';
