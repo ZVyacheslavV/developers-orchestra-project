@@ -14,7 +14,7 @@ import{i as g,a as u,g as l}from"./assets/vendor-BAa1Uqhj.js";(function(){const 
                 <h3 class="artist-name">${o}</h3>
                 ${t?`<p class="artist-desc text-clamp-3">${t}</p>`:""}
 
-                <button class="artist-cta" type="button" aria-label="Learn more about ${o}">
+                <button class="artist-cta" type="button" data-artist-id="${a}" aria-label="Learn more about ${o}">
                   Learn More
                 </button>
               </div>
