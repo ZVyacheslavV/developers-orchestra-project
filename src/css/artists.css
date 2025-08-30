@@ -237,7 +237,6 @@
     }
 
         .filters-panel .filters-content {
-            position: static !important;
             inset: auto !important;
             max-width: 304px;
             width: 100%;
