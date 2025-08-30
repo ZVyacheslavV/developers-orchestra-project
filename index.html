@@ -28,7 +28,7 @@
     <script type="module" crossorigin src="/developers-orchestra-project/index.js"></script>
     <link rel="modulepreload" crossorigin href="/developers-orchestra-project/assets/vendor-BAa1Uqhj.js">
     <link rel="stylesheet" crossorigin href="/developers-orchestra-project/assets/vendor-DnveWo0P.css">
-    <link rel="stylesheet" crossorigin href="/developers-orchestra-project/assets/index-BWNdmv2E.css">
+    <link rel="stylesheet" crossorigin href="/developers-orchestra-project/assets/index-TgKDEnP0.css">
   </head>
   <body>
     <!-- Header -->
@@ -50,24 +50,62 @@
           <p class="artists-subtitle">Explore Your New Favorite Artists</p>
           <div class="artists-subcontainer">
             <!-- Artists additional -->
-
-<div class="artists-search-and-filters">
-  <button class="dropdown-toggle search-and-filters-toggle">
-    <span class="search-and-filters-toggle">Search and Filters</span>
-    <svg class="dropdown-icon" width="24" height="24">
-      <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-chevron-down"></use>
-    </svg>
-  </button>
-  <div class="artists-dropdown-genres">
-    <button class="dropdown-toggle dropdown-toggle-genres">
-      <span class="dropdown-label">Genre</span>
+<aside class="filters-panel">
+  <header class="filters-header">
+    <div class="filter-reset-wrapper">
+      <h2 class="filters-title">Filters</h2>
+      <button class="filters-reset-btn visually-hidden">Reset</button>
+    </div>
+    <!-- Button for mobile -->
+    <button
+      class="dropdown-toggle search-and-filters-toggle"
+      aria-expanded="false"
+    >
+      Search & Filters
       <svg class="dropdown-icon" width="24" height="24">
         <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-chevron-down"></use>
       </svg>
     </button>
-    <ul class="dropdown-menu dropdown-menu-genres"></ul>
+  </header>
+
+  <div class="filters-content">
+    <!-- Search -->
+    <div class="artists-search-wrapper">
+      <button class="search-btn">
+        <svg class="search-icon" width="24" height="24">
+          <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-search"></use>
+        </svg>
+      </button>
+      <input class="search-input" type="text" placeholder="Search" />
+    </div>
+
+    <!-- Sorting -->
+    <div class="artists-dropdown-sort">
+      <button class="dropdown-toggle dropdown-toggle-sort">
+        <span class="dropdown-label">Sorting</span>
+        <svg class="dropdown-icon" width="24" height="24">
+          <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-chevron-down"></use>
+        </svg>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-sort">
+        <li data-value="0">Default</li>
+        <li data-value="1">A-Z</li>
+        <li data-value="2">Z-A</li>
+      </ul>
+    </div>
+
+    <!-- Genre -->
+    <div class="artists-dropdown-genres">
+      <button class="dropdown-toggle dropdown-toggle-genres">
+        <span class="dropdown-label">Genre</span>
+        <svg class="dropdown-icon" width="24" height="24">
+          <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-chevron-down"></use>
+        </svg>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-genres"></ul>
+    </div>
   </div>
-</div>
+</aside>
 
             <!-- Artists -->
 
