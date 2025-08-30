@@ -101,21 +101,21 @@ function initDropdown({ btn, menu, wrapperSelector }) {
       allDropdowns.forEach(d => {
         if (d.menu !== menu) {
           d.tlOpen.pause(0);
-          d.tlClose.restart();
+          d.tlClose.pause(0).play(0);
           d.btn.classList.remove('open');
           d.menu.classList.remove('open');
         }
       });
 
       tlClose.pause(0);
-      tlOpen.restart();
+      tlOpen.pause(0).play(0);
       btn.classList.add('open');
       menu.classList.add('open');
       document.addEventListener('click', outsideClickHandler, { once: true });
       // document.body.classList.add('no-scroll');
     } else {
       tlOpen.pause(0);
-      tlClose.restart();
+      tlClose.pause(0).play(0);
       btn.classList.remove('open');
       menu.classList.remove('open');
       // document.body.classList.remove('no-scroll');
