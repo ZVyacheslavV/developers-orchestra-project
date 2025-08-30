@@ -273,16 +273,15 @@
   border-color: var(--color-affair);
 }
 
-.search-input:focus,
-.search-input:active {
-  border-width: 1.5px;
-  border-color: var(--color-affair);
+input.search-input:focus {
+  border: 1.5px solid var(--color-affair);
 }
+
 .search-btn {
   padding: 12px;
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 0px;
+  left: 0px;
   background-color: transparent;
   border-radius: 5px;
 }
@@ -329,11 +328,11 @@
   }
 
   .filters-content {
-    /* left: 52px; */
     max-width: 328px;
     background-color: var(--opacity-transparent);
     padding: 0;
   }
+
   .dropdown-menu {
     background-color: var(--opacity-transparent);
   }
@@ -355,11 +354,6 @@
   .filter-reset-wrapper {
     max-width: 304px;
     width: 100%;
-  }
-
-  .search-btn {
-    top: 0;
-    left: 0;
   }
 }
 

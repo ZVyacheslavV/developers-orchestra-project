@@ -11,6 +11,8 @@ const allDropdowns = [];
 //Inits:
 initGenresMarkup();
 
+initSearchAndFilters();
+
 initDropdown({
   btn: refs.btnGenres,
   menu: refs.menuGenres,
@@ -140,15 +142,18 @@ function initDropdown({ btn, menu, wrapperSelector }) {
   allDropdowns.push({ btn, menu, tlOpen, tlClose });
 }
 
-/*
-const handleGenres = () => {
-  const iconGenres = refs.btnGenres.querySelector('.dropdown-icon');
+function initSearchAndFilters() {
+  if (window.matchMedia('(min-width: 1440px)').matches) {
+    return; // не ініціалізуємо анімацію
+  }
+
+  const iconSearch = refs.btnSearch.querySelector('.dropdown-icon');
 
   const tlOpen = gsap.timeline({ paused: true });
   tlOpen
-    .to(iconGenres, { rotate: 180, duration: 0.35, ease: 'power2.out' }, 0)
+    .to(iconSearch, { rotate: 180, duration: 0.35, ease: 'power2.out' }, 0)
     .fromTo(
-      refs.menuGenres,
+      refs.panelSearch,
       { opacity: 0, y: -10, pointerEvents: 'none' },
       {
         opacity: 1,
@@ -160,7 +165,7 @@ const handleGenres = () => {
       0
     )
     .from(
-      refs.menuGenres.children,
+      refs.panelSearch.children,
       {
         opacity: 0,
         y: -6,
@@ -172,8 +177,8 @@ const handleGenres = () => {
     );
 
   const tlClose = gsap.timeline({ paused: true });
-  tlClose.to(iconGenres, { rotate: 0, duration: 0.3, ease: 'power2.in' }, 0).to(
-    refs.menuGenres,
+  tlClose.to(iconSearch, { rotate: 0, duration: 0.3, ease: 'power2.in' }, 0).to(
+    refs.panelSearch,
     {
       opacity: 0,
       y: -10,
@@ -185,148 +190,47 @@ const handleGenres = () => {
   );
 
   const outsideClickHandler = e => {
-    if (
-      !document.querySelector('.artists-dropdown-genres').contains(e.target)
-    ) {
+    if (!document.querySelector('.filters-content').contains(e.target)) {
       tlClose.play(0);
       document.removeEventListener('click', outsideClickHandler);
     }
-    refs.btnGenres.classList.remove('open');
-    refs.menuGenres.classList.remove('open');
+    // refs.btnSearch.classList.remove('open');
+    // refs.panelSearch.classList.remove('open');
   };
 
-  refs.btnGenres.addEventListener('click', e => {
+  refs.btnSearch.addEventListener('click', e => {
     e.stopPropagation();
-    const isOpenGenres =
-      gsap.isTweening(refs.menuGenres) ||
-      refs.menuGenres.style.pointerEvents === 'auto';
+    const isOpenSearch =
+      gsap.isTweening(refs.panelSearch) ||
+      refs.panelSearch.style.pointerEvents === 'auto';
 
-    if (!isOpenGenres) {
+    if (!isOpenSearch) {
       tlClose.pause(0);
       tlOpen.restart();
       document.addEventListener('click', outsideClickHandler);
-      refs.btnGenres.classList.add('open');
-      refs.menuGenres.classList.add('open');
-      refs.btnSort.classList.remove('open');
-      refs.menuSort.classList.remove('open');
+      // refs.btnSearch.classList.add('open');
+      // refs.panelSearch.classList.add('open');
     } else {
       tlOpen.pause(0);
       tlClose.restart();
       document.removeEventListener('click', outsideClickHandler);
-      refs.btnGenres.classList.remove('open');
-      refs.menuGenres.classList.remove('open');
+      // refs.btnSearch.classList.remove('open');
+      // refs.panelSearch.classList.remove('open');
     }
   });
 
-  refs.menuGenres.addEventListener('click', e => {
-    refs.btnGenres.classList.remove('open');
-    refs.menuGenres.classList.remove('open');
+  /* refs.panelSearch.addEventListener('click', e => {
+    refs.btnSearch.classList.remove('open');
+    refs.panelSearch.classList.remove('open');
     const item = e.target.closest('li');
     if (!item) return;
 
-    refs.btnGenres.querySelector('.dropdown-label').textContent =
+    refs.btnSearch.querySelector('.dropdown-label').textContent =
       item.textContent;
-    refs.btnGenres.dataset.value = item.dataset.value;
+    refs.btnSearch.dataset.value = item.dataset.value;
 
     tlOpen.pause(0);
     tlClose.restart();
     document.removeEventListener('click', outsideClickHandler);
-  });
-};
-
-handleGenres();
-
-//Sort:
-const handleSort = () => {
-  const iconSort = refs.btnSort.querySelector('.dropdown-icon');
-
-  const tlOpen = gsap.timeline({ paused: true });
-  tlOpen
-    .to(iconSort, { rotate: 180, duration: 0.35, ease: 'power2.out' }, 0)
-    .fromTo(
-      refs.menuSort,
-      { opacity: 0, y: -10, pointerEvents: 'none' },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.4,
-        pointerEvents: 'auto',
-        ease: 'power3.out',
-      },
-      0
-    )
-    .from(
-      refs.menuSort.children,
-      {
-        opacity: 0,
-        y: -6,
-        stagger: 0.05,
-        duration: 0.25,
-        ease: 'power2.out',
-      },
-      0.1
-    );
-
-  const tlClose = gsap.timeline({ paused: true });
-  tlClose.to(iconSort, { rotate: 0, duration: 0.3, ease: 'power2.in' }, 0).to(
-    refs.menuSort,
-    {
-      opacity: 0,
-      y: -10,
-      duration: 0.3,
-      pointerEvents: 'none',
-      ease: 'power2.in',
-    },
-    0
-  );
-
-  const outsideClickHandler = e => {
-    if (!document.querySelector('.artists-dropdown-sort').contains(e.target)) {
-      tlClose.play(0);
-      document.removeEventListener('click', outsideClickHandler);
-    }
-    refs.btnSort.classList.remove('open');
-    refs.menuSort.classList.remove('open');
-  };
-
-  refs.btnSort.addEventListener('click', e => {
-    e.stopPropagation();
-    const isOpenSort =
-      gsap.isTweening(refs.menuSort) ||
-      refs.menuSort.style.pointerEvents === 'auto';
-
-    if (!isOpenSort) {
-      tlClose.pause(0);
-      tlOpen.restart();
-      document.addEventListener('click', outsideClickHandler);
-      refs.btnSort.classList.add('open');
-      refs.menuSort.classList.add('open');
-      refs.btnGenres.classList.remove('open');
-      refs.menuGenres.classList.remove('open');
-    } else {
-      tlOpen.pause(0);
-      tlClose.restart();
-      document.removeEventListener('click', outsideClickHandler);
-      refs.btnSort.classList.remove('open');
-      refs.menuSort.classList.remove('open');
-    }
-  });
-
-  refs.menuSort.addEventListener('click', e => {
-    refs.btnSort.classList.remove('open');
-    refs.menuSort.classList.remove('open');
-    const item = e.target.closest('li');
-    if (!item) return;
-
-    refs.btnSort.querySelector('.dropdown-label').textContent =
-      item.textContent;
-    refs.btnSort.dataset.value = item.dataset.value;
-
-    tlOpen.pause(0);
-    tlClose.restart();
-    document.removeEventListener('click', outsideClickHandler);
-  });
-};
-
-handleSort();
- */
+  }); */
+}
