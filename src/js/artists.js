@@ -55,7 +55,7 @@ export function renderArtists(artists = []) {
 
                 <button class="artist-cta" type="button" data-artist-id="${_id}" aria-label="Learn more about ${strArtist}">
                   Learn More<svg class="artist-cta-icon" width="16" height="16" aria-hidden="true">
-    <use href="/img/icons.svg#icon-arrow-1"></use>
+    <use href="./img/icons.svg#icon-arrow-1"></use>
   </svg>
                 </button>
               </div>
