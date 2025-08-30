@@ -1,4 +1,39 @@
 <!-- Feedback modal -->
+
+
 <div class="feedback-backdrop feedback-modal">
-  <div class="container"></div>
+  <div class="container feedback-modal-form">
+    <button class="feedback-modal-close" type="button">
+      <svg class="feedback-modal-svg" width="32" height="32">
+        <use href="./img/icons.svg#icon-close"></use>
+      </svg>  
+    </button>
+    <h2 class="feedback-modal-title">Submit feedback</h2>
+    <label 
+    for="user-name"
+    class="feedback-modal-label">
+  Name
+  </label>
+  <input
+  id="user-name"
+  class="feedback-modal-username"
+  type="text"
+  name="user-name"
+  placeholder="Emily"
+  maxlength="50"/>
+  <label
+  for="user-feedback"
+  class="feedback-modal-label">
+Message
+</label>
+<textarea
+id="user-feedback"
+name="user-feedback"
+class="feedback-modal-user-feedback"
+placeholder="Type your message..."
+maxlength="200"></textarea>
+
+
+<button type="submit" class="feedback-modal-btn">Submit</button> 
+</div>
 </div>
