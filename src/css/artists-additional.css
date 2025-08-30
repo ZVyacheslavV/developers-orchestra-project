@@ -8,6 +8,9 @@
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 16px;
+  max-width: 288px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .artists-subtitle {
@@ -17,11 +20,26 @@
   line-height: 1.2;
   letter-spacing: -0.01em;
   margin-bottom: 32px;
+  max-width: 288px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media only screen and (min-width: 768px) {
   .artists {
     padding: 64px 0;
+  }
+
+  .artists-title {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .artists-subtitle {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -37,6 +55,12 @@
     max-width: 863px;
     margin-bottom: 80px;
   }
+}
+
+.filter-wrapper {
+  max-width: 288px;
+  position: relative;
+  margin: 0 auto;
 }
 
 .artists-dropdown-genres {
@@ -276,6 +300,10 @@
 }
 
 @media only screen and (min-width: 768px) {
+  .filter-wrapper {
+    max-width: 704px;
+  }
+
   .filters-header {
     display: flex;
     justify-content: space-between;
@@ -286,7 +314,7 @@
   }
 
   .filters-content {
-    right: 32px;
+    right: 0;
     max-width: 304px;
     width: 100%;
   }
@@ -301,9 +329,10 @@
   }
 
   .filters-content {
-    left: 52px;
+    /* left: 52px; */
     max-width: 328px;
     background-color: var(--opacity-transparent);
+    padding: 0;
   }
   .dropdown-menu {
     background-color: var(--opacity-transparent);
@@ -326,6 +355,11 @@
   .filter-reset-wrapper {
     max-width: 304px;
     width: 100%;
+  }
+
+  .search-btn {
+    top: 0;
+    left: 0;
   }
 }
 
