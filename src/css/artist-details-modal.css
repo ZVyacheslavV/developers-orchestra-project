@@ -1,1 +1,85 @@
 /* Artist details modal */
+
+.artist-details-modal-content {
+}
+.artist-details-modal-close-btn {
+}
+.modal-svg {
+}
+.artist-details-modal-main-title {
+}
+.artist-details-modal-img {
+}
+.artist-details-modal-title {
+}
+.artist-details-modal-text {
+}
+.artist-details-modal-genres {
+}
+.artist-details-modal-albums {
+}
+.artist-details-modal-albums-list {
+}
+.artist-details-modal-albums-list-title {
+}
+.artist-details-modal-albums-list-table {
+}
+.artist-details-modal-albums-list-table-text {
+}
+.modal-youtube {
+}
+
+
+
+
+.loader {
+  width: 8px;
+  height: 40px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-left: 20px;
+  margin-top: 10px;
+  position: relative;
+  background: currentColor;
+  color: #FFF;
+  box-sizing: border-box;
+  animation: animloader 0.3s 0.3s linear infinite alternate;
+}
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 8px;
+  height: 40px;
+  border-radius: 4px;
+  background: currentColor;
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  animation: animloader1 0.3s  0.45s  linear infinite alternate;
+}
+.loader::before {
+  left: -20px;
+  animation-delay: 0s;
+}
+
+@keyframes animloader {
+  0% {
+    height: 40px;
+    transform: translateY(0);
+  }
+  100% {
+    height: 10px;
+    transform: translateY(30px);
+  }
+}
+
+@keyframes animloader1 {
+  0% {
+    height: 48px;
+  }
+  100% {
+    height: 4.8px;
+  }
+}
+    
