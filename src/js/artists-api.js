@@ -40,11 +40,16 @@ export const getGenres = async () => {
   return data;
 };
 
-export const searchArtist = async (query, page = 1, sorted = 0, genre = '') => {
+export const searchArtist = async ({
+  name,
+  page = 1,
+  sorted = 0,
+  genre = '',
+}) => {
   const { data } = await axios.get(
     `${
       API_ENDPOINTS.ARTISTS
-    }?limit=${ARTISTS_PER_PAGE}&page=${page}&name=${query}${
+    }?limit=${ARTISTS_PER_PAGE}&page=${page}&name=${name}${
       sorted === 2 ? `&sortName=desc` : sorted === 1 ? `&sortName=asc` : ''
     }${genre ? `&genre=${genre}` : ''}`
   );
