@@ -53,7 +53,7 @@ export function renderArtists(artists = []) {
                     : ''
                 }
 
-                <button class="artist-cta" type="button" aria-label="Learn more about ${strArtist}">
+                <button class="artist-cta" type="button" data-artist-id="${_id}" aria-label="Learn more about ${strArtist}">
                   Learn More
                 </button>
               </div>
