@@ -31,7 +31,6 @@
   }
 
   .artists-subtitle {
-    font-family: var(--second-family);
     font-weight: 700;
     font-size: 84px;
     line-height: 1.1;
@@ -40,11 +39,72 @@
   }
 }
 
-.dropdown {
+.artists-dropdown-genres {
   position: relative;
-  width: 200px;
+  max-width: 304px;
   font-family: sans-serif;
-  margin-bottom: 200px;
+  margin-bottom: 400px;
+}
+
+.dropdown-toggle {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--opacity-white-20);
+  border-radius: 12px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 18px;
+  line-height: 150%;
+  transition: border 0.2s ease;
+}
+
+.dropdown-toggle:hover {
+  border-color: var(--color-affair);
+}
+
+.dropdown-icon {
+  transform-origin: center;
+  fill: #fff;
+}
+
+.dropdown-menu {
+  list-style: none;
+  padding: 8px 0;
+  margin: 8px 0 0;
+  background: var(--opacity-transparent);
+  border: 1px solid var(--opacity-white-20);
+  border-radius: 12px;
+  position: absolute;
+  width: 100%;
+  max-height: 304px;
+  overflow-y: auto;
+  z-index: 10;
+  scrollbar-color: var(--color-affair) #222;
+
+  /* At start is not visible */
+  opacity: 0;
+  pointer-events: none;
+}
+.dropdown-menu li {
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+}
+.dropdown-menu li:hover {
+  background: #222;
+}
+
+/* .artists-dropdown-genres {
+  position: relative;
+  max-width: 200px;
+  font-family: sans-serif;
+  margin-bottom: 16px;
 }
 
 .dropdown-toggle {
@@ -71,10 +131,10 @@
 }
 
 .dropdown-toggle::after {
-  content: '▼';
+  content: '∨';
   float: right;
   font-size: 0.7rem;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .dropdown-menu {
@@ -86,16 +146,17 @@
   border-radius: 6px;
   position: absolute;
   width: 100%;
-  max-height: 150px;
+  max-height: 304px;
   overflow-y: auto;
   display: none;
   z-index: 10;
+
+  scrollbar-color: var(--color-affair) #222;
 
   border: 1px solid var(--opacity-white-20);
   border-radius: 12px;
   padding: 8px 12px;
   width: 304px;
-  /* height: 43px; */
 
   background: var(--opacity-transparent);
 }
@@ -109,3 +170,24 @@
 .dropdown-menu li:hover {
   background: #222;
 }
+
+.artists-dropdown-genres.open .dropdown-menu {
+  display: block;
+}
+
+.dropdown-toggle::after {
+  content: '∨';
+  float: right;
+  font-size: 0.7rem;
+  margin-top: 2px;
+}
+
+.artists-dropdown-genres.open .dropdown-toggle::after {
+  content: '∧';
+}
+
+.artists-icon-genres {
+  stroke: transparent;
+  fill: #0d0b0a;
+  transition: fill 250ms cubic-bezier(0.4, 0, 0.2, 1);
+} */

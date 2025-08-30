@@ -3,12 +3,7 @@
 import { getArtists } from './artists-api.js';
 import { refs } from './refs.js';
 import { page } from './storage.js';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
-
-function toastError(message) {
-  iziToast.error({ title: 'Error', message });
-}
+import { toastError } from './helpers.js';
 
 export async function loadArtists() {
   try {
@@ -58,7 +53,7 @@ export function renderArtists(artists = []) {
                     : ''
                 }
 
-                <button class="artist-cta" type="button" aria-label="Learn more about ${strArtist}">
+                <button class="artist-cta" type="button" data-artist-id="${_id}" aria-label="Learn more about ${strArtist}">
                   Learn More
                 </button>
               </div>
