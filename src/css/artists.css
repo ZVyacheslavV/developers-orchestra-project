@@ -3,11 +3,15 @@
 .artist-card {
     user-select: none;
     cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: var(--color-white);
+    background: transparent;
 }
 
 .artists-list {
     list-style: none;
-    margin: 0;
     padding: 0;
     display: grid;
     grid-template-columns: 1fr;
@@ -17,23 +21,13 @@
 
 .artists-item {}
 
-.artist-card {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-    color: var(--color-white);
-    background: transparent;
-}
-
 .artist-img {
-    width: 100%;
-    height: auto;
-    border-radius: 16px;
-    display: block;
-    aspect-ratio: 16 / 9;
-    object-position: 50% 30%;
+    width: 288px;
+    height: 177px;
+    aspect-ratio: auto;
     object-fit: cover;
+    object-position: 50% 25%;
+    border-radius: 16px;
 }
 
 .artist-tags {
@@ -138,8 +132,9 @@
     transition: transform .2s ease, opacity .2s ease;
 }
 
-.artist-cta:hover {
-    opacity: .6;
+.artist-cta:hover,
+.artist-cta:focus-visible {
+    color: var(--opacity-white-60);
 }
 
 .artist-cta:hover
@@ -152,28 +147,61 @@
     outline-offset: 2px;
 }
 
-@media (min-width: 768px) {
-
-    .artist-img {
-        height: 432px;
-        width: 100%;
-        aspect-ratio: auto;
-        object-fit: cover;
-        object-position: 50% 25%;
-    }
-
+@media (max-width: 767.98px) {
     .artists-list {
-        grid-template-columns: 1fr;
-        gap: 32px;
-        margin-top: 16px;
+        justify-items: center;
     }
 
     .artist-card {
-        gap: 24px;
+        width: 288px;
+        max-width: 288px;
+        margin-inline: auto;
+    }
+
+    .artist-img {
+        width: 288px;
+        height: 177px;
+        aspect-ratio: auto;
+        object-fit: cover;
+        object-position: 50% 25%;
+        border-radius: 16px;
+        display: block;
     }
 }
 
-@media (min-width: 1440px) {
+@media (min-width:768px) and (max-width:1439.99px) {
+    .artist-img {
+        width: 100%;
+        height: 432px;
+        aspect-ratio: auto;
+        object-fit: cover;
+        object-position: center top;
+    }
+    
+    .artists-list {
+        grid-template-columns: 1fr;
+        justify-items: stretch;
+        gap: 32px;
+    }
+
+    .artist-card {
+        width: 100%;
+        max-width: 704px;
+        margin-inline: auto;
+    }
+
+    .artist-img {
+        width: 100%;
+        height: 432px;
+        aspect-ratio: auto;
+        object-fit: cover;
+        object-position: center top;
+        border-radius: 16px;
+        display: block;
+    }
+}
+
+@media (min-width:1440px) {
 
     .artists-subcontainer {
         display: grid;
@@ -182,19 +210,46 @@
         align-items: start;
         max-width: 1312px;
         margin-inline: auto;
-        }
-            
-    .artists-search-and-filters {
+        overflow: visible;
+        contain: none;
+    }
+
+    .artists,
+    .artists-container {
+        overflow: visible;
+    }
+
+    .filters-panel {
+        grid-column: 1;
         width: 304px;
         max-width: 304px;
         position: sticky;
-        top: 112px; /*top*/
+        top: 112px;
         align-self: start;
         z-index: 2;
-        height: fit-content;
+    }
+
+    .filters-content {
+        position: static;
+        width: 100%;
+        max-width: none;
+        background: transparent;
+    }
+
+        .filters-panel .filters-content {
+            position: static !important;
+            inset: auto !important;
+            max-width: 304px;
+            width: 100%;
+            background: transparent;
+        }
+
+    .search-and-filters-toggle {
+        display: none;
     }
 
     .artists-list {
+        grid-column: 2;
         grid-template-columns: repeat(2, 1fr);
         gap: 64px 32px;
         margin-top: 0;
@@ -203,10 +258,12 @@
     }
 
     .artist-img {
+        width: 100%;
         aspect-ratio: 472 / 290;
         height: auto;
         object-fit: cover;
         object-position: 50% 30%;
-        border-radius: 16px ;
+        border-radius: 16px;
+        display: block;
     }
 }
