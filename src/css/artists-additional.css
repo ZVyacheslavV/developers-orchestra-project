@@ -25,6 +25,12 @@
   margin-right: auto;
 }
 
+.artists-loader-container {
+  height: 341px;
+  margin: 200px auto;
+  width: 100px;
+}
+
 @media only screen and (min-width: 768px) {
   .artists {
     padding: 64px 0;
