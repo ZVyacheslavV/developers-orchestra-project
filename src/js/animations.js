@@ -136,3 +136,10 @@ export const timeLines = {
       0
     ),
 };
+
+timeLines.tlOpenSort.eventCallback('onStart', () => {
+  timeLines.tlCloseSort?.pause(0).progress(0);
+});
+timeLines.tlCloseSort.eventCallback('onStart', () => {
+  timeLines.tlOpenSort?.pause(0).progress(0);
+});
