@@ -17,13 +17,13 @@ export const getArtists = async page => {
 };
 
 export const getArtistById = async id => {
-  const { data } = await axios.get(`${API_ENDPOINTS.ARTIST_BY_Id}${id}`);
+  const { data } = await axios.get(`${API_ENDPOINTS.ARTIST_BY_ID}${id}`);
   return data;
 };
 
 export const getArtistAlbumsById = async id => {
   const { data } = await axios.get(
-    `${API_ENDPOINTS.ARTIST_BY_Id}${id}${API_ENDPOINTS.ARTIST_ALBUMS_BY_ID}`
+    `${API_ENDPOINTS.ARTIST_BY_ID}${id}${API_ENDPOINTS.ARTIST_ALBUMS_BY_ID}`
   );
   return data;
 };
