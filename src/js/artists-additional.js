@@ -238,7 +238,7 @@ function initGenres() {
     if (
       !document.querySelector('.artists-dropdown-genres').contains(e.target)
     ) {
-      timeLines.tlCloseSort.restart();
+      timeLines.tlCloseGenres.restart();
       refs.btnGenres.classList.remove('open');
       refs.menuGenres.classList.remove('open');
       // document.body.classList.remove('no-scroll');
