@@ -11,4 +11,8 @@ export const refs = {
   btnGenres: document.querySelector('.dropdown-toggle-genres'),
   btnSort: document.querySelector('.dropdown-toggle-sort'),
   btnSearch: document.querySelector('.search-and-filters-toggle'),
+
+  toggleBtn: document.querySelector('.header-toggle'),
+  mobileMenu: document.querySelector('.header-mobile-menu'),
+  menuLinks: document.querySelectorAll('.header-mob-nav-link'),
 };
