@@ -1,15 +1,15 @@
-import{i as T,a as p,g as u}from"./assets/vendor-CTMFRdsy.js";(function(){const e=document.createElement("link").relList;if(e&&e.supports&&e.supports("modulepreload"))return;for(const s of document.querySelectorAll('link[rel="modulepreload"]'))r(s);new MutationObserver(s=>{for(const i of s)if(i.type==="childList")for(const l of i.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&r(l)}).observe(document,{childList:!0,subtree:!0});function a(s){const i={};return s.integrity&&(i.integrity=s.integrity),s.referrerPolicy&&(i.referrerPolicy=s.referrerPolicy),s.crossOrigin==="use-credentials"?i.credentials="include":s.crossOrigin==="anonymous"?i.credentials="omit":i.credentials="same-origin",i}function r(s){if(s.ep)return;s.ep=!0;const i=a(s);fetch(s.href,i)}})();const o={artistsList:document.querySelector("#artists-list"),artistDetailsModal:document.querySelector(".artist-details-modal"),artistDetailsModalCloseBtn:document.querySelector(".artist-details-modal-close-btn"),menuGenres:document.querySelector(".dropdown-menu-genres"),menuSort:document.querySelector(".dropdown-menu-sort"),panelSearch:document.querySelector(".filters-content"),btnGenres:document.querySelector(".dropdown-toggle-genres"),btnSort:document.querySelector(".dropdown-toggle-sort"),loader:document.querySelector(".loader"),btnSearch:document.querySelector(".search-and-filters-toggle"),toggleBtn:document.querySelector(".header-toggle"),mobileMenu:document.querySelector(".header-mobile-menu"),menuLinks:document.querySelectorAll(".header-mob-nav-link")},M="https://sound-wave.b.goit.study/api",m={ARTISTS:"/artists",ARTIST_BY_ID:"/artists/",ARTIST_ALBUMS_BY_ID:"/albums",GENRES:"/genres",FEEDBACKS:"/feedbacks",PRODUCTS_BY_CATEGORY:"/products/category/"},D=8;function S(t,e="center"){T.error({title:"Error",message:t,position:e})}const q={currentPage:1};document.addEventListener("DOMContentLoaded",()=>{const{toggleBtn:t,mobileMenu:e,menuLinks:a}=o;function r(){e.classList.add("active"),t.classList.add("active")}function s(){e.classList.remove("active"),t.classList.remove("active")}t==null||t.addEventListener("click",()=>{e.classList.contains("active")?s():r()}),a==null||a.forEach(i=>i.addEventListener("click",s))});p.defaults.baseURL=M;const I=async t=>{const{data:e}=await p.get(`${m.ARTISTS}?limit=${D}&page=${t}`);return e},_=async t=>{const{data:e}=await p.get(`${m.ARTIST_BY_ID}${t}`);return e},O=async t=>{const{data:e}=await p.get(`${m.ARTIST_BY_ID}${t}${m.ARTIST_ALBUMS_BY_ID}`);return e},B=async()=>{const{data:t}=await p.get(`${m.GENRES}`);return t};async function C(){try{const{artists:t}=await I(q.currentPage);x(t)}catch{S("Failed to fetch artists")}}function x(t=[]){const e=t.map(({_id:a,strArtist:r="Unknown",strArtistThumb:s,strBiographyEN:i="",genres:l=[]})=>`
+import{i as q,a as u,g as c}from"./assets/vendor-CTMFRdsy.js";(function(){const s=document.createElement("link").relList;if(s&&s.supports&&s.supports("modulepreload"))return;for(const o of document.querySelectorAll('link[rel="modulepreload"]'))r(o);new MutationObserver(o=>{for(const i of o)if(i.type==="childList")for(const l of i.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&r(l)}).observe(document,{childList:!0,subtree:!0});function a(o){const i={};return o.integrity&&(i.integrity=o.integrity),o.referrerPolicy&&(i.referrerPolicy=o.referrerPolicy),o.crossOrigin==="use-credentials"?i.credentials="include":o.crossOrigin==="anonymous"?i.credentials="omit":i.credentials="same-origin",i}function r(o){if(o.ep)return;o.ep=!0;const i=a(o);fetch(o.href,i)}})();const t={artistsList:document.querySelector("#artists-list"),artistDetailsModal:document.querySelector(".artist-details-modal"),artistDetailsModalCloseBtn:document.querySelector(".artist-details-modal-close-btn"),menuGenres:document.querySelector(".dropdown-menu-genres"),menuSort:document.querySelector(".dropdown-menu-sort"),panelSearch:document.querySelector(".filters-content"),btnGenres:document.querySelector(".dropdown-toggle-genres"),btnSort:document.querySelector(".dropdown-toggle-sort"),loader:document.querySelector(".loader"),btnSearch:document.querySelector(".search-and-filters-toggle"),searchInput:document.querySelector(".search-input"),searchBtnRequest:document.querySelector(".search-btn"),iconSearch:document.querySelector(".dropdown-icon-search"),iconSort:document.querySelector(".sort-icon"),iconSort:document.querySelector(".genres-icon"),loaderArtistsWrapper:document.querySelector(".artists-loader-container"),toggleBtn:document.querySelector(".header-toggle"),mobileMenu:document.querySelector(".header-mobile-menu"),menuLinks:document.querySelectorAll(".header-mob-nav-link")},C="https://sound-wave.b.goit.study/api",d={ARTISTS:"/artists",ARTIST_BY_ID:"/artists/",ARTIST_ALBUMS_BY_ID:"/albums",GENRES:"/genres",FEEDBACKS:"/feedbacks",PRODUCTS_BY_CATEGORY:"/products/category/"},L=8;function y(e,s="center"){q.error({title:"Error",message:e,position:s})}function I(){t.loaderArtistsWrapper.classList.add("hidden")}function O(){t.loaderArtistsWrapper.classList.remove("hidden")}const G={currentPage:1};document.addEventListener("DOMContentLoaded",()=>{const{toggleBtn:e,mobileMenu:s,menuLinks:a}=t;function r(){s.classList.add("active"),e.classList.add("active")}function o(){s.classList.remove("active"),e.classList.remove("active")}e==null||e.addEventListener("click",()=>{s.classList.contains("active")?o():r()}),a==null||a.forEach(i=>i.addEventListener("click",o))});u.defaults.baseURL=C;const D=async e=>{const{data:s}=await u.get(`${d.ARTISTS}?limit=${L}&page=${e}`);return s},R=async e=>{const{data:s}=await u.get(`${d.ARTIST_BY_ID}${e}`);return s},B=async e=>{const{data:s}=await u.get(`${d.ARTIST_BY_ID}${e}${d.ARTIST_ALBUMS_BY_ID}`);return s},_=async()=>{const{data:e}=await u.get(`${d.GENRES}`);return e},x=async({name:e,page:s=1,sorted:a=0,genre:r=""})=>{const{data:o}=await u.get(`${d.ARTISTS}?limit=${L}&page=${s}&name=${e}${a===2?"&sortName=desc":a===1?"&sortName=asc":""}${r?`&genre=${r}`:""}`);return o};async function P(){try{const{artists:e}=await D(G.currentPage);w(e)}catch{y("Failed to fetch artists")}}function w(e=[]){const s=e.map(({_id:a,strArtist:r="Unknown",strArtistThumb:o,strBiographyEN:i="",genres:l=[]})=>`
             <li class="artists-item">
               <div class="artist-card" data-id="${a}">
                 <img
-                  src="${s||"https://placehold.co/736x414?text=No+Image"}"
+                  src="${o||"https://placehold.co/736x414?text=No+Image"}"
                   alt="${r} — portrait"
                   class="artist-img"
                   loading="lazy"
                   decoding="async"
                   width="736" height="414"
                 >
-                ${Array.isArray(l)&&l.length?`<ul class="artist-tags">${l.map(c=>`<li class="tag">${c}</li>`).join("")}</ul>`:""}
+                ${Array.isArray(l)&&l.length?`<ul class="artist-tags">${l.map(m=>`<li class="tag">${m}</li>`).join("")}</ul>`:""}
 
                 <h3 class="artist-name">${r}</h3>
                 ${i?`<p class="artist-desc text-clamp-3">${i}</p>`:""}
@@ -20,7 +20,7 @@ import{i as T,a as p,g as u}from"./assets/vendor-CTMFRdsy.js";(function(){const 
   </svg>
                 </button>
               </div>
-            </li>`).join("");o.artistsList.insertAdjacentHTML("beforeend",e)}C();const b=[];R();P();L({btn:o.btnGenres,menu:o.menuGenres,wrapperSelector:".artists-dropdown-genres"});L({btn:o.btnSort,menu:o.menuSort,wrapperSelector:".artists-dropdown-sort"});async function R(){try{const e='<li data-value="all">All Genres</li>'+(await B()).map(({genre:a})=>`<li data-value="${a.toLowerCase()}">${a}</li>`).join("");o.menuGenres.insertAdjacentHTML("beforeend",e)}catch(t){S(`While loading genres ${t}`)}}function L({btn:t,menu:e,wrapperSelector:a}){const r=t.querySelector(".dropdown-icon"),s=u.timeline({paused:!0}),i=u.timeline({paused:!0}),l=n=>{document.querySelector(a).contains(n.target)||(i.restart(),t.classList.remove("open"),e.classList.remove("open"))};s.to(r,{rotate:180,duration:.35,ease:"power2.out"},0).fromTo(e,{opacity:0,y:-10,pointerEvents:"none"},{opacity:1,y:0,duration:.4,pointerEvents:"auto",ease:"power3.out"},0).from(e.children,{opacity:0,y:-6,stagger:.05,duration:.25,ease:"power2.out"},.1),i.to(r,{rotate:0,duration:.3,ease:"power2.in"},0).to(e,{opacity:0,y:-10,duration:.3,pointerEvents:"none",ease:"power2.in"},0),t.addEventListener("click",n=>{n.stopPropagation(),e.classList.contains("open")?(s.pause(0),i.pause(0).play(0),t.classList.remove("open"),e.classList.remove("open")):(b.forEach(d=>{d.menu!==e&&(d.tlOpen.pause(0),d.tlClose.pause(0).play(0),d.btn.classList.remove("open"),d.menu.classList.remove("open"))}),i.pause(0),s.pause(0).play(0),t.classList.add("open"),e.classList.add("open"),document.addEventListener("click",l,{once:!0}))}),e.addEventListener("click",n=>{const c=n.target.closest("li");c&&(t.querySelector(".dropdown-label").textContent=c.textContent,t.dataset.value=c.dataset.value,s.pause(0),i.restart(),t.classList.remove("open"),e.classList.remove("open"))}),b.push({btn:t,menu:e,tlOpen:s,tlClose:i})}function P(){if(window.matchMedia("(min-width: 1440px)").matches)return;const t=o.btnSearch.querySelector(".dropdown-icon"),e=u.timeline({paused:!0});e.to(t,{rotate:180,duration:.35,ease:"power2.out"},0).fromTo(o.panelSearch,{opacity:0,y:-10,pointerEvents:"none"},{opacity:1,y:0,duration:.4,pointerEvents:"auto",ease:"power3.out"},0).from(o.panelSearch.children,{opacity:0,y:-6,stagger:.05,duration:.25,ease:"power2.out"},.1);const a=u.timeline({paused:!0});a.to(t,{rotate:0,duration:.3,ease:"power2.in"},0).to(o.panelSearch,{opacity:0,y:-10,duration:.3,pointerEvents:"none",ease:"power2.in"},0);const r=s=>{document.querySelector(".filters-content").contains(s.target)||(a.play(0),document.removeEventListener("click",r))};o.btnSearch.addEventListener("click",s=>{s.stopPropagation(),u.isTweening(o.panelSearch)||o.panelSearch.style.pointerEvents==="auto"?(e.pause(0),a.restart(),document.removeEventListener("click",r)):(a.pause(0),e.restart(),document.addEventListener("click",r))})}function G(){o.artistDetailsModal.classList.add("modal--is-open"),document.body.style.overflow="hidden",window.addEventListener("keydown",w),o.artistDetailsModal.addEventListener("click",$)}function y(){o.artistDetailsModal.classList.remove("modal--is-open"),document.body.style.overflow="",window.removeEventListener("keydown",w),o.artistDetailsModal.removeEventListener("click",$)}function w(t){t.key==="Escape"&&y()}function $(t){t.target===o.artistDetailsModal&&y()}function Y(){var t;(t=o.loader)==null||t.classList.remove("is-hidden")}function N(){var t;(t=o.loader)==null||t.classList.add("is-hidden")}async function j(t){try{Y();const e=await _(t);let a=await O(t);Array.isArray(a)||(a=(a==null?void 0:a.albums)||[]);const{startYear:r,endYear:s,name:i,image:l,gender:n,members:c,country:d,biography:E,genres:A}=e;let h;r&&s?h=`${r} - ${e.endYear}`:r&&!s?h=`${r} - present`:h="information missing";const k=`
+            </li>`).join("");t.artistsList.insertAdjacentHTML("beforeend",s)}P();const n={tlOpenSearch:window.matchMedia("(min-width: 1440px)").matches?null:c.timeline({paused:!0}).to(t.iconSearch,{rotate:180,duration:.35,ease:"power2.out"},0).fromTo(t.panelSearch,{opacity:0,y:-10,pointerEvents:"none"},{opacity:1,y:0,duration:.4,pointerEvents:"auto",ease:"power3.out"},0).from(t.panelSearch.children,{opacity:0,y:-6,stagger:.05,duration:.25,ease:"power2.out"},.1),tlCloseSearch:window.matchMedia("(min-width: 1440px)").matches?null:c.timeline({paused:!0}).to(t.iconSearch,{rotate:0,duration:.3,ease:"power2.in"},0).to(t.panelSearch,{opacity:0,y:-10,duration:.3,pointerEvents:"none",ease:"power2.in"},0),tlOpenSort:c.timeline({paused:!0}).to(t.iconSort,{rotate:180,duration:.35,ease:"power2.out"},0).fromTo(t.menuSort,{opacity:0,y:-10,pointerEvents:"none"},{opacity:1,y:0,duration:.4,pointerEvents:"auto",ease:"power3.out"},0).from(t.menuSort.children,{opacity:0,y:-6,stagger:.05,duration:.25,ease:"power2.out"},.1),tlCloseSort:c.timeline({paused:!0}).to(t.iconSort,{rotate:0,duration:.3,ease:"power2.in"},0).to(t.menuSort,{opacity:0,y:-10,duration:.3,pointerEvents:"none",ease:"power2.in"},0),tlOpenGenres:c.timeline({paused:!0}).to(t.iconGenres,{rotate:180,duration:.35,ease:"power2.out"},0).fromTo(t.menuGenres,{opacity:0,y:-10,pointerEvents:"none"},{opacity:1,y:0,duration:.4,pointerEvents:"auto",ease:"power3.out"},0).from(t.menuGenres.children,{opacity:0,y:-6,stagger:.05,duration:.25,ease:"power2.out"},.1),tlCloseGenres:c.timeline({paused:!0}).to(t.iconGenres,{rotate:0,duration:.3,ease:"power2.in"},0).to(t.menuGenres,{opacity:0,y:-10,duration:.3,pointerEvents:"none",ease:"power2.in"},0)},g={name:"",page:1,sorted:0,genre:""};N();H();Y();j();function Y(){t.searchInput.addEventListener("input",()=>{g.name=t.searchInput.value.trim()}),t.searchBtnRequest.addEventListener("click",async()=>{var e;if(O(),!((e=g.name)!=null&&e.length)){y("Silence from you");return}try{const{artists:s}=await x(g);t.artistsList.innerHTML="",w(s)}catch(s){y(`Silence due problem ${s}`)}I(),n.tlCloseSearch.play(0)})}async function N(){try{const s='<li data-value="all">All Genres</li>'+(await _()).map(({genre:a})=>`<li data-value="${a.toLowerCase()}">${a}</li>`).join("");t.menuGenres.insertAdjacentHTML("beforeend",s)}catch(e){y(`While loading genres ${e}`)}}function j(){const e=s=>{document.querySelector(".artists-dropdown-sort").contains(s.target)||(n.tlCloseSort.restart(),t.btnSort.classList.remove("open"),t.menuSort.classList.remove("open"))};t.btnSort.addEventListener("click",s=>{s.stopPropagation(),t.menuSort.classList.contains("open")?(n.tlOpenSort.pause(0),n.tlCloseSort.pause(0).play(0),t.btnSort.classList.remove("open"),t.menuSort.classList.remove("open")):(n.tlOpenGenres.pause(0),n.tlCloseGenres.pause(0).play(0),t.btnGenres.classList.remove("open"),t.menuGenres.classList.remove("open"),n.tlCloseSort.pause(0),n.tlOpenSort.pause(0).play(0),t.btnSort.classList.add("open"),t.menuSort.classList.add("open"),document.addEventListener("click",e,{once:!0}))}),t.menuSort.addEventListener("click",s=>{const a=s.target.closest("li");a&&(t.btnSort.querySelector(".dropdown-label").textContent=a.textContent,t.btnSort.dataset.value=a.dataset.value,n.tlOpenSort.pause(0),n.tlCloseSort.restart(),t.btnSort.classList.remove("open"),t.menuSort.classList.remove("open"))})}function H(){if(window.matchMedia("(min-width: 1440px)").matches)return;const e=s=>{document.querySelector(".filters-content").contains(s.target)||(n.tlCloseSearch.play(0),document.removeEventListener("click",e))};t.btnSearch.addEventListener("click",s=>{s.stopPropagation(),c.isTweening(t.panelSearch)||t.panelSearch.style.pointerEvents==="auto"?(n.tlOpenSearch.pause(0),n.tlCloseSearch.restart(),document.removeEventListener("click",e)):(n.tlCloseSearch.pause(0),n.tlOpenSearch.restart(),document.addEventListener("click",e))})}function U(){t.artistDetailsModal.classList.add("modal--is-open"),document.body.style.overflow="hidden",window.addEventListener("keydown",$),t.artistDetailsModal.addEventListener("click",E)}function f(){t.artistDetailsModal.classList.remove("modal--is-open"),document.body.style.overflow="",window.removeEventListener("keydown",$),t.artistDetailsModal.removeEventListener("click",E)}function $(e){e.key==="Escape"&&f()}function E(e){e.target===t.artistDetailsModal&&f()}function W(){var e;(e=t.loader)==null||e.classList.remove("is-hidden")}function F(){var e;(e=t.loader)==null||e.classList.add("is-hidden")}async function K(e){try{W();const s=await R(e);let a=await B(e);Array.isArray(a)||(a=(a==null?void 0:a.albums)||[]);const{startYear:r,endYear:o,name:i,image:l,gender:S,members:m,country:A,biography:T,genres:k}=s;let p;r&&o?p=`${r} - ${s.endYear}`:r&&!o?p=`${r} - present`:p="information missing";const M=`
         <div class="artist-details-modal-content">
             <button class="artist-details-modal-close-btn" type="button">
                 <svg class="modal-svg" width="14" height="14">
@@ -30,46 +30,46 @@ import{i as T,a as p,g as u}from"./assets/vendor-CTMFRdsy.js";(function(){const 
 
             <h2 class="artist-details-modal-main-title">${i}</h2>
             <div class="artist-details-modal-main-block">
-            <img class="artist-details-modal-img" src="${l}" alt="${e.name}" />
+            <img class="artist-details-modal-img" src="${l}" alt="${s.name}" />
 
             <ul class="artist-details-modal-list">
             <li class="artist-details-modal-list-item">
                 <h3 class="artist-details-modal-title">Years active</h3>
-                <p  class="artist-details-modal-text">${h}</p>
+                <p  class="artist-details-modal-text">${p}</p>
             </li>
-            ${n?`
+            ${S?`
                 <li class="artist-details-modal-list-item">
                     <h3 class="artist-details-modal-title">Sex</h3>
-                    <p class="artist-details-modal-text">${n}</p>
+                    <p class="artist-details-modal-text">${S}</p>
                 </li>
                 `:""}
-            ${c?`
+            ${m?`
                 <li class="artist-details-modal-list-item">
                     <h3 class="artist-details-modal-title">Members</h3>
-                    <p class="artist-details-modal-text">${c.length}</p>
+                    <p class="artist-details-modal-text">${m.length}</p>
                 </li>
                 `:""}
             <li class="artist-details-modal-list-item">
                 <h3 class="artist-details-modal-title">Country</h3>
-                <p class="artist-details-modal-text">${d}</p>
+                <p class="artist-details-modal-text">${A}</p>
             </li>
             <li class="artist-details-modal-list-item">
                 <h3 class="artist-details-modal-title">Biography</h3>
-                <p class="artist-details-modal-text">${E}</p>
+                <p class="artist-details-modal-text">${T}</p>
             </li>
             </ul>
            
             <ul class="artist-details-modal-block-genres">
             <li class="artist-details-modal-block-genres-item">
-                <p class="artist-details-modal-genres">${A}</p>
+                <p class="artist-details-modal-genres">${k}</p>
             </li>
             </ul>
             </div>
 
             <h3 class="artist-details-modal-albums">Albums</h3>
-            ${a.length>0?a.map(f=>{var v;return`
+            ${a.length>0?a.map(v=>{var b;return`
             <div class="artist-details-modal-albums-list">
-                <h4 class="artist-details-modal-albums-list-title">${f.title}</h4>
+                <h4 class="artist-details-modal-albums-list-title">${v.title}</h4>
                 <table>
                 <thead class="artist-details-modal-albums-list-table-head">
                     <tr>
@@ -79,13 +79,13 @@ import{i as T,a as p,g as u}from"./assets/vendor-CTMFRdsy.js";(function(){const 
                     </tr>
                 </thead>
                 <tbody class="artist-details-modal-albums-list-table-body">
-                    ${((v=f.tracks)==null?void 0:v.map(g=>`
+                    ${((b=v.tracks)==null?void 0:b.map(h=>`
                     <tr>
-                        <td class="artist-details-modal-albums-list-table-text col-1">${g.title}</td>
-                        <td class="artist-details-modal-albums-list-table-text col-2">${g.duration}</td>
+                        <td class="artist-details-modal-albums-list-table-text col-1">${h.title}</td>
+                        <td class="artist-details-modal-albums-list-table-text col-2">${h.duration}</td>
                         <td class= "col-3">
-                            ${g.youtubeLink?`
-                                <a class="modal-link-youtube" href="${g.youtubeLink}" target="_blank">
+                            ${h.youtubeLink?`
+                                <a class="modal-link-youtube" href="${h.youtubeLink}" target="_blank">
                                     <svg class="modal-youtube" width="20" height="14">
                                         <use href="/src/img/icons.svg#icon-youtube"></use>
                                     </svg>
@@ -99,12 +99,12 @@ import{i as T,a as p,g as u}from"./assets/vendor-CTMFRdsy.js";(function(){const 
             </div>
             `}).join(""):"<p>No albums found</p>"}
         </div>
-        `;o.artistDetailsModal.innerHTML=`
+        `;t.artistDetailsModal.innerHTML=`
         <button class="artist-details-modal-close-btn" type="button">
             <svg class="modal-svg" width="14" height="14">
             <use href="/src/img/icons.svg#icon-close"></use>
             </svg>
         </button>
-        ${k}
-        `,o.artistDetailsModal.querySelector(".artist-details-modal-close-btn").addEventListener("click",y),G()}catch(e){console.log(e)}finally{N()}}o.artistsList.addEventListener("click",t=>{const e=t.target.closest(".artist-cta");if(!e)return;const a=e.dataset.artistId;a&&j(a)});
+        ${M}
+        `,t.artistDetailsModal.querySelector(".artist-details-modal-close-btn").addEventListener("click",f),U()}catch(s){console.log(s)}finally{F()}}t.artistsList.addEventListener("click",e=>{const s=e.target.closest(".artist-cta");if(!s)return;const a=s.dataset.artistId;a&&K(a)});
 //# sourceMappingURL=index.js.map
