@@ -1,1 +1,181 @@
-/* Feedback modal */
+.feedback-backdrop {
+    display: none;
+    position: fixed;
+    align-items: center;   
+    justify-content: center;      
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .feedback-backdrop.is-open {
+    display: flex; 
+  }
+
+  .feedback-modal-form {
+    background: var(--color-scheme-1-background);
+    padding: 64px 32px 32px 32px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column; 
+    position: relative;
+    width: 100%;   
+    box-sizing: border-box;     
+  }
+
+  .feedback-modal-title {
+    font-family: var(--second-family);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 130%;
+    letter-spacing: -0.01em;
+    text-align: center;
+    color: var(--color-scheme-1-text);
+  }
+
+  .feedback-modal-label {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 150%;
+    color: var(--color-scheme-1-text);
+    margin-bottom: 8px;
+   
+}
+
+  .feedback-modal-user-feedback,
+  .feedback-modal-username {
+    all: unset;
+    background: var(--opacity-transparent);
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 150%;
+    color: var(--color-scheme-2-text);
+    border: 1px solid var(--opacity-white-20);
+    border-radius: 12px;
+    max-width: 288px;
+    width: 100%;
+    box-sizing: border-box; 
+  }
+
+  .feedback-modal-user-feedback:focus::placeholder,
+  .feedback-modal-username:focus::placeholder {
+    opacity: 0; 
+  } 
+
+  .feedback-modal-user-feedback {
+    padding: 12px;
+    height: 130px;
+    resize: vertical; 
+    overflow: auto;
+  }
+
+  .feedback-modal-user-feedback:hover::placeholder,
+  .feedback-modal-username:hover::placeholder {
+    color: var(--color-scheme-2-text);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+
+  }
+
+  .feedback-modal-username {
+    padding: 8px 12px;
+    height: 43px;
+    margin-bottom: 32px;
+  }
+
+
+  .feedback-modal-username::placeholder,
+  .feedback-modal-user-feedback::placeholder  {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 150%;
+    color: var(--opacity-white-60);
+  }
+
+  .feedback-modal-btn {
+    border-radius: 12px;
+    padding: 10px 24px;
+    width: 100%;          
+    max-width: 288px;     
+    box-sizing: border-box;
+    height: 47px;
+    box-shadow: 0 1px 2px 0 var(--opacity-neutral-darkest-5), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px var(--opacity-neutral-darkest-15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 var(--opacity-white-5);
+    background: var(--color-affair);
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
+    color: var(--color-white);
+    display: block;    
+    margin: 24px auto 0; 
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+
+  .feedback-modal-btn:hover {
+    box-shadow: 0 1px 2px 0 var(--opacity-neutral-darkest-5), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px var(--opacity-neutral-darkest-15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 var(--opacity-white-5);
+background: rgba(118, 65, 145, 0.6);
+opacity: 0.6;
+  }
+
+  .feedback-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+  }
+
+  .feedback-modal-svg {
+    fill: var(--color-white);
+    transition: opacity 0.3s ease;
+  }
+
+  .feedback-modal-svg:hover {
+    opacity: 0.6;
+  }
+
+  @media screen and (min-width: 768px) {
+    .feedback-modal-form {
+        max-width: 704px;
+    }
+    .feedback-modal-title {
+        font-size: 44px;
+        line-height: 120%;
+    }
+    .feedback-modal-username {
+        max-width: 640px;
+        margin-bottom: 24px;
+    }
+    .feedback-modal-user-feedback {
+        max-width: 640px;
+    }
+    .feedback-modal-btn {
+        max-width: 340px;
+  }
+}
+  
+  @media screen and (min-width: 1140px) {
+   .feedback-modal-form {
+    max-width: 864px;
+   }
+   .feedback-modal-title {
+    font-size: 60px;
+    line-height: 120%;
+   }
+   .feedback-modal-user-feedback,
+   .feedback-modal-username {
+    max-width: 736px;
+   }
+   .feedback-modal-username {
+    margin-bottom: 24px;
+   }
+   .feedback-modal-btn {
+    width: 108px;
+   }
+  }
+  

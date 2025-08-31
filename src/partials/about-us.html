@@ -1,4 +1,52 @@
 <!-- About us -->
 <section class="about-us" id="about">
-  <div class="container"></div>
+  <div class="container about-us-container">
+    <div class="about-image-container">
+      <picture class="about-us-picture">
+        <source
+          media="(min-width: 1440px)"
+          srcset="
+            /img/about-us/two-boys-and-two-girls-desk.jpg    1x,
+            /img/about-us/two-boys-and-two-girls-desk@2x.jpg 2x
+          "
+        />
+        <source
+          media="(min-width: 768px)"
+          srcset="
+            /img/about-us/two-boys-and-two-girls-tab.jpg    1x,
+            /img/about-us/two-boys-and-two-girls-tab@2x.jpg 2x
+          "
+        />
+        <source
+          media="(max-width: 767px)"
+          srcset="
+            /img/about-us/two-boys-and-two-girls-mobile.jpg    1x,
+            /img/about-us/two-boys-and-two-girls-mobile@2x.jpg 2x
+          "
+        />
+        <img
+          srcset="
+            /img/about-us/two-boys-and-two-girls-mobile.jpg    1x,
+            /img/about-us/two-boys-and-two-girls-mobile@2x.jpg 2x
+          "
+          src="/img/about-us/two-boys-and-two-girls-mobile.jpg"
+          alt="Two boys and girls"
+          class="about-us-img"
+          width="280"
+          height="169"
+        />
+      </picture>
+    </div>
+    <div class="about-text-container">
+      <svg width="64" height="64" class="about-us-icon">
+        <use href="/img/icons.svg#icon-logo-small"></use>
+      </svg>
+      <h3 class="about-us-title">About ArtistsHub</h3>
+      <p class="about-us-paragraph">
+        At ArtistsHub, our mission is to connect music lovers with the artists
+        they adore. We strive to create a vibrant community where discovering
+        new music is as enjoyable as listening to it.
+      </p>
+    </div>
+  </div>
 </section>
