@@ -1,1 +1,172 @@
 /* Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #060307;
+}
+
+/* Контейнер */
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+/* Логотип */
+.logo svg {
+  fill: #fff;
+  transition: fill 0.3s ease;
+  margin-left: 26px;
+  margin-top: 11px;
+}
+
+.logo:hover svg {
+  fill: #764191;
+}
+
+/* Горизонтальна навігація */
+.header-nav {
+  display: none;
+}
+
+.header-nav-ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  transition: color 0.3s;
+}
+
+.header-nav-link:hover {
+  color: #764191;
+}
+
+/* Бургер кнопка */
+.header-burger {
+  display: flex;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 20px 20px 0 0;
+  transition: opacity 0.3s ease;
+}
+
+.header-burger-icon {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+  transition: opacity 0.3s ease;
+}
+
+.header-burger:hover .header-burger-icon {
+  opacity: 0.6;
+}
+
+/* Кнопка закриття */
+.header-close-menu {
+  display: flex;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 12px;
+  transition: opacity 0.3s ease;
+}
+
+.header-close-icon {
+  fill: #fff;
+  width: 24px;
+  height: 24px;
+  transition: opacity 0.3s ease;
+}
+
+.header-close-menu:hover .header-close-icon {
+  opacity: 0.6;
+}
+
+/* Мобільне меню */
+.header-mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+  background: #060307;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-mobile-menu.active {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.header-mobile-menu-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.header-mob-nav-ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  text-align: center;
+}
+
+.header-mob-nav-link {
+  color: #fff;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.header-mob-nav-link:hover {
+  color: #d67fff;
+}
+
+/* ================= MEDIA ================= */
+@media (min-width: 768px) {
+  .header {
+    padding: 10.5px 64px;
+  }
+
+  .header-nav {
+    display: block;
+  }
+
+  .header-nav-ul {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .header-burger,
+  .header-mobile-menu {
+    display: none !important;
+  }
+
+  .logo svg {
+    margin: 0;
+  }
+}
