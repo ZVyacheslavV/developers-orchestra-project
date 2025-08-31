@@ -1,4 +1,4 @@
-/* Header */
+/* ================= HEADER ================= */
 .header {
   position: fixed;
   top: 0;
@@ -6,37 +6,43 @@
   width: 100%;
   z-index: 1000;
   background-color: #060307;
-}
-
-/* Контейнер */
-.header-container {
+  height: 64px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 0 auto;
 }
 
-/* Логотип */
+.header-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+}
+
 .logo svg {
   fill: #fff;
   transition: fill 0.3s ease;
-  margin-left: 26px;
-  margin-top: 11px;
 }
 
 .logo:hover svg {
-  fill: #764191;
+  fill: #888;
 }
 
-/* Горизонтальна навігація */
+/* ================= NAV ================= */
 .header-nav {
   display: none;
+  justify-self: end;
 }
 
 .header-nav-ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  gap: 32px;
 }
 
 .header-nav-link {
@@ -45,87 +51,104 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 1.5;
-  transition: color 0.3s;
+  padding: 22px 0;
+  transition: color 0.3s ease;
 }
 
 .header-nav-link:hover {
-  color: #764191;
+  color: #888;
 }
 
-/* Бургер кнопка */
-.header-burger {
+/* ================= BURGER & CLOSE ================= */
+.header-actions {
   display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+}
+
+.header-toggle {
   cursor: pointer;
   background: none;
   border: none;
-  padding: 20px 20px 0 0;
-  transition: opacity 0.3s ease;
-}
-
-.header-burger-icon {
-  width: 24px;
-  height: 24px;
-  fill: #fff;
-  transition: opacity 0.3s ease;
-}
-
-.header-burger:hover .header-burger-icon {
-  opacity: 0.6;
-}
-
-/* Кнопка закриття */
-.header-close-menu {
   display: flex;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 12px;
-  transition: opacity 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  position: relative;
 }
 
-.header-close-icon {
-  fill: #fff;
+.header-icon {
   width: 24px;
   height: 24px;
-  transition: opacity 0.3s ease;
+  fill: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: fill 0.3s ease, opacity 0.3s ease;
 }
 
-.header-close-menu:hover .header-close-icon {
-  opacity: 0.6;
+.header-icon.burger {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* Мобільне меню */
+.header-icon.close {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.header-toggle:hover .header-icon.burger {
+  fill: #888;
+}
+
+.header-toggle.active:hover .header-icon.close {
+  fill: #888;
+}
+
+.header-toggle.active .header-icon.burger {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.header-toggle.active .header-icon.close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ================= MOBILE MENU ================= */
 .header-mobile-menu {
   position: fixed;
-  top: 0;
+  top: 64px;
   left: 0;
   width: 100%;
-  height: 100vh;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 999;
+  height: calc(100vh - 64px);
   background: #060307;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 999;
   display: flex;
   flex-direction: column;
+  padding-top: 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .header-mobile-menu.active {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-.header-mobile-menu-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
+  transform: translateX(0);
 }
 
 .header-mob-nav-ul {
   list-style: none;
+  margin: 0;
   padding: 0;
-  margin-top: 60px;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -138,35 +161,38 @@
   font-size: 26px;
   line-height: 1.5;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .header-mob-nav-link:hover {
-  color: #d67fff;
+  color: #888;
 }
 
 /* ================= MEDIA ================= */
-@media (min-width: 768px) {
+@media only screen and (min-width: 768px) {
   .header {
-    padding: 10.5px 64px;
+    height: 72px;
+  }
+
+  .header-container {
+    padding: 0 32px;
   }
 
   .header-nav {
     display: block;
   }
 
-  .header-nav-ul {
-    display: flex;
-    flex-direction: row;
-    gap: 32px;
+  .header-actions {
+    display: none;
   }
 
-  .header-burger,
   .header-mobile-menu {
-    display: none !important;
+    display: none;
   }
+}
 
-  .logo svg {
-    margin: 0;
+@media only screen and (min-width: 1440px) {
+  .header-container {
+    padding: 0 64px;
   }
 }
