@@ -2,6 +2,7 @@
 .about-us {
   padding-bottom: 64px;
   padding-top: 64px;
+  margin: 0 auto;
 }
 
 .about-us-img {
@@ -22,6 +23,8 @@
   letter-spacing: -0.01em;
   color: #fff;
   margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .about-us-paragraph {
   font-family: 'IBM Plex Sans', sans-serif;
