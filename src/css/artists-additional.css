@@ -252,7 +252,7 @@
 .search-input {
   font-size: 18px;
   line-height: 1.5;
-  color: var(--opacity-white-60);
+  color: var(--color-scheme-2-text);
 
   border: 1px solid var(--opacity-white-20);
   border-radius: 12px;
