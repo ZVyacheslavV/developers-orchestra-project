@@ -1,25 +1,25 @@
+import { refs } from './refs.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  const burger = document.getElementById('burger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const closeMenu = document.getElementById('closeMenu');
-  const menuLinks = document.querySelectorAll('.header-mob-nav-link');
-  const overlay = document.getElementById('menuOverlay');
+  const { toggleBtn, mobileMenu, menuLinks } = refs;
 
-  burger.addEventListener('click', () => {
+  function openMenu() {
     mobileMenu.classList.add('active');
-  });
+    toggleBtn.classList.add('active');
+  }
 
-  closeMenu.addEventListener('click', () => {
+  function closeMenu() {
     mobileMenu.classList.remove('active');
+    toggleBtn.classList.remove('active');
+  }
+
+  toggleBtn?.addEventListener('click', () => {
+    if (mobileMenu.classList.contains('active')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
-  overlay.addEventListener('click', () => {
-    mobileMenu.classList.remove('active');
-  });
-
-  menuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-    });
-  });
+  menuLinks?.forEach(link => link.addEventListener('click', closeMenu));
 });
