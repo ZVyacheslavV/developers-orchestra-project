@@ -1,5 +1,6 @@
 /* Refs */
 export const refs = {
+  feedbacksContainer: document.querySelector('.feedbacks-container'),
   artistsList: document.querySelector('#artists-list'),
   artistDetailsModal: document.querySelector('.artist-details-modal'),
   artistDetailsModalCloseBtn: document.querySelector(

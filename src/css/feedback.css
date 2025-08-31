@@ -1,1 +1,261 @@
 /* Feedback */
+
+.feedback {
+  padding: 64px 0;
+  opacity: 0;
+}
+
+.feedback.is-ready {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.swiper {
+  margin-bottom: 16px;
+}
+
+.feedback-card {
+  padding: 0px 0 16px 0;
+}
+
+/* Rating */
+
+.rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  margin-bottom: 32px;
+  pointer-events: none;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.star > svg {
+  position: absolute;
+  inset: 0;
+}
+
+.star-base {
+  position: absolute;
+  inset: 0;
+  fill: #ffffff;
+  stroke: none;
+}
+
+.star-fill {
+  position: absolute;
+  inset: 0;
+  fill: #764191;
+  clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0);
+  -webkit-clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0);
+}
+
+/* Feedback text */
+
+.feedback-text {
+  font-family: var(--second-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-1-text);
+
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.feedback-author {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-scheme-1-text);
+
+  text-align: center;
+}
+
+/* Swiper pagination */
+
+.swiper-pagination {
+  position: static !important;
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 10px 0;
+}
+
+.swiper-pagination span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.swiper-pagination-bullet-active {
+  background: #fff;
+}
+
+/* Swiper button */
+
+.swiper-button-prev,
+.swiper-button-next {
+  display: none !important;
+}
+
+/* Feedback button */
+
+.leave-feedback-button {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-white);
+
+  background-color: var(--color-affair);
+  box-shadow: 0 1px 2px 0 var(--opacity-neutral-darkest-5),
+    inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px var(--opacity-neutral-darkest-15),
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 32px 24px 0 var(--opacity-white-5);
+
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+
+  gap: 8px;
+  border: none;
+  border-radius: 12px;
+
+  min-width: 288px;
+  height: 47px;
+
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.leave-feedback-button:hover,
+.leave-feedback-button:focus {
+  opacity: 0.6;
+}
+
+@media only screen and (min-width: 768px) {
+  .feedback-card {
+    padding: 0px 93px 16px 93px;
+  }
+
+  .feedback-text {
+    font-size: 26px;
+  }
+
+  /* Swiper button */
+  .swiper-button-prev {
+    left: 0px !important;
+  }
+
+  .swiper-button-next {
+    right: 0px !important;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 48px !important;
+    height: 48px !important;
+    padding: 11px;
+
+    border-radius: 8px;
+    border: 1px solid var(--opacity-white-50);
+    background-color: transparent;
+
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    content: none !important;
+  }
+
+  .swiper-button-prev::before,
+  .swiper-button-next::before {
+    content: '';
+    display: block;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover,
+  .swiper-button-prev:focus,
+  .swiper-button-next:focus {
+    background: var(--color-scheme-2-foreground);
+  }
+
+  .arrow {
+    color: #fff;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-arrow {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  .swiper-button-prev .icon-arrow {
+    transform: rotate(180deg);
+  }
+
+  .swiper-button-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  /* Feedback button */
+
+  .leave-feedback-button {
+    min-width: 158px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .feedback {
+    padding: 112px 0;
+  }
+
+  .swiper {
+    margin-bottom: 80px;
+  }
+
+  .feedback-text {
+    font-size: 32px;
+  }
+
+  .feedback-card {
+    padding: 0px 223px 16px 223px;
+  }
+
+  /* Feedback button */
+
+  .leave-feedback-button {
+    min-width: 177px;
+  }
+}
