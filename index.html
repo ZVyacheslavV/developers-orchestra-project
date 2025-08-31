@@ -28,12 +28,62 @@
     <script type="module" crossorigin src="/developers-orchestra-project/index.js"></script>
     <link rel="modulepreload" crossorigin href="/developers-orchestra-project/assets/vendor-CTMFRdsy.js">
     <link rel="stylesheet" crossorigin href="/developers-orchestra-project/assets/vendor-DnveWo0P.css">
-    <link rel="stylesheet" crossorigin href="/developers-orchestra-project/assets/index-DpqUBJyQ.css">
+    <link rel="stylesheet" crossorigin href="/developers-orchestra-project/assets/index-Bmbn8Tyh.css">
   </head>
   <body>
-    <!-- Header -->
-<header class="header">
-  <div class="container"></div>
+    <header class="header">
+  <div class="container header-container">
+    <a href="./index.html" class="logo">
+      <svg class="icon-logo" width="106" height="30">
+        <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-logo-big"></use>
+      </svg>
+    </a>
+
+    <div class="header-nav-actions">
+      <nav class="header-nav">
+        <ul class="header-nav-ul">
+          <li><a href="#artists-list" class="header-nav-link">Artists</a></li>
+          <li><a href="#about" class="header-nav-link">About Us</a></li>
+          <li><a href="#reviews" class="header-nav-link">Reviews</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <button class="header-burger" id="burger">
+      <svg class="header-burger-icon" width="24" height="24">
+        <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-burger-menu"></use>
+      </svg>
+    </button>
+
+    <div class="header-mobile-menu" id="mobileMenu">
+      <div class="header-mobile-menu-overlay" id="menuOverlay"></div>
+
+      <div class="header-mobile-menu-content">
+        <div class="header-mobile-menu-head">
+          <a href="./index.html" class="logo mob-logo">
+            <svg class="header-logo-icon" width="106" height="30">
+              <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-logo-big"></use>
+            </svg>
+          </a>
+          <button class="header-close-menu" id="closeMenu">
+            <svg class="header-close-icon" width="12" height="12">
+              <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-close"></use>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="header-mob-nav">
+          <ul class="header-mob-nav-ul">
+            <li>
+              <a href="#artists-list" class="header-mob-nav-link">Artists</a>
+            </li>
+            <li><a href="#about" class="header-mob-nav-link">About Us</a></li>
+            <li><a href="#reviews" class="header-mob-nav-link">Reviews</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
 </header>
 
 
@@ -157,7 +207,7 @@
       >
         Search & Filters
         <svg class="dropdown-icon" width="24" height="24">
-          <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-chevron-down"></use>
+          <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-chevron-down"></use>
         </svg>
       </button>
     </header>
@@ -167,7 +217,7 @@
       <div class="artists-search-wrapper">
         <button class="search-btn">
           <svg class="search-icon" width="24" height="24">
-            <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-search"></use>
+            <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-search"></use>
           </svg>
         </button>
         <input class="search-input" type="text" placeholder="Search" />
@@ -178,7 +228,7 @@
         <button class="dropdown-toggle dropdown-toggle-sort">
           <span class="dropdown-label">Sorting</span>
           <svg class="dropdown-icon" width="24" height="24">
-            <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-chevron-down"></use>
+            <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-chevron-down"></use>
           </svg>
         </button>
         <ul class="dropdown-menu dropdown-menu-sort">
@@ -193,7 +243,7 @@
         <button class="dropdown-toggle dropdown-toggle-genres">
           <span class="dropdown-label">Genre</span>
           <svg class="dropdown-icon" width="24" height="24">
-            <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-chevron-down"></use>
+            <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-chevron-down"></use>
           </svg>
         </button>
         <ul class="dropdown-menu dropdown-menu-genres"></ul>
@@ -264,7 +314,7 @@
     </div>
     <div class="about-text-container">
       <svg width="64" height="64" class="about-us-icon">
-        <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-logo-small"></use>
+        <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-logo-small"></use>
       </svg>
       <h3 class="about-us-title">About ArtistsHub</h3>
       <p class="about-us-paragraph">
@@ -288,7 +338,7 @@
   <div class="container">
     <a href="/" rel="noopener noreferrer">
       <svg class="footer-icon-logo" width="" height="120">
-        <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-logo-big"></use>
+        <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-logo-big"></use>
       </svg>
     </a>
 <ul class="footer-menu">
@@ -308,14 +358,14 @@
   <li>
     <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
       <svg class="footer-icons" width="40" height="40">
-          <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-instagram"></use>
+          <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-instagram"></use>
         </svg>
       </a>
     </li>
     <li>
       <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
         <svg class="footer-icons" width="40" height="40">
-            <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-facebook"></use>
+            <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-facebook"></use>
           </svg>
         </a>
       </li>
@@ -323,7 +373,7 @@
       <li>
         <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
           <svg class="footer-icons" width="40" height="40">
-              <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-youtube"></use>
+              <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-youtube"></use>
             </svg>
           </a>
         </li>
@@ -352,7 +402,7 @@
   <div class="container feedback-modal-form">
     <button class="feedback-modal-close" type="button">
       <svg class="feedback-modal-svg" width="32" height="32">
-        <use href="/developers-orchestra-project/assets/icons-BgOC2xjC.svg#icon-close"></use>
+        <use href="/developers-orchestra-project/assets/icons-BW1fWait.svg#icon-close"></use>
       </svg>  
     </button>
     <h2 class="feedback-modal-title">Submit feedback</h2>
