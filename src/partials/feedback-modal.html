@@ -1,6 +1,8 @@
 <!-- Feedback modal -->
+<link rel="stylesheet" href="node_modules/css-star-rating/css/star-rating.css">
+
 <div class="feedback-backdrop feedback-modal">
-  <div class="container feedback-modal-form">
+  <div class="container feedback-modal-form is-open">
     <button class="feedback-modal-close" type="button">
       <svg class="feedback-modal-svg" width="32" height="32">
         <use href="./img/icons.svg#icon-close"></use>
@@ -18,8 +20,8 @@
     type="text"
     name="user-name"
     placeholder="Emily"
-    maxlength="50"
-    
+    minlength="2"
+    maxlength="16"
   />
   <label
   for="user-feedback"
@@ -31,8 +33,17 @@ id="user-feedback"
 name="user-feedback"
 class="feedback-modal-user-feedback"
 placeholder="Type your message..."
-maxlength="200"></textarea>
+minlength="10"
+maxlength="512"></textarea>
 
+<div class="my-rating" id="myRating">
+  <svg data-value="1" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="2" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="3" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="4" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="5" viewBox="0 0 24 24" width="30" height="28"></svg>
+</div>
+<input type="hidden" name="rating" id="ratingValue" value="0">
 
 <button type="submit" class="feedback-modal-btn">Submit</button> 
 </div>
