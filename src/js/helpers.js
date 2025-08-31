@@ -4,11 +4,11 @@ import { refs } from './refs';
 
 /* Helpers */
 export function toastError(message, position = 'center') {
-  iziToast.error({ title: 'Error', message, position });
+  iziToast.error({ /* title: 'Error', */ message, position });
 }
 
 export function toastSuccess(message, position = 'center') {
-  iziToast.success({ title: '🔥', message, position });
+  iziToast.success({ /* title: '🔥', */ message, position });
 }
 
 export function hideLoaderArtists() {

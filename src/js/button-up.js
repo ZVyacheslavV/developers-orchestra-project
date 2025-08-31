@@ -3,13 +3,14 @@ const scrollBtn = document.querySelector('.scroll-to-top');
 let lastScroll = window.scrollY;
 let isVisible = false;
 let scrollTimeout;
+let hideTimeout;
 
 window.addEventListener('scroll', () => {
   clearTimeout(scrollTimeout);
 
   scrollTimeout = setTimeout(() => {
     const currentScroll = window.scrollY;
-    const scrollingUp = currentScroll < lastScroll - 30;
+    const scrollingUp = currentScroll < lastScroll - 70;
     const scrolledToBottom =
       window.innerHeight + currentScroll >= document.body.offsetHeight - 10;
 
@@ -18,9 +19,16 @@ window.addEventListener('scroll', () => {
     if (shouldShow && !isVisible) {
       scrollBtn.classList.add('visible');
       isVisible = true;
+
+      clearTimeout(hideTimeout);
+      hideTimeout = setTimeout(() => {
+        scrollBtn.classList.remove('visible');
+        isVisible = false;
+      }, 2000);
     } else if (!shouldShow && isVisible) {
       scrollBtn.classList.remove('visible');
       isVisible = false;
+      clearTimeout(hideTimeout);
     }
 
     lastScroll = currentScroll;
