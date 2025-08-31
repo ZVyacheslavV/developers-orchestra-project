@@ -40,12 +40,12 @@ function initSearchRequest() {
   });
 
   refs.searchBtnRequest.addEventListener('click', async () => {
-    showLoaderArtists();
-
     if (!query.name?.length) {
       toastError('Silence from you');
+
       return;
     }
+    showLoaderArtists();
 
     try {
       const { artists } = await searchArtist(query);
@@ -182,6 +182,7 @@ function initSort() {
   const outsideClickHandler = e => {
     if (!document.querySelector('.artists-dropdown-sort').contains(e.target)) {
       timeLines.tlCloseSort.restart();
+      timeLines.tlCloseGenres.restart(); //try
       refs.btnSort.classList.remove('open');
       refs.menuSort.classList.remove('open');
       // document.body.classList.remove('no-scroll');
@@ -239,6 +240,7 @@ function initGenres() {
       !document.querySelector('.artists-dropdown-genres').contains(e.target)
     ) {
       timeLines.tlCloseGenres.restart();
+      timeLines.tlOpenGenres.restart(); //try
       refs.btnGenres.classList.remove('open');
       refs.menuGenres.classList.remove('open');
       // document.body.classList.remove('no-scroll');
@@ -252,19 +254,19 @@ function initGenres() {
     if (!isOpen) {
       //Closing sort
       timeLines.tlOpenSort.pause(0);
-      timeLines.tlCloseSort.pause(0).play(0);
+      timeLines.tlCloseSort.restart();
       refs.btnSort.classList.remove('open');
       refs.menuSort.classList.remove('open');
 
       timeLines.tlCloseGenres.pause(0);
-      timeLines.tlOpenGenres.pause(0).play(0);
+      timeLines.tlOpenGenres.restart();
       refs.btnGenres.classList.add('open');
       refs.menuGenres.classList.add('open');
       document.addEventListener('click', outsideClickHandler, { once: true });
       // document.body.classList.add('no-scroll');
     } else {
       timeLines.tlOpenGenres.pause(0);
-      timeLines.tlCloseGenres.pause(0).play(0);
+      timeLines.tlCloseGenres.restart();
       refs.btnGenres.classList.remove('open');
       refs.menuGenres.classList.remove('open');
       // document.body.classList.remove('no-scroll');
