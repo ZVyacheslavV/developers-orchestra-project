@@ -2,6 +2,8 @@
 .about-us {
   padding-bottom: 64px;
   padding-top: 64px;
+}
+.about-us-container {
   margin: 0 auto;
 }
 
@@ -25,6 +27,7 @@
   margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
+  max-width: 280px;
 }
 .about-us-paragraph {
   font-family: 'IBM Plex Sans', sans-serif;
@@ -46,6 +49,7 @@
   }
   .about-us-title {
     margin-bottom: 24px;
+    max-width: 704px;
   }
   .about-us-paragraph {
     font-size: 20px;
@@ -70,6 +74,7 @@
   }
   .about-us-title {
     font-size: 60px;
+    max-width: 640px;
   }
   .about-us-paragraph {
     max-width: 640px;
