@@ -3,13 +3,19 @@
 .footer-icons {
     color: #fff; 
     fill: currentColor;
+    display: block;
+    /* transition: fill 0.3s ease, opacity 0.3s ease; */
 }
 
 .footer-icon-logo {
     fill: var(--color-affair);
     display: block; 
-    margin: 48px auto 0 auto;
+    margin: 48px auto 32px auto;
+    transition: fill 0.3s ease;
+}
 
+.footer-icon-logo:hover {
+   fill:  #FFFFFF;
 }
 
 .footer-menu {
@@ -27,7 +33,25 @@
     font-size: 16px;
     line-height: 150%;
     color: var(--color-scheme-1-text);
+    transition: opacity 0.3s ease;
 }
+
+.footer-menu-item:hover {
+    opacity: 0.6;
+}
+
+.footer-icons:hover {
+    fill: #FFFFFF;
+    opacity: 0.6;
+  }
+
+.footer-social-media li {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
 .footer-copyright {
     font-family: var(--font-family);

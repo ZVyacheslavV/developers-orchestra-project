@@ -63,9 +63,23 @@
     box-sizing: border-box; 
   }
 
+  .feedback-modal-user-feedback:focus::placeholder,
+  .feedback-modal-username:focus::placeholder {
+    opacity: 0; 
+  } 
+
   .feedback-modal-user-feedback {
     padding: 12px;
     height: 130px;
+    resize: vertical; 
+    overflow: auto;
+  }
+
+  .feedback-modal-user-feedback:hover::placeholder,
+  .feedback-modal-username:hover::placeholder {
+    color: var(--color-scheme-2-text);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+
   }
 
   .feedback-modal-username {
@@ -73,6 +87,7 @@
     height: 43px;
     margin-bottom: 32px;
   }
+
 
   .feedback-modal-username::placeholder,
   .feedback-modal-user-feedback::placeholder  {
@@ -99,6 +114,13 @@
     color: var(--color-white);
     display: block;    
     margin: 24px auto 0; 
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+
+  .feedback-modal-btn:hover {
+    box-shadow: 0 1px 2px 0 var(--opacity-neutral-darkest-5), inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px var(--opacity-neutral-darkest-15), inset 0 2px 1px 0 rgba(255, 255, 255, 0.25), inset 0 32px 24px 0 var(--opacity-white-5);
+background: rgba(118, 65, 145, 0.6);
+opacity: 0.6;
   }
 
   .feedback-modal-close {
@@ -110,8 +132,12 @@
 
   .feedback-modal-svg {
     fill: var(--color-white);
+    transition: opacity 0.3s ease;
   }
 
+  .feedback-modal-svg:hover {
+    opacity: 0.6;
+  }
 
   @media screen and (min-width: 768px) {
     .feedback-modal-form {
