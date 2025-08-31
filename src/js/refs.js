@@ -10,9 +10,10 @@ export const refs = {
   panelSearch: document.querySelector('.filters-content'),
   btnGenres: document.querySelector('.dropdown-toggle-genres'),
   btnSort: document.querySelector('.dropdown-toggle-sort'),
+  loader: document.querySelector('.loader'),
   btnSearch: document.querySelector('.search-and-filters-toggle'),
-
   toggleBtn: document.querySelector('.header-toggle'),
   mobileMenu: document.querySelector('.header-mobile-menu'),
   menuLinks: document.querySelectorAll('.header-mob-nav-link'),
+
 };
