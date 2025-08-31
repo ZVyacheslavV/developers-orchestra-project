@@ -5,6 +5,11 @@
 }
 .about-us-container {
   margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .about-us-img {
@@ -25,8 +30,6 @@
   letter-spacing: -0.01em;
   color: #fff;
   margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
   max-width: 280px;
 }
 .about-us-paragraph {
@@ -38,6 +41,11 @@
   max-width: 280px;
 }
 @media screen and (min-width: 768px) {
+  .about-us-container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
   .about-us-img {
     margin-bottom: 24px;
     max-width: 704px;
@@ -58,8 +66,10 @@
 }
 @media screen and (min-width: 1440px) {
   .about-us-container {
-    display: flex;
+    flex-direction: row;
     align-items: center;
+    padding-left: 64px;
+    padding-right: 64px;
     gap: 32px;
   }
 
