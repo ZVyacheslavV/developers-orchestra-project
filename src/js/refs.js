@@ -16,7 +16,7 @@ export const refs = {
   searchBtnRequest: document.querySelector('.search-btn'),
   iconSearch: document.querySelector('.dropdown-icon-search'),
   iconSort: document.querySelector('.sort-icon'),
-  iconSort: document.querySelector('.genres-icon'),
+  iconGenres: document.querySelector('.genres-icon'),
   loaderArtistsWrapper: document.querySelector('.artists-loader-container'),
   toggleBtn: document.querySelector('.header-toggle'),
   mobileMenu: document.querySelector('.header-mobile-menu'),

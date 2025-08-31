@@ -19,7 +19,7 @@ initSearchRequest();
 
 initSort();
 
-// initGenres();
+initGenres();
 
 /* initDropdown({
   btn: refs.btnGenres,
@@ -137,21 +137,21 @@ function initDropdown({ btn, menu, wrapperSelector }) {
       allDropdowns.forEach(d => {
         if (d.menu !== menu) {
           d.tlOpen.pause(0);
-          d.tlClose.pause(0).play(0);
+          d.tlClose.restart();
           d.btn.classList.remove('open');
           d.menu.classList.remove('open');
         }
       });
 
       tlClose.pause(0);
-      tlOpen.pause(0).play(0);
+      tlOpen.restart();
       btn.classList.add('open');
       menu.classList.add('open');
       document.addEventListener('click', outsideClickHandler, { once: true });
       // document.body.classList.add('no-scroll');
     } else {
       tlOpen.pause(0);
-      tlClose.pause(0).play(0);
+      tlClose.restart();
       btn.classList.remove('open');
       menu.classList.remove('open');
       // document.body.classList.remove('no-scroll');
@@ -195,19 +195,19 @@ function initSort() {
     if (!isOpen) {
       //Closing genres
       timeLines.tlOpenGenres.pause(0);
-      timeLines.tlCloseGenres.pause(0).play(0);
+      timeLines.tlCloseGenres.restart();
       refs.btnGenres.classList.remove('open');
       refs.menuGenres.classList.remove('open');
 
       timeLines.tlCloseSort.pause(0);
-      timeLines.tlOpenSort.pause(0).play(0);
+      timeLines.tlOpenSort.restart();
       refs.btnSort.classList.add('open');
       refs.menuSort.classList.add('open');
       document.addEventListener('click', outsideClickHandler, { once: true });
       // document.body.classList.add('no-scroll');
     } else {
       timeLines.tlOpenSort.pause(0);
-      timeLines.tlCloseSort.pause(0).play(0);
+      timeLines.tlCloseSort.restart();
       refs.btnSort.classList.remove('open');
       refs.menuSort.classList.remove('open');
       // document.body.classList.remove('no-scroll');
