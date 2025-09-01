@@ -81,7 +81,7 @@ async function showArtistDetails(artistId) {
         <div class="artist-details-modal-content">
             <button class="artist-details-modal-close-btn" type="button">
                 <svg class="modal-svg" width="32" height="32">
-                    <use href="./img/icons.svg#icon-close"></use>
+                    <use href="/img/icons.svg#icon-close"></use>
                 </svg>
             </button> 
 
@@ -127,8 +127,9 @@ async function showArtistDetails(artistId) {
             </div>
             </div>
             <h3 class="artist-details-modal-albums">Albums</h3>
+            <div class="artist-details-modal-albums-wrap">
             ${albums.length > 0 ? albums.map(album => `
-            <div class="artist-details-modal-albums-list">
+                <div class="artist-details-modal-albums-list">
                 <h4 class="artist-details-modal-albums-list-title">${album.strAlbum}</h4>
                 <table>
                 <thead class="artist-details-modal-albums-list-table-head">
@@ -146,8 +147,8 @@ async function showArtistDetails(artistId) {
                         <td class= "col-3">
                             ${track.movie && track.movie !== 'null' ? `
                                 <a class="modal-link-youtube" href="${track.movie}" target="_blank">
-                                    <svg class="modal-youtube" width="20" height="14">
-                                        <use href="./img/icons.svg#icon-youtube"></use>
+                                    <svg class="modal-youtube" width="24" height="20">
+                                        <use href="/img/icons.svg#icon-youtube"></use>
                                     </svg>
                                 </a>
                             ` : ''}
@@ -158,6 +159,7 @@ async function showArtistDetails(artistId) {
                 </table>
             </div>
             `).join('') : '<p>No albums found</p>'}
+            </div>
         </div>
         `;
 
