@@ -170,8 +170,8 @@ async function showArtistDetails(artistId) {
         openModal();
 
     } catch (err) {
-        // toastError(err.message);
-        console.log(err);
+        toastError(err.message);
+        // console.log(err);
     } finally {
         hideLoader();
     }
@@ -187,6 +187,3 @@ refs.artistsList.addEventListener('click', e => {
     showArtistDetails(artistId);
     }
 });
-
-
-
