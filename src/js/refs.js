@@ -22,4 +22,5 @@ export const refs = {
   toggleBtn: document.querySelector('.header-toggle'),
   mobileMenu: document.querySelector('.header-mobile-menu'),
   menuLinks: document.querySelectorAll('.header-mob-nav-link'),
+  artistDetailsModalBackdrope: document.querySelector('.artist-details-backdrop'),
 };
