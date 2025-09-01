@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 3000;
   background-color: #060307;
   height: 64px;
   display: flex;
@@ -16,10 +16,17 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   width: 100%;
-  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding-left: 26px;
+  padding-right: 20px;
   height: 100%;
+}
+
+.logo {
+  position: relative;
+  z-index: 3100;
+  display: inline-flex;
+  align-items: center;
 }
 
 .logo svg {
@@ -28,7 +35,7 @@
 }
 
 .logo:hover svg {
-  fill: #888;
+  fill: #764191;
 }
 
 /* ================= NAV ================= */
@@ -63,12 +70,10 @@
 .header-actions {
   display: flex;
   align-items: center;
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
+  justify-self: end;
   width: 40px;
   height: 40px;
+  z-index: 3001;
 }
 
 .header-toggle {
@@ -129,20 +134,15 @@
   left: 0;
   width: 100%;
   height: calc(100vh - 64px);
-  background: #060307;
-  transform: translateX(100%);
+  background-color: #060307;
+  transform: translateY(-100%);
   transition: transform 0.3s ease;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  padding-top: 32px;
+  z-index: 2000;
   overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
 }
 
 .header-mobile-menu.active {
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 .header-mob-nav-ul {
@@ -169,13 +169,16 @@
 }
 
 /* ================= MEDIA ================= */
-@media only screen and (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1439px) {
   .header {
     height: 72px;
   }
 
   .header-container {
-    padding: 0 32px;
+    width: 100%;
+    max-width: 100%;
+    padding-left: 70px;
+    padding-right: 64px;
   }
 
   .header-nav {
@@ -193,6 +196,20 @@
 
 @media only screen and (min-width: 1440px) {
   .header-container {
-    padding: 0 64px;
+    width: 100%;
+    max-width: 1312px;
+    padding: 0;
+  }
+
+  .header-nav {
+    display: block;
+  }
+
+  .header-actions {
+    display: none;
+  }
+
+  .header-mobile-menu {
+    display: none;
   }
 }
