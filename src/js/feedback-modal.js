@@ -1,7 +1,7 @@
 import { addNewFeedback } from './artists-api.js';
 import { toastSuccessFeedbacks } from './helpers.js';
 import "css-star-rating/css/star-rating.css";
-import axios from 'axios';
+import axios from 'axios';   
 
 document.addEventListener("DOMContentLoaded", () => {
   const backdrop = document.querySelector(".feedback-backdrop");
