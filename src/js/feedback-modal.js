@@ -1,5 +1,6 @@
 import { addNewFeedback } from './artists-api.js';
-import { toastSuccess } from './helpers.js';
+import { toastSuccessFeedbacks } from './helpers.js';
+import "css-star-rating/css/star-rating.css";
 
 document.addEventListener("DOMContentLoaded", () => {
   const backdrop = document.querySelector(".feedback-backdrop");
