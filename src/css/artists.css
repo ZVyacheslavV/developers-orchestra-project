@@ -38,6 +38,17 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    min-height: 32px;
+}
+
+.artist-tags[data-empty="1"] {
+    pointer-events: none;
+}
+
+.artist-tags:empty::before {
+    content: "";
+    display: block;
+    height: 32px;
 }
 
 .tag {
@@ -229,23 +240,26 @@
         z-index: 2;
     }
 
-    .filters-content {
+        .js-artists-top {
+            scroll-margin-top: calc(var(--header-height, 96px) + 8px);}
+
+    /* .filters-content {
         position: static;
         width: 100%;
         max-width: none;
         background: transparent;
-    }
+    } */
 
-        .filters-panel .filters-content {
+        /* .filters-panel .filters-content {
             inset: auto !important;
             max-width: 304px;
             width: 100%;
             background: transparent;
-        }
+        } */
 
-    .search-and-filters-toggle {
+    /* .search-and-filters-toggle {
         display: none;
-    }
+    } */
 
     .artists-list {
         grid-column: 2;
@@ -264,5 +278,117 @@
         object-position: 50% 30%;
         border-radius: 16px;
         display: block;
+    }
+}
+
+:root {
+    --pg-gap: 4px;
+    --pg-h: 48px;
+    --pg-radius: 12px;
+
+    --pg-bg: transparent;
+    --pg-border: #2a2a36;
+    --pg-text: #c9c9d4;
+
+    --pg-hover-bg: #1b1b26;
+    --pg-active-bg: #2c2c38;
+    --pg-active-text: #ffffff;
+
+    --pg-disabled: #565666;
+    --pg-focus: #6e56cf;
+}
+
+#tui-pagination {
+    width: 372px;
+    height: var(--pg-h);
+    margin: 64px auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--pg-gap);
+}
+
+#tui-pagination .tui-first,
+#tui-pagination .tui-last {
+    display: none !important;
+}
+
+#tui-pagination .tui-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--pg-h);
+    min-width: 44px;
+    padding: 0 12px;
+    border-radius: var(--pg-radius);
+    background: var(--pg-bg);
+    border: 1px solid var(--pg-border);
+    color: var(--pg-text);
+    font: 500 14px/1 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    text-decoration: none;
+    user-select: none;
+    transition: background .15s ease, border-color .15s ease, color .15s ease, transform .05s ease;
+}
+
+
+#tui-pagination .tui-page-btn:not(.is-disabled):hover {
+    background: var(--pg-hover-bg);
+}
+
+#tui-pagination .tui-page-btn.is-active,
+#tui-pagination .tui-is-selected {
+    background: var(--pg-active-bg);
+    color: var(--pg-active-text);
+    border-color: transparent;
+    pointer-events: none;
+}
+
+#tui-pagination .tui-ellipsis {
+    border: none;
+    padding: 0 8px;
+}
+
+#tui-pagination .tui-prev .tui-ico-prev::before {
+    content: '←';
+}
+
+#tui-pagination .tui-next .tui-ico-next::before {
+    content: '→';
+}
+
+#tui-pagination .tui-prev .tui-ico-prev,
+#tui-pagination .tui-next .tui-ico-next {
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1;
+}
+
+#tui-pagination .tui-page-btn.is-disabled {
+    opacity: .5;
+    color: var(--pg-disabled);
+    border-color: var(--pg-border);
+    cursor: not-allowed;
+}
+
+#tui-pagination .tui-page-btn:focus-visible {
+    outline: 2px solid var(--pg-focus);
+    outline-offset: 2px;
+}
+
+#tui-pagination .tui-page-btn:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 767.98px) {
+    #tui-pagination {
+        width: 288px;
+        margin-top: 32px;
+    }
+}
+
+@media (min-width:1440px) {
+    .artists-subcontainer #tui-pagination {
+        grid-column: 2;
+        justify-self: center;
     }
 }
