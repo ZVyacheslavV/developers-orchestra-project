@@ -8,8 +8,8 @@
     height: 100%;
     z-index: 1000;
     box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.25);
-    display: none;            /* flex-контейнер */
+    background: rgba(118, 65, 145, 0.1);
+    display: none;            
   }
 
   .is-open {
@@ -44,7 +44,10 @@
     line-height: 150%;
     color: var(--color-scheme-1-text);
     margin-bottom: 8px;
-   
+}
+
+.feedback-modal-message {
+  margin-top: 32px;
 }
 
   .feedback-modal-user-feedback,
@@ -75,17 +78,23 @@
     overflow: auto;
   }
 
+  .feedback-modal-user-feedback:hover,
+  .feedback-modal-username:hover,
+  .feedback-modal-user-feedback:focus,
+  .feedback-modal-username:focus {
+  border: 1px solid #764191;
+  outline: none; 
+}
+
   .feedback-modal-user-feedback:hover::placeholder,
   .feedback-modal-username:hover::placeholder {
     color: var(--color-scheme-2-text);
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-
   }
 
   .feedback-modal-username {
     padding: 8px 12px;
     height: 43px;
-    margin-bottom: 32px;
   }
 
 
@@ -146,6 +155,28 @@ opacity: 0.6;
     margin-top: 32px;
   }
 
+  .input-error {
+    border: 1px solid #AF0404;
+    outline: none;
+  }
+
+  .input-error::placeholder {
+    color: var(--color-error-red);
+  }
+
+  .field-error {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 150%;
+    color: var(--color-error-red);
+    margin-top: 4px;
+  }
+  .feedback-modal-username,
+.feedback-modal-user-feedback {
+  margin-bottom: 0; /* убираем для точного контроля через field-error */
+}
+
   @media screen and (min-width: 768px) {
     .feedback-modal-form {
         max-width: 704px;
@@ -153,16 +184,19 @@ opacity: 0.6;
     .feedback-modal-title {
         font-size: 44px;
         line-height: 120%;
+        margin-bottom: 48px;
     }
     .feedback-modal-username {
         max-width: 640px;
-        margin-bottom: 24px;
     }
     .feedback-modal-user-feedback {
         max-width: 640px;
     }
     .feedback-modal-btn {
         max-width: 340px;
+  }
+  .feedback-modal-message {
+    margin-top: 24px;
   }
 }
   
@@ -173,16 +207,18 @@ opacity: 0.6;
    .feedback-modal-title {
     font-size: 60px;
     line-height: 120%;
+    margin-bottom: 48px;
    }
    .feedback-modal-user-feedback,
    .feedback-modal-username {
     max-width: 736px;
    }
-   .feedback-modal-username {
-    margin-bottom: 24px;
-   }
+
    .feedback-modal-btn {
     width: 108px;
    }
+   .feedback-modal-message {
+    margin-top: 24px;
+  }
   }
   
