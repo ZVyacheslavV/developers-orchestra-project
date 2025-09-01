@@ -6,8 +6,8 @@
   height: 50px;
   border: none;
   border-radius: 50%;
-  background-color: #b4b3b4;
-  color: white;
+  background-color: var(--opacity-white-10);
+  color: var(--color-white);
   font-size: 24px;
   cursor: pointer;
   display: none;

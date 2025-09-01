@@ -275,6 +275,14 @@
   color: var(--opacity-white-60);
 }
 
+/* .search-input:hover::placeholder {
+  color: var(--color-scheme-2-text);
+} */
+
+.search-input:focus::placeholder {
+  color: transparent;
+}
+
 .search-input:hover {
   border-color: var(--color-affair);
 }
