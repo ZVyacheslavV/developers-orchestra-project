@@ -224,7 +224,6 @@ function initSort() {
     refs.btnSort.dataset.value = item.dataset.value;
 
     query.sorted = item.dataset.value;
-    console.log(query);
 
     showLoaderArtists();
     try {
