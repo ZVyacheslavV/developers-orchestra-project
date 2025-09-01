@@ -2,13 +2,18 @@
 import { timeLines } from './animations.js';
 import { getArtists, getGenres, searchArtist } from './artists-api';
 import { loadArtists, renderArtists } from './artists.js';
-import { hideLoaderArtists, showLoaderArtists, toastError } from './helpers';
+import {
+  hideLoaderArtists,
+  showLoaderArtists,
+  toastError,
+  toastSuccess,
+} from './helpers';
 import { refs } from './refs.js';
 import { gsap } from 'gsap';
 
 export let query = { name: '', page: 1, sorted: 0, genre: '' };
 
-const allDropdowns = [];
+// const allDropdowns = [];
 
 //Inits:
 initGenresMarkup();

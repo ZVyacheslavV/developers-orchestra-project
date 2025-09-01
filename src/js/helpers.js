@@ -5,30 +5,55 @@ import { refs } from './refs';
 //!======================================================
 
 /* Helpers */
-export function toastError() {
+export function toastError(
+  message = 'Something went wrong. Please try again later.',
+  position = 'topCenter'
+) {
   iziToast.error({
     title: '',
-    message: 'Something went wrong. Please try again later.',
-    position: 'topRight',
-    timeout: 5000,
+    message,
+    position,
+    timeout: 3000,
+    progressBar: false,
   });
 }
 
-export function toastErrorFeedbacks() {
-  iziToast.error({
-    title: '',
-    message: 'We couldn’t load the reviews. Please try again later.',
-    position: 'topRight',
-    timeout: 5000,
-  });
-}
-
-export function toastSuccessFeedbacks() {
+export function toastSuccess(
+  message = 'Thank you! Your feedback means a lot to us.',
+  position = 'topCenter'
+) {
   iziToast.success({
     title: '',
-    message: 'Thank you! Your feedback means a lot to us.',
-    position: 'topRight',
-    timeout: 5000,
+    message,
+    position,
+    timeout: 3000,
+    progressBar: false,
+  });
+}
+
+export function toastErrorFeedbacks(
+  message = 'We couldn’t load the reviews. Please try again later.',
+  position = 'topRight'
+) {
+  iziToast.error({
+    title: '',
+    message,
+    position,
+    timeout: 3000,
+    progressBar: false,
+  });
+}
+
+export function toastSuccessFeedbacks(
+  message = 'Thank you! Your feedback means a lot to us.',
+  position = 'topRight'
+) {
+  iziToast.success({
+    title: '',
+    message,
+    position,
+    timeout: 3000,
+    progressBar: false,
   });
 }
 
