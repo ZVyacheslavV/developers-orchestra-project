@@ -24,4 +24,5 @@ export const refs = {
   menuLinks: document.querySelectorAll('.header-mob-nav-link'),
   heroBtn: document.querySelector('.hero-btn'),
   resetBtn: document.querySelector('.filters-reset-btn'),
+  feedbackLoader: document.querySelector('.feedback-loader'),
 };
