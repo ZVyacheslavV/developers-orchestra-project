@@ -22,8 +22,12 @@ export const refs = {
   toggleBtn: document.querySelector('.header-toggle'),
   mobileMenu: document.querySelector('.header-mobile-menu'),
   menuLinks: document.querySelectorAll('.header-mob-nav-link'),
-  artistDetailsModalBackdrope: document.querySelector('.artist-details-backdrop'),
+  artistDetailsModalBackdrope: document.querySelector(
+    '.artist-details-backdrop'
+  ),
   heroBtn: document.querySelector('.hero-btn'),
   resetBtn: document.querySelector('.filters-reset-btn'),
+
   feedbackLoader: document.querySelector('.feedback-loader'),
+  feedbackLoaderContainer: document.querySelector('.feedback-loader-container'),
 };

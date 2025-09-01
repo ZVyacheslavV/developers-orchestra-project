@@ -45,13 +45,19 @@ export function showLoaderArtists() {
 //!======================================================
 
 export function hideLoaderFeedback() {
-  refs.feedbackLoader.classList.add('hidden');
-  refs.feedbackLoader.setAttribute('aria-hidden', 'true');
+  refs.feedbackLoader?.classList.add('hidden');
+  refs.feedbackLoaderContainer?.classList.add('hidden');
+
+  refs.feedbackLoaderContainer?.setAttribute('aria-hidden', 'true');
+  refs.feedbackLoader?.setAttribute('aria-hidden', 'true');
 }
 
 export function showLoaderFeedback() {
-  refs.feedbackLoader.classList.remove('hidden');
-  refs.feedbackLoader.setAttribute('aria-hidden', 'false');
+  refs.feedbackLoaderContainer?.classList.remove('hidden');
+  refs.feedbackLoader?.classList.remove('hidden');
+
+  refs.feedbackLoaderContainer?.setAttribute('aria-hidden', 'false');
+  refs.feedbackLoader?.setAttribute('aria-hidden', 'false');
 }
 
 //!======================================================

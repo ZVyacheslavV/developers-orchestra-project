@@ -1,13 +1,14 @@
-/* Feedback */
-
 import Swiper from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
+import 'css-star-rating/css/star-rating.css';
+
 import { getFeedbacks } from './artists-api';
 import { refs } from './refs';
 import { Pagination, Navigation } from 'swiper/modules';
+
 import {
   hideLoaderFeedback,
   showLoaderFeedback,
@@ -16,17 +17,30 @@ import {
 
 // ! ===========================================================================================
 
-function renderRating(rating) {
-  const val = normalizeRating(rating);
-  const { full, frac } = splitRating(val);
-  const percents = starPercents(full, frac, 5);
-  const stars = renderStars(percents);
-  const label = ariaLabelForRating(val, frac);
+function ratingMarkup(rating) {
+  const cls = ratingClasses(rating);
+  const aria = roundToHalf(rating);
+  const starSvg = `
+    <svg viewBox="0 0 24 24" width="24" height="24">
+      <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 
+        1.402 8.173L12 18.897l-7.336 3.86 
+        1.402-8.173L.132 9.21l8.2-1.192z"></path>
+    </svg>`;
 
   return `
-    <div class="rating" role="img" aria-label="Rating ${label}">
-      ${stars}
+    <div class="${cls}" aria-label="Rating ${aria} out of 5">
+      <div class="star-container">
+        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
+        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
+        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
+        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
+        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
+      </div>
     </div>`;
+}
+
+function renderRating(rating) {
+  return ratingMarkup(rating);
 }
 
 function feedbackTemplate({ descr, name, rating }) {
@@ -45,46 +59,22 @@ function createFeedbacks(feedbacks) {
 
 // TODO ======================================
 
-function normalizeRating(input) {
-  const n = Number(input);
-  if (Number.isNaN(n)) return 0;
-  return Math.min(5, Math.max(0, n));
+function clamp01to5(x) {
+  const n = Number(x);
+  return Math.min(5, Math.max(0, Number.isNaN(n) ? 0 : n));
 }
 
-function splitRating(val) {
-  const full = Math.floor(val);
-  const frac = val - full;
-  return { full, frac };
+function roundToHalf(x) {
+  return Math.round(clamp01to5(x) * 2) / 2;
 }
 
-function starPercents(full, frac, maxStars = 5) {
-  return Array.from({ length: maxStars }, (_, i) => {
-    if (i < full) return 100;
-    if (i === full) return Math.round(frac * 100);
-    return 0;
-  });
-}
-
-function renderStar(percent) {
-  return `
-    <span class="star" style="--p:${percent}%">
-      <svg class="star-base" width="20" height="20" aria-hidden="true">
-        <use href="img/icons.svg#icon-star"></use>
-      </svg>
-      <svg class="star-fill" width="20" height="20" aria-hidden="true">
-        <use href="img/icons.svg#icon-star"></use>
-      </svg>
-    </span>`;
-}
-
-function renderStars(percents) {
-  return percents.map(renderStar).join('');
-}
-
-function ariaLabelForRating(val, frac) {
-  return frac === 0
-    ? `${Math.floor(val)} out of 5`
-    : `${val.toFixed(1)} out of 5`;
+function ratingClasses(rating) {
+  const val = roundToHalf(rating);
+  const intPart = Math.floor(val);
+  const hasHalf = val % 1 !== 0;
+  return `rating medium star-icon ${
+    hasHalf ? 'half' : ''
+  } value-${intPart} label-hidden`;
 }
 
 // ! ===========================================================================================
@@ -101,18 +91,10 @@ async function renderFeedbacks() {
     const resp = await getFeedbacks(1);
     await fontsReady;
 
-    const swiperNav = document.querySelector('.swiper-nav');
     const list = Array.isArray(resp?.data) ? resp.data : [];
+
     if (!list.length) {
-      refs.feedbacksContainer.insertAdjacentHTML(
-        'beforeend',
-        `<div class="swiper-slide feedback-card">
-          <p class="feedback-text">
-            We are waiting for your feedback! Be the first to share your impressions.
-          </p>
-        </div>`
-      );
-      swiperNav.classList.toggle('hidden');
+      renderEmptyState();
     } else {
       createFeedbacks(list);
     }
@@ -121,8 +103,6 @@ async function renderFeedbacks() {
       modules: [Pagination, Navigation],
       slidesPerView: 1,
       spaceBetween: 30,
-      observer: true,
-      observeParents: true,
 
       pagination: {
         el: '.swiper-pagination',
@@ -143,20 +123,9 @@ async function renderFeedbacks() {
 
     const section = document.querySelector('#reviews');
     section?.classList.add('is-ready');
-    section?.setAttribute('role', 'region');
-    section?.setAttribute('aria-label', 'User feedback carousel');
   } catch (err) {
     toastErrorFeedbacks();
-    const swiperNav = document.querySelector('.swiper-nav');
-    refs.feedbacksContainer.insertAdjacentHTML(
-      'beforeend',
-      `<div class="swiper-slide feedback-card">
-          <p class="feedback-text">
-            We are waiting for your feedback! Be the first to share your impressions.
-          </p>
-        </div>`
-    );
-    swiperNav.classList.toggle('hidden');
+    renderEmptyState();
   } finally {
     hideLoaderFeedback();
   }
@@ -211,6 +180,22 @@ function updateBullets(swiper) {
       'swiper-pagination-bullet-active'
     );
   }
+}
+
+// ! ===========================================================================================
+
+function renderEmptyState() {
+  refs.feedbacksContainer.insertAdjacentHTML(
+    'beforeend',
+    `
+    <div class="swiper-slide feedback-card">
+      <p class="feedback-text">
+        We are waiting for your feedback! Be the first to share your impressions.
+      </p>
+    </div>`
+  );
+  const swiperNav = document.querySelector('.swiper-nav');
+  swiperNav?.classList.add('hidden');
 }
 
 // ! ===========================================================================================
