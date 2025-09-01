@@ -16,8 +16,9 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   width: 100%;
+  max-width: 1312px;
   margin: 0 auto;
-  padding-left: 26px;
+  padding-left: 20px;
   padding-right: 20px;
   height: 100%;
 }
@@ -175,10 +176,9 @@
   }
 
   .header-container {
-    width: 100%;
-    max-width: 100%;
-    padding-left: 70px;
-    padding-right: 64px;
+    max-width: 1312px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .header-nav {
@@ -196,9 +196,9 @@
 
 @media only screen and (min-width: 1440px) {
   .header-container {
-    width: 100%;
     max-width: 1312px;
-    padding: 0;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .header-nav {
