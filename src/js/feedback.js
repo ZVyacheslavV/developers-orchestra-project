@@ -8,6 +8,11 @@ import 'swiper/css/navigation';
 import { getFeedbacks } from './artists-api';
 import { refs } from './refs';
 import { Pagination, Navigation } from 'swiper/modules';
+import {
+  hideLoaderFeedback,
+  showLoaderFeedback,
+  toastErrorFeedbacks,
+} from './helpers';
 
 // ! ===========================================================================================
 
@@ -87,6 +92,8 @@ function ariaLabelForRating(val, frac) {
 let swiperInstance = null;
 
 async function renderFeedbacks() {
+  showLoaderFeedback();
+
   try {
     if (swiperInstance) return;
 
@@ -94,8 +101,21 @@ async function renderFeedbacks() {
     const resp = await getFeedbacks(1);
     await fontsReady;
 
+    const swiperNav = document.querySelector('.swiper-nav');
     const list = Array.isArray(resp?.data) ? resp.data : [];
-    createFeedbacks(list);
+    if (!list.length) {
+      refs.feedbacksContainer.insertAdjacentHTML(
+        'beforeend',
+        `<div class="swiper-slide feedback-card">
+          <p class="feedback-text">
+            We are waiting for your feedback! Be the first to share your impressions.
+          </p>
+        </div>`
+      );
+      swiperNav.classList.toggle('hidden');
+    } else {
+      createFeedbacks(list);
+    }
 
     swiperInstance = new Swiper('.swiper', {
       modules: [Pagination, Navigation],
@@ -125,8 +145,20 @@ async function renderFeedbacks() {
     section?.classList.add('is-ready');
     section?.setAttribute('role', 'region');
     section?.setAttribute('aria-label', 'User feedback carousel');
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    toastErrorFeedbacks();
+    const swiperNav = document.querySelector('.swiper-nav');
+    refs.feedbacksContainer.insertAdjacentHTML(
+      'beforeend',
+      `<div class="swiper-slide feedback-card">
+          <p class="feedback-text">
+            We are waiting for your feedback! Be the first to share your impressions.
+          </p>
+        </div>`
+    );
+    swiperNav.classList.toggle('hidden');
+  } finally {
+    hideLoaderFeedback();
   }
 }
 
