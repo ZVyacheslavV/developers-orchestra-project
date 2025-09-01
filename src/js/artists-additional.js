@@ -23,7 +23,9 @@ initGenres();
 
 initReset();
 
-ExecHeroBtnClick();
+execHeroBtnClick();
+
+helpClearHoverOnButtons();
 
 //Functions:
 function initSearchRequest() {
@@ -47,7 +49,8 @@ function initSearchRequest() {
     }
 
     hideLoaderArtists();
-    timeLines.tlCloseSearch.play(0);
+    if (!window.matchMedia('(min-width: 1440px)'))
+      timeLines.tlCloseSearch.play(0);
   };
 
   refs.searchBtnRequest.addEventListener('click', handleSearchBtnRequest);
@@ -65,9 +68,7 @@ async function initGenresMarkup() {
     const markup =
       '<li data-value="all">All Genres</li>' +
       genres
-        .map(
-          ({ genre }) => `<li data-value="${genre.toLowerCase()}">${genre}</li>`
-        )
+        .map(({ genre }) => `<li data-value="${genre}">${genre}</li>`)
         .join('');
     refs.menuGenres.insertAdjacentHTML('beforeend', markup);
   } catch (err) {
@@ -214,13 +215,26 @@ function initSort() {
     }
   });
 
-  refs.menuSort.addEventListener('click', e => {
+  refs.menuSort.addEventListener('click', async e => {
     const item = e.target.closest('li');
     if (!item) return;
 
     refs.btnSort.querySelector('.dropdown-label').textContent =
       item.textContent;
     refs.btnSort.dataset.value = item.dataset.value;
+
+    query.sorted = item.dataset.value;
+    console.log(query);
+
+    showLoaderArtists();
+    try {
+      const { artists } = await searchArtist(query);
+      refs.artistsList.innerHTML = '';
+      renderArtists(artists);
+    } catch (err) {
+      toastError(`Silence due problem ${err}`);
+    }
+    hideLoaderArtists();
 
     timeLines.tlOpenSort.pause(0);
     timeLines.tlCloseSort.restart();
@@ -233,7 +247,7 @@ function initSort() {
   // allDropdowns.push({ btn, menu, tlOpen, tlClose });
 }
 
-function initGenres() {
+async function initGenres() {
   const outsideClickHandler = e => {
     if (
       !document.querySelector('.artists-dropdown-genres').contains(e.target)
@@ -272,13 +286,25 @@ function initGenres() {
     }
   });
 
-  refs.menuGenres.addEventListener('click', e => {
+  refs.menuGenres.addEventListener('click', async e => {
     const item = e.target.closest('li');
     if (!item) return;
 
     refs.btnGenres.querySelector('.dropdown-label').textContent =
       item.textContent;
     refs.btnGenres.dataset.value = item.dataset.value;
+
+    query.genre = item.textContent === 'All Genres' ? '' : item.textContent;
+
+    showLoaderArtists();
+    try {
+      const { artists } = await searchArtist(query);
+      refs.artistsList.innerHTML = '';
+      renderArtists(artists);
+    } catch (err) {
+      toastError(`Silence due problem ${err}`);
+    }
+    hideLoaderArtists();
 
     timeLines.tlOpenGenres.pause(0);
     timeLines.tlCloseGenres.restart();
@@ -346,7 +372,7 @@ function initSearchAndFilters() {
 }
 
 function initReset() {
-  const handleResetQuery = () => {
+  const handleResetQuery = async () => {
     query = { name: '', page: 1, sorted: 0, genre: '' };
     refs.btnGenres.querySelector('.dropdown-label').textContent = 'Genre';
     refs.btnSort.querySelector('.dropdown-label').textContent = 'Sorting';
@@ -355,22 +381,46 @@ function initReset() {
     showLoaderArtists();
     try {
       refs.artistsList.innerHTML = '';
-      loadArtists();
+      // loadArtists();
+      const { artists } = await searchArtist(query);
+      renderArtists(artists);
     } catch (err) {
       toastError(`Silence due problem ${err}`);
     }
     hideLoaderArtists();
+
+    timeLines.tlCloseGenres.play(0);
+    timeLines.tlCloseSort.play(0);
   };
 
   refs.resetBtn.addEventListener('click', handleResetQuery);
 }
 
-function ExecHeroBtnClick() {
+function execHeroBtnClick() {
   refs.heroBtn.addEventListener('click', e => {
     e.preventDefault();
     document.querySelector('#artists').scrollIntoView({ behavior: 'smooth' });
   });
 }
+
+function helpClearHoverOnButtons() {
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.blur(); // знімає focus після кліку
+    });
+  });
+}
+
+/* async function searching() {
+  try {
+    const { artists } = await searchArtist(query);
+    refs.artistsList.innerHTML = '';
+    renderArtists(artists);
+  } catch (err) {
+    toastError(`Silence due problem ${err}`);
+  }
+  return artists;
+} */
 
 /* == Universal function for sort-genres dropdowns with array == */
 /* function initDropdown({ btn, menu, wrapperSelector }) {
