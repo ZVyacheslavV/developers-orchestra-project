@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded",()=>{const{toggleBtn:e,mobileMenu:t
         <div class="artist-details-modal-content">
             <button class="artist-details-modal-close-btn" type="button">
                 <svg class="modal-svg" width="32" height="32">
-                    <use href="./img/icons.svg#icon-close"></use>
+                    <use href="/img/icons.svg#icon-close"></use>
                 </svg>
             </button> 
 
@@ -103,8 +103,9 @@ document.addEventListener("DOMContentLoaded",()=>{const{toggleBtn:e,mobileMenu:t
             </div>
             </div>
             <h3 class="artist-details-modal-albums">Albums</h3>
+            <div class="artist-details-modal-albums-wrap">
             ${r.length>0?r.map(p=>{var v;return`
-            <div class="artist-details-modal-albums-list">
+                <div class="artist-details-modal-albums-list">
                 <h4 class="artist-details-modal-albums-list-title">${p.strAlbum}</h4>
                 <table>
                 <thead class="artist-details-modal-albums-list-table-head">
@@ -122,8 +123,8 @@ document.addEventListener("DOMContentLoaded",()=>{const{toggleBtn:e,mobileMenu:t
                         <td class= "col-3">
                             ${y.movie&&y.movie!=="null"?`
                                 <a class="modal-link-youtube" href="${y.movie}" target="_blank">
-                                    <svg class="modal-youtube" width="20" height="14">
-                                        <use href="./img/icons.svg#icon-youtube"></use>
+                                    <svg class="modal-youtube" width="24" height="20">
+                                        <use href="/img/icons.svg#icon-youtube"></use>
                                     </svg>
                                 </a>
                             `:""}
@@ -134,6 +135,7 @@ document.addEventListener("DOMContentLoaded",()=>{const{toggleBtn:e,mobileMenu:t
                 </table>
             </div>
             `}).join(""):"<p>No albums found</p>"}
+            </div>
         </div>
         `;s.artistDetailsModal.innerHTML=`${u}`,s.artistDetailsModalBackdrope.querySelector(".artist-details-modal-close-btn").addEventListener("click",j),Ne()}catch(t){L(t.message)}finally{Fe()}}s.artistsList.addEventListener("click",e=>{const t=e.target.closest(".artist-cta");if(!t)return;const a=t.dataset.artistId;a&&_e(a)});document.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".feedback-backdrop"),t=document.querySelector(".feedback-modal-form"),a=document.getElementById("user-name"),r=document.getElementById("user-feedback"),n=document.getElementById("ratingValue"),i=t.querySelector(".feedback-modal-btn"),d=document.querySelectorAll("#myRating svg"),b=document.getElementById("ratingError");function h(l){b.textContent=l}function g(){b.textContent=""}d.forEach((l,u)=>{l.innerHTML=`<path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 
       1.402 8.173L12 18.897l-7.336 3.86 
