@@ -88,6 +88,11 @@ export async function loadArtists({ init = false } = {}) {
     const artists = payload.artists ?? [];
     const totalArtists = Number(payload.totalArtists) || 0;
 
+    if (totalArtists === 0) {
+      if (pager) pager.reset(0);
+      togglePager(false, 0);
+    }
+
     refs.artistsList.innerHTML = '';
     renderArtists(artists);
 
@@ -188,6 +193,7 @@ export function renderArtists(artists = []) {
     hideNoArtists();
     refs.artistsList.innerHTML = '';
     showNoArtists();
+    togglePager(false, 0);
     document.dispatchEvent(new Event('artists:updated'));
     return;
   }
