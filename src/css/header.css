@@ -89,6 +89,16 @@
   position: relative;
 }
 
+.header-toggle:hover .header-icon.burger {
+  fill: #ffffff;
+  opacity: 0.6;
+}
+
+.header-toggle.active:hover .header-icon.close {
+  fill: #ffffff;
+  opacity: 0.6;
+}
+
 .header-icon {
   width: 24px;
   height: 24px;
@@ -106,13 +116,11 @@
 .header-icon.burger {
   opacity: 1;
   pointer-events: auto;
-  display: block;
 }
 
 .header-icon.close {
   opacity: 0;
   pointer-events: none;
-  display: none;
 }
 
 .header-toggle.active .header-icon.burger {
