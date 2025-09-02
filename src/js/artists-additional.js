@@ -41,7 +41,7 @@ function initSearchRequest() {
 
   const handleSearchBtnRequest = async () => {
     if (!query.name?.length) {
-      toastSuccess('Silence from you', 'topCenter', null);
+      toastSuccess('Silence from you', 'topRight', null);
       return;
     }
     showLoaderArtists();
