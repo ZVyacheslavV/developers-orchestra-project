@@ -77,11 +77,13 @@ async function showArtistDetails(artistId) {
             return `${min}:${sec}`;
         };
 
+        const sprite = new URL('../img/icons.svg', import.meta.url).href;
+
         const markup = `
         <div class="artist-details-modal-content">
             <button class="artist-details-modal-close-btn" type="button">
                 <svg class="modal-svg" width="32" height="32">
-                    <use href="/img/icons.svg#icon-close"></use>
+                    <use href="${sprite}#icon-close"></use>
                 </svg>
             </button> 
 
@@ -148,7 +150,7 @@ async function showArtistDetails(artistId) {
                             ${track.movie && track.movie !== 'null' ? `
                                 <a class="modal-link-youtube" href="${track.movie}" target="_blank">
                                     <svg class="modal-youtube" width="24" height="20">
-                                        <use href="/img/icons.svg#icon-youtube"></use>
+                                        <use href="${sprite}#icon-youtube"></use>
                                     </svg>
                                 </a>
                             ` : ''}
