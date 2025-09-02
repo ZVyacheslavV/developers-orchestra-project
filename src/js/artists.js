@@ -19,6 +19,7 @@ let pager = null;
 let inFlight = false;
 let skipScrollOnce = false;
 let suppressExternalNormalize = false;
+let lastKnownTotal = 0;
 
 /*------------ Placeholder ----------- */
 
@@ -77,6 +78,14 @@ function isSearchActive() {
 
 function ensurePager(total = 0) {
   if (pager) return;
+
+  const SPRITE = new URL('../img/icons.svg', import.meta.url).href;
+  const icon = `
+    <svg class="tui-ico-svg" width="24" height="24" aria-hidden="true">
+      <use href="${SPRITE}#icon-arrow-1"></use>
+    </svg>
+  `;
+
   pager = new Pagination('#tui-pagination', {
     totalItems: total,
     itemsPerPage: ARTISTS_PER_PAGE,
@@ -88,10 +97,8 @@ function ensurePager(total = 0) {
       page: '<a href="#" class="tui-page-btn">{{page}}</a>',
       currentPage:
         '<strong class="tui-page-btn is-active" aria-current="page">{{page}}</strong>',
-      moveButton:
-        '<a href="#" class="tui-page-btn tui-{{type}}"><span class="tui-ico-{{type}}"></span></a>',
-      disabledMoveButton:
-        '<span class="tui-page-btn is-disabled tui-{{type}}"><span class="tui-ico-{{type}}"></span></span>',
+      moveButton: `<a href="#" class="tui-page-btn tui-{{type}}">${icon}</a>`,
+      disabledMoveButton: `<span class="tui-page-btn is-disabled tui-{{type}}">${icon}</span>`,
       moreButton: '<span class="tui-page-btn tui-ellipsis">…</span>',
     },
   });
@@ -109,6 +116,8 @@ function normalizeAndMovePager(total) {
     pager.movePageTo(target);
   }
   togglePager(totalPages > 1, total);
+
+  if (isMobile) renderMobilePagerCompact();
 }
 
 /*---------------- loader ------------------*/
@@ -133,6 +142,7 @@ export async function loadArtists({ init = false } = {}) {
 
     ensurePager(totalArtists);
     pager.setTotalItems(totalArtists);
+    lastKnownTotal = totalArtists;
     normalizeAndMovePager(totalArtists);
 
     if (!init) {
@@ -148,6 +158,71 @@ export async function loadArtists({ init = false } = {}) {
   } finally {
     hideLoaderArtists();
   }
+}
+
+function renderMobilePagerCompact() {
+  try {
+    if (!isMobile || !pager) return;
+    const box = document.querySelector('#tui-pagination');
+    if (!box) return;
+
+    let totalItems = 0;
+    if (typeof pager.getTotalItems === 'function') {
+      totalItems = Number(pager.getTotalItems()) || 0;
+    }
+    if (!totalItems) totalItems = lastKnownTotal || 0;
+
+    const totalPages = Math.max(1, Math.ceil(totalItems / ARTISTS_PER_PAGE));
+    const cur = pager.getCurrentPage();
+
+    const SPRITE = new URL('../img/icons.svg', import.meta.url).href;
+    const ico = id => `
+      <svg class="tui-ico-svg" width="24" height="24" aria-hidden="true">
+        <use href="${SPRITE}#${id}"></use>
+      </svg>`;
+
+    const btn = (label, page, extra = '') =>
+      `<a href="#" class="tui-page-btn${extra}" data-page="${page}">${label}</a>`;
+
+    const ellipsis = `<span class="tui-page-btn tui-ellipsis">…</span>`;
+
+    const prevDisabled = cur <= 1 ? ' is-disabled' : '';
+    const nextDisabled = cur >= totalPages ? ' is-disabled' : '';
+
+    const html = [
+      `<a href="#" class="tui-page-btn tui-prev${prevDisabled}" data-page="${Math.max(
+        1,
+        cur - 1
+      )}">${ico('icon-arrow-1')}</a>`,
+      btn('1', 1, cur === 1 ? ' is-active' : ''),
+      cur > 3 ? ellipsis : '',
+      cur > 1 && cur < totalPages ? btn(String(cur), cur, ' is-active') : '',
+      cur < totalPages - 2 ? ellipsis : '',
+      totalPages > 1
+        ? btn(
+            String(totalPages),
+            totalPages,
+            cur === totalPages ? ' is-active' : ''
+          )
+        : '',
+      `<a href="#" class="tui-page-btn tui-next${nextDisabled}" data-page="${Math.min(
+        totalPages,
+        cur + 1
+      )}">${ico('icon-arrow-1')}</a>`,
+    ].join('');
+
+    box.innerHTML = html;
+
+    box.onclick = e => {
+      const a = e.target.closest('a.tui-page-btn:not(.is-disabled)');
+      if (!a) return;
+      e.preventDefault();
+      const p = Number(a.dataset.page);
+      if (Number.isFinite(p) && p >= 1 && p <= totalPages && p !== cur) {
+        pager.movePageTo(p);
+      }
+    };
+  } catch {}
 }
 
 /*---------------------- Pager ------------------------*/
@@ -173,6 +248,7 @@ async function handlePagerMove({ page: next }) {
     suppressExternalNormalize = false;
 
     pager.setTotalItems(nextTotal);
+    lastKnownTotal = nextTotal; // оновили total
     normalizeAndMovePager(nextTotal);
 
     if (!skipScrollOnce) {
@@ -337,32 +413,6 @@ function smartScrollAfterRender() {
 
   setTimeout(scrollToArtistsTop, 400);
 }
-
-document.addEventListener('artists:updated', async () => {
-  if (refs.artistsList.children.length === 0) return;
-  if (suppressExternalNormalize) return;
-
-  try {
-    ensurePager();
-
-    const usingSearch = isSearchActive();
-    const payload = usingSearch
-      ? await searchArtist({ ...query, page: 1 })
-      : await getArtists(query.page || 1);
-
-    const totalArtists = Number(payload.totalArtists) || 0;
-
-    pager.setTotalItems(totalArtists);
-    normalizeAndMovePager(totalArtists);
-
-    const totalPages = Math.ceil(totalArtists / ARTISTS_PER_PAGE);
-    togglePager(totalPages > 1, totalArtists);
-
-    // scrollAfterImages();
-  } catch {
-    togglePager(false, 0);
-  }
-});
 
 /* ================= Filters animation =============== */
 
