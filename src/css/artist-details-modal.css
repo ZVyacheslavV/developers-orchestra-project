@@ -157,11 +157,18 @@ table {
   margin-bottom: 16px;
 }
 
+.artist-details-modal-albums-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+
 .artist-details-modal-albums-list {
-  margin-bottom: 32px;
   border-radius: 16px;
   padding: 14px 11px;
-  max-width: 288px;
+  max-width: 272px;
   min-width: 250px;
   background-color: var(--color-scheme-2-foreground);
 }
@@ -317,14 +324,18 @@ table {
   flex: 100%;
 }
 
+.artist-details-modal-block-genres {
+  margin-bottom: 48px;
+}
+
 .artist-details-modal-albums-wrap {
-  display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
-  gap: 32px;
+  justify-content: center;
+  align-items: normal;
 }
 
 .artist-details-modal-albums-list {
+  max-width: 311px;
   flex-basis: calc((100% - 32px) / 2);
 }
 
@@ -352,6 +363,10 @@ table {
   flex-direction: row;
   gap: 32px;
   margin-bottom: 48px;
+}
+
+.artist-details-modal-block-genres {
+  margin-bottom: 0;
 }
 
 .artist-details-modal-img {
