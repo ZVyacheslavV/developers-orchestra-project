@@ -28,6 +28,10 @@ button:focus:not(:focus-visible) {
   outline: none;
 }
 
+.active-link {
+  text-decoration: underline !important;
+}
+
 /* IziToast. */
 
 .iziToast.iziToast-theme-light {

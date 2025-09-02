@@ -4,6 +4,7 @@ import './js/helpers';
 import './js/storage';
 
 import './js/header';
+import './js/navigation-highlights';
 import './js/artists';
 import './js/animations';
 import './js/artists-api';

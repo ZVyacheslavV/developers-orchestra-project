@@ -1,19 +1,22 @@
+.hero-section {
+  background: var(--color-scheme-3-background);
+}
+
 .hero {
   display: flex;
   flex-direction: column;
   padding-top: 128px;
   gap: 64px;
   text-align: left;
-  background: var(--color-scheme-3-background);
   color: #fff;
 }
 
-.hero-container {
+.hero-section {
   position: relative;
   overflow: hidden;
 }
 
-.hero-container::before {
+.hero-section::before {
   content: '';
   position: absolute;
   top: 64px;
@@ -25,7 +28,7 @@
   z-index: 1;
 }
 
-.hero-container::after {
+.hero-section::after {
   content: '';
   position: absolute;
   bottom: 0;
