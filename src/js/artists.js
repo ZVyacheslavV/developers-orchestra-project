@@ -246,7 +246,7 @@ export function renderArtists(artists = []) {
               }
               <button class="artist-cta" type="button" data-artist-id="${_id}" aria-label="Learn more about ${strArtist}">
                 Learn More
-                <svg class="artist-cta-icon" width="16" height="16" aria-hidden="true">
+                <svg class="artist-cta-icon" width="24" height="24" aria-hidden="true">
                   <use href="${sprite}#icon-arrow-1"></use>
                 </svg>
               </button>
@@ -337,3 +337,29 @@ function smartScrollAfterRender() {
 
   setTimeout(scrollToArtistsTop, 400);
 }
+
+document.addEventListener('artists:updated', async () => {
+  if (refs.artistsList.children.length === 0) return;
+  if (suppressExternalNormalize) return;
+
+  try {
+    ensurePager();
+
+    const usingSearch = isSearchActive();
+    const payload = usingSearch
+      ? await searchArtist({ ...query, page: 1 })
+      : await getArtists(query.page || 1);
+
+    const totalArtists = Number(payload.totalArtists) || 0;
+
+    pager.setTotalItems(totalArtists);
+    normalizeAndMovePager(totalArtists);
+
+    const totalPages = Math.ceil(totalArtists / ARTISTS_PER_PAGE);
+    togglePager(totalPages > 1, totalArtists);
+
+    scrollAfterImages();
+  } catch {
+    togglePager(false, 0);
+  }
+});
