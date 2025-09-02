@@ -20,7 +20,8 @@ export function toastError(
 
 export function toastSuccess(
   message = 'Thank you! Your feedback means a lot to us.',
-  position = 'topCenter'
+  position = 'topCenter',
+  icon = 'ico-success'
 ) {
   iziToast.success({
     title: '',
@@ -28,6 +29,7 @@ export function toastSuccess(
     position,
     timeout: 3000,
     progressBar: false,
+    icon,
   });
 }
 
