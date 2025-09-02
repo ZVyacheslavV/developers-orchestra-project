@@ -17,36 +17,24 @@ import {
 
 // ! ===========================================================================================
 
+const MAX_STARS = 5;
+
 function ratingMarkup(rating) {
   const cls = ratingClasses(rating);
-  const aria = roundToHalf(rating);
-  const starSvg = `
-    <svg viewBox="0 0 24 24" width="24" height="24">
-      <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 
-        1.402 8.173L12 18.897l-7.336 3.86 
-        1.402-8.173L.132 9.21l8.2-1.192z"></path>
-    </svg>`;
+  const aria = clamp01to5(rating);
 
   return `
-    <div class="${cls}" aria-label="Rating ${aria} out of 5">
+    <div class="${cls}" role="img" aria-label="Rating ${aria} out of 5">
       <div class="star-container">
-        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
-        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
-        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
-        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
-        <div class="star"><span class="star-empty">${starSvg}</span><span class="star-half">${starSvg}</span><span class="star-filled">${starSvg}</span></div>
+        ${renderStars(aria, MAX_STARS)}
       </div>
     </div>`;
-}
-
-function renderRating(rating) {
-  return ratingMarkup(rating);
 }
 
 function feedbackTemplate({ descr, name, rating }) {
   return `
     <div class="swiper-slide feedback-card">
-      ${renderRating(rating)}
+      ${ratingMarkup(rating)}
       <p class="feedback-text">"${descr}"</p>
       <p class="feedback-author">${name}</p>
     </div>`;
@@ -57,24 +45,57 @@ function createFeedbacks(feedbacks) {
   refs.feedbacksContainer.insertAdjacentHTML('beforeend', markup);
 }
 
-// TODO ======================================
+// TODO ===================================
 
 function clamp01to5(x) {
   const n = Number(x);
   return Math.min(5, Math.max(0, Number.isNaN(n) ? 0 : n));
 }
 
-function roundToHalf(x) {
-  return Math.round(clamp01to5(x) * 2) / 2;
+function ratingClasses(rating) {
+  const val = clamp01to5(rating);
+  const full = Math.floor(val);
+  const hasHalf = val % 1 >= 0.5;
+  return `rating medium star-icon label-hidden value-${full} ${
+    hasHalf ? 'half' : ''
+  }`;
 }
 
-function ratingClasses(rating) {
-  const val = roundToHalf(rating);
-  const intPart = Math.floor(val);
-  const hasHalf = val % 1 !== 0;
-  return `rating medium star-icon ${
-    hasHalf ? 'half' : ''
-  } value-${intPart} label-hidden`;
+function renderStars(value, maxStars) {
+  const full = Math.floor(value);
+  const hasHalf = value % 1 >= 0.5;
+
+  return Array.from({ length: maxStars }, (_, i) => {
+    if (i < full) return renderStar('full');
+    if (i === full && hasHalf) return renderStar('half');
+    return renderStar('empty');
+  }).join('');
+}
+
+function renderStar(type) {
+  return `
+    <div class="star">
+      <span class="star-empty">${starSvg()}</span>
+      <span class="star-half" ${
+        type === 'half' ? '' : 'style="display:none" aria-hidden="true"'
+      }>
+        ${starSvg()}
+      </span>
+      <span class="star-filled" ${
+        type === 'full' ? '' : 'style="display:none" aria-hidden="true"'
+      }>
+        ${starSvg()}
+      </span>
+    </div>`;
+}
+
+function starSvg() {
+  return `
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+      <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 
+        1.402 8.173L12 18.897l-7.336 3.86 
+        1.402-8.173L.132 9.21l8.2-1.192z"></path>
+    </svg>`;
 }
 
 // ! ===========================================================================================
@@ -82,6 +103,11 @@ function ratingClasses(rating) {
 let swiperInstance = null;
 
 async function renderFeedbacks() {
+  const section = document.querySelector('#reviews');
+
+  section?.setAttribute('data-state', 'loading');
+  section?.setAttribute('aria-busy', 'true');
+
   showLoaderFeedback();
 
   try {
@@ -121,11 +147,14 @@ async function renderFeedbacks() {
     handleSlideChange(swiperInstance);
     swiperInstance.update();
 
-    const section = document.querySelector('#reviews');
-    section?.classList.add('is-ready');
+    section?.setAttribute('data-state', 'ready');
+    section?.setAttribute('aria-busy', 'false');
   } catch (err) {
     toastErrorFeedbacks();
     renderEmptyState();
+
+    section?.setAttribute('data-state', 'ready');
+    section?.setAttribute('aria-busy', 'false');
   } finally {
     hideLoaderFeedback();
   }
@@ -146,10 +175,11 @@ function handleSlideChange(swiper) {
   updateBullets(swiper);
 }
 
-function updateNavigationButtons(swiper) {
-  const prevBtn = document.querySelector('.swiper-button-prev');
-  const nextBtn = document.querySelector('.swiper-button-next');
+const prevBtn = document.querySelector('.swiper-button-prev');
+const nextBtn = document.querySelector('.swiper-button-next');
+const bulletsRoot = document.querySelector('.swiper-pagination');
 
+function updateNavigationButtons(swiper) {
   prevBtn.classList.toggle('swiper-button-disabled', swiper.activeIndex === 0);
   nextBtn.classList.toggle(
     'swiper-button-disabled',
@@ -158,7 +188,7 @@ function updateNavigationButtons(swiper) {
 }
 
 function updateBullets(swiper) {
-  const bullets = document.querySelectorAll('.swiper-pagination span');
+  const bullets = bulletsRoot?.querySelectorAll('span');
   if (!bullets.length) return;
 
   bullets.forEach(b => b.classList.remove('swiper-pagination-bullet-active'));
@@ -189,13 +219,11 @@ function renderEmptyState() {
     'beforeend',
     `
     <div class="swiper-slide feedback-card">
-      <p class="feedback-text">
-        We are waiting for your feedback! Be the first to share your impressions.
-      </p>
+      <p class="feedback-text">We are waiting for your feedback! Be the first to share your impressions.</p>
     </div>`
   );
-  const swiperNav = document.querySelector('.swiper-nav');
-  swiperNav?.classList.add('hidden');
+  document.querySelector('.swiper-nav')?.classList.add('hidden');
+  document.querySelector('.swiper-pagination')?.classList.add('hidden');
 }
 
 // ! ===========================================================================================
