@@ -138,7 +138,7 @@ export async function loadArtists({ init = false } = {}) {
     if (!init) {
       const totalPages = Math.ceil(totalArtists / ARTISTS_PER_PAGE);
       togglePager(totalPages > 1, totalArtists);
-      if (!skipScrollOnce) smartScrollAfterRender();
+      // if (!skipScrollOnce) smartScrollAfterRender();
     }
   } catch (e) {
     if (isSearchActive()) toastError('Failed to fetch artists');
@@ -358,13 +358,13 @@ document.addEventListener('artists:updated', async () => {
     const totalPages = Math.ceil(totalArtists / ARTISTS_PER_PAGE);
     togglePager(totalPages > 1, totalArtists);
 
-    scrollAfterImages();
+    // scrollAfterImages();
   } catch {
     togglePager(false, 0);
   }
 });
 
-/* ================= Filters follow (desktop) ================= */
+/* ================= Filters animation =============== */
 
 const FILTERS_STICKY_TOP = 112;
 const filtersState = {
@@ -417,7 +417,9 @@ function onScrollFiltersFollow() {
 
   const rawShift =
     window.pageYOffset + FILTERS_STICKY_TOP - filtersState.firstTop;
-  const clamped = Math.max(0, Math.min(rawShift, filtersState.maxShift));
+  const clamped = Math.round(
+    Math.max(0, Math.min(rawShift, filtersState.maxShift))
+  );
 
   panel.style.setProperty('--filters-shift', `${clamped}px`);
 }

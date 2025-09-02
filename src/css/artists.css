@@ -224,6 +224,7 @@
 }
 
 @media (min-width:1440px) {
+
     .artists-subcontainer {
         display: grid;
         grid-template-columns: 304px 1fr;
@@ -238,6 +239,7 @@
     .artists,
     .artists-container {
         overflow: visible;
+        gap: 0;
     }
 
     .filters-panel {
@@ -247,7 +249,10 @@
         position: sticky;
         top: 112px;
         align-self: start;
-        z-index: 2;
+        z-index: 5;
+        transform: translateY(var(--filters-shift, 0px));
+        will-change: transform;
+        transition: none;
     }
 
     .artists-list {
@@ -257,6 +262,7 @@
         margin-top: 0;
         padding-left: 0;
         max-width: 976px;
+        align-self: start;
     }
 
     .artist-img {
@@ -268,14 +274,13 @@
     }
 
     .js-artists-top {
-        scroll-margin-top: 112px;
+        position: absolute;
+        width: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
     }
 
-    .filters-panel {
-        position: sticky;
-        top: 112px;
-        transform: translateY(var(--filters-shift, 0px));
-        will-change: transform;}
 }
 
 
@@ -441,26 +446,34 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+
     width: 100%;
     max-width: 256px;
     height: 47px;
+
     border: none;
     border-radius: 12px;
     cursor: pointer;
+
     font-family: "IBM Plex Sans", sans-serif;
     font-weight: 500;
     font-size: 18px;
     line-height: 1.5;
-    color: #fff;
+    color: var(--color-white);
+    ;
+
     background: #764191;
-    box-shadow: 0 1px 2px 0 rgba(6, 3, 7, .05), inset 0 -2px 1px 0 rgba(0, 0, 0, .2), inset 0 0 0 1px rgba(6, 3, 7, .15),
-        inset 0 2px 1px 0 rgba(255, 255, 255, .25), inset 0 32px 24px 0 rgba(255, 255, 255, .05);
-    transition: opacity .2s ease-in-out, transform .02s linear;
+    box-shadow:
+        0 1px 2px 0 var(--opacity-neutral-darkest-5),
+        inset 0 -2px 1px 0 rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px var(--opacity-neutral-darkest-15),
+        inset 0 2px 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 32px 24px 0 var(--opacity-white-5);
 }
 
 .btn-reset-filters:hover,
 .btn-reset-filters:focus-visible {
-    opacity: .6;
+    background-color: #5a2f78;
 }
 
 .btn-reset-filters:focus-visible {
@@ -469,7 +482,6 @@
 }
 
 .btn-reset-filters:active {
-    opacity: .6;
     transform: translateY(1px);
 }
 
