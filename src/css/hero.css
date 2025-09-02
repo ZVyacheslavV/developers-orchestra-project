@@ -73,7 +73,6 @@
     border: none;
     width: 288px;
     height: 47px;
-    padding: 10px 24px;
     border-radius: 12px;
     color: var(--color-white);
     font-size: 18px;
@@ -87,8 +86,11 @@
 }
 
 .hero-icon {
-    width: 54px;
-    height: 54px;
+    margin-left: 12px;
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    stroke: #fff;
 }
 
 .hero-btn:hover,
@@ -96,13 +98,6 @@
     background-color: #5a2f78;
 }
 
-.hero-icon {
-    padding-left: 12px;
-    width: 24px;
-    height: 24px;
-    fill: #fff;
-    stroke: #fff;
-}
 
 /* === Hero Images === */
 .hero-images {
@@ -291,7 +286,7 @@
     }
 
     .hero-images .column {
-        gap: 16px;
+        gap: 18px;
     }
 
     .hero-images {
@@ -344,7 +339,7 @@
     }
 
     .hero-content p {
-        max-width: 640px;
+        width: 624px;
         font-family: 'IBM Plex Sans', sans-serif;
         font-size: 20px;
         margin: 24px 0 32px 0;
@@ -411,9 +406,5 @@
         max-height: 900px;
         overflow: hidden;
         top: -29px;
-    }
-
-    .hero-content p {
-        width: 624px;
     }
 }
