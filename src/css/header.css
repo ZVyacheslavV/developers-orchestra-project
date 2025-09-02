@@ -12,15 +12,13 @@
 }
 
 .header-container {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 1312px;
   margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
   height: 100%;
+  width: 100%;
+  padding: 0;
 }
 
 .logo {
@@ -28,9 +26,13 @@
   z-index: 3100;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  margin-left: 26px;
 }
 
 .logo svg {
+  width: 106px;
+  height: 30px;
   fill: #fff;
   transition: fill 0.3s ease;
 }
@@ -42,7 +44,6 @@
 /* ================= NAV ================= */
 .header-nav {
   display: none;
-  justify-self: end;
 }
 
 .header-nav-ul {
@@ -71,9 +72,10 @@
 .header-actions {
   display: flex;
   align-items: center;
-  justify-self: end;
-  width: 40px;
-  height: 40px;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 20px;
   z-index: 3001;
 }
 
@@ -84,48 +86,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   position: relative;
 }
 
 .header-icon {
   width: 24px;
   height: 24px;
+  flex-shrink: 0;
   fill: #fff;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   transition: fill 0.3s ease, opacity 0.3s ease;
+  display: block;
+}
+
+.header-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .header-icon.burger {
   opacity: 1;
   pointer-events: auto;
+  display: block;
 }
 
 .header-icon.close {
   opacity: 0;
   pointer-events: none;
-}
-
-.header-toggle:hover .header-icon.burger {
-  fill: #888;
-}
-
-.header-toggle.active:hover .header-icon.close {
-  fill: #888;
+  display: none;
 }
 
 .header-toggle.active .header-icon.burger {
   opacity: 0;
   pointer-events: none;
+  display: none;
 }
 
 .header-toggle.active .header-icon.close {
   opacity: 1;
   pointer-events: auto;
+  display: block;
 }
 
 /* ================= MOBILE MENU ================= */
@@ -170,15 +171,16 @@
 }
 
 /* ================= MEDIA ================= */
+
 @media (min-width: 768px) and (max-width: 1439px) {
   .header {
     height: 72px;
   }
 
   .header-container {
-    max-width: 1312px;
-    padding-left: 40px;
-    padding-right: 40px;
+    max-width: 704px;
+    padding: 0 40px;
+    margin: 0 auto;
   }
 
   .header-nav {
@@ -196,9 +198,9 @@
 
 @media only screen and (min-width: 1440px) {
   .header-container {
-    max-width: 1312px;
-    padding-left: 20px;
-    padding-right: 20px;
+    width: 1312px;
+    margin: 0 auto;
+    padding: 0;
   }
 
   .header-nav {
