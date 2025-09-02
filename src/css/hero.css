@@ -347,13 +347,13 @@
 }
 /* === Desktop (1440px+) === */
 @media (min-width: 1440px) {
-  .thumb:not(:first-child) {
+  .thumb {
     border-radius: 16px !important;
   }
-
+  /* 
   .hero-images .column:nth-child(2) .thumb:nth-child(1) {
     border-radius: 16px;
-  }
+  } */
 
   .hero-content {
     margin-left: 0;
