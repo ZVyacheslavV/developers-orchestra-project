@@ -86,8 +86,11 @@
 }
 
 .hero-icon {
-  width: 54px;
-  height: 54px;
+margin-left: 12px;
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    stroke: #fff;
 }
 
 .hero-btn:hover,
@@ -396,7 +399,7 @@
   }
 
   .hero-content p {
-    max-width: 640px;
+    width: 624px;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 20px;
     margin: 24px 0 32px 0;
@@ -475,52 +478,4 @@
     overflow: hidden;
     top: -29px;
   }
-
-  .hero-content p {
-    width: 624px;
-  }
-
-  /*   .hero-images::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 140px;
-    background: linear-gradient(to bottom, #23132b 10%, transparent 100%);
-    z-index: 2;
-    pointer-events: none;
-  }
-  .hero-images::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 140px;
-    background: linear-gradient(to top, #23132b 30%, transparent 100%);
-    z-index: 2;
-    pointer-events: none;
-  } */
-
-  /*   .hero-images .column {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  .hero-images .thumb {
-    display: block;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .hero-images picture img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  } */
 }
