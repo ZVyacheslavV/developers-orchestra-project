@@ -4,7 +4,7 @@
     color: #fff; 
     fill: currentColor;
     display: block;
-    /* transition: fill 0.3s ease, opacity 0.3s ease; */
+    transition: fill 0.3s ease, opacity 0.3s ease;
 }
 
 .footer-icon-logo {

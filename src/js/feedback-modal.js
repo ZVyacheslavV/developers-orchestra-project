@@ -1,7 +1,6 @@
 import { addNewFeedback } from './artists-api.js';
-import { toastSuccessFeedbacks } from './helpers.js';
-import "css-star-rating/css/star-rating.css";
-import axios from 'axios';   
+import { toastSuccessFeedbacks, toastErrorFeedbacks} from './helpers.js';
+import axios from 'axios';
 
 document.addEventListener("DOMContentLoaded", () => {
   const backdrop = document.querySelector(".feedback-backdrop");
@@ -10,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageInput = document.getElementById("user-feedback");
   const ratingInput = document.getElementById("ratingValue");
   const submitBtn = form.querySelector(".feedback-modal-btn");
-  const stars = document.querySelectorAll("#myRating svg");
+  const stars = document.querySelectorAll(".modal-star");
   const ratingError = document.getElementById("ratingError");
 
   function showRatingError(message) {
@@ -21,33 +20,57 @@ document.addEventListener("DOMContentLoaded", () => {
     ratingError.textContent = "";
   }
 
- 
-  stars.forEach((star, idx) => {
-    star.innerHTML = `<path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 
-      1.402 8.173L12 18.897l-7.336 3.86 
-      1.402-8.173L.132 9.21l8.2-1.192z"/>`;
-    star.style.fill = "#ffffff";
-    star.style.cursor = "pointer";
-
-    star.addEventListener("click", () => {
-      ratingInput.value = idx + 1;
-      stars.forEach((s, i) => s.style.fill = i <= idx ? "#764191" : "#ffffff");
-      clearRatingError(); 
+  function fillStars(value) {
+    stars.forEach((s, i) => {
+      if (i + 1 <= value) {
+        s.style.background = "linear-gradient(to right, #764191 100%, #ffffff 0%)";
+      } else if (i < value) {
+        const fraction = value - i;
+        s.style.background = `linear-gradient(to right, #764191 ${fraction * 100}%, #ffffff ${fraction * 100}%)`;
+      } else {
+        s.style.background = "linear-gradient(to right, #764191 0%, #ffffff 100%)";
+      }
     });
-  });
+  }
 
+  function updateStars() {
+    const rating = parseFloat(ratingInput.value) || 0;
+    fillStars(rating);
+  }
+
+  stars.forEach((star, idx) => {
+    star.addEventListener("mousemove", (e) => {
+      const rect = star.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percent = x / rect.width;
+      const quarter = Math.ceil(percent * 4) / 4;
+      fillStars(idx + quarter);
+    });
+
+    star.addEventListener("click", (e) => {
+      const rect = star.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percent = x / rect.width;
+      const quarter = Math.ceil(percent * 4) / 4;
+      ratingInput.value = idx + quarter;
+      updateStars();
+      clearRatingError();
+    });
+
+    star.addEventListener("mouseleave", updateStars);
+  });
 
   const openBtn = document.querySelector(".leave-feedback-button");
   if (openBtn) {
     openBtn.addEventListener("click", () => {
       form.reset();
       ratingInput.value = "0";
+      updateStars();
       clearRatingError();
-      stars.forEach(s => s.style.fill = "#ffffff");
       clearError(nameInput);
       clearError(messageInput);
       backdrop.classList.add("is-open");
-      document.body.style.overflow = "hidden"; 
+      document.body.style.overflow = "hidden";
     });
   }
 
@@ -58,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector(".feedback-modal-close").addEventListener("click", closeModal);
   backdrop.addEventListener("click", e => { if (e.target === backdrop) closeModal(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
-  
+
   const showError = (input, message) => {
     let errorEl = input.nextElementSibling;
     if (!errorEl || !errorEl.classList.contains("field-error")) {
@@ -78,10 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
     input.removeAttribute("aria-invalid");
   };
 
- 
   form.addEventListener("submit", async e => {
     e.preventDefault();
-
     clearError(nameInput);
     clearError(messageInput);
     clearRatingError();
@@ -102,8 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
       hasError = true;
     }
 
-    if (rating < 1 || rating > 5) {
-      showRatingError("Please provide a rating between 1 and 5");
+    if (rating < 0.25 || rating > 5) {
+      showRatingError("Please provide a rating between 0.25 and 5");
       hasError = true;
     }
 
@@ -113,16 +134,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await addNewFeedback(name, rating, message);
-      toastSuccess("Thank you! Your feedback has been submitted.");
-
+      toastSuccessFeedbacks("Thank you! Your feedback has been submitted.");
       form.reset();
       ratingInput.value = "0";
-      stars.forEach(s => s.style.fill = "#ffffff");
+      updateStars();
       closeModal();
     } catch (err) {
-      alert("Server error: " + (err.response?.data?.message || err.message));
+      toastErrorFeedbacks("Server error: " + (err.response?.data?.message || err.message));
     } finally {
       submitBtn.disabled = false;
     }
   });
+
+  updateStars();
 });
