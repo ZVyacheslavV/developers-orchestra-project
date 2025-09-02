@@ -1,11 +1,10 @@
 <!-- Feedback modal -->
 
-
 <div class="feedback-backdrop feedback-modal">
-  <div class="container feedback-modal-form">
+  <form class="container feedback-modal-form is-open">
     <button class="feedback-modal-close" type="button">
       <svg class="feedback-modal-svg" width="32" height="32">
-        <use href="./img/icons.svg#icon-close"></use>
+        <use href="/img/icons.svg#icon-close"></use>
       </svg>  
     </button>
     <h2 class="feedback-modal-title">Submit feedback</h2>
@@ -15,25 +14,33 @@
   Name
   </label>
   <input
-  id="user-name"
-  class="feedback-modal-username"
-  type="text"
-  name="user-name"
-  placeholder="Emily"
-  maxlength="50"/>
+    id="user-name"
+    class="feedback-modal-username"
+    type="text"
+    name="user-name"
+    placeholder="Emily"
+  />
   <label
   for="user-feedback"
-  class="feedback-modal-label">
+  class="feedback-modal-label feedback-modal-message">
 Message
 </label>
 <textarea
 id="user-feedback"
 name="user-feedback"
 class="feedback-modal-user-feedback"
-placeholder="Type your message..."
-maxlength="200"></textarea>
+placeholder="Type your message..."></textarea>
 
+<div class="my-rating" id="myRating">
+  <svg data-value="1" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="2" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="3" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="4" viewBox="0 0 24 24" width="30" height="28"></svg>
+  <svg data-value="5" viewBox="0 0 24 24" width="30" height="28"></svg>
+</div>
+<div id="ratingError" class="field-error"></div>
+<input type="hidden" name="rating" id="ratingValue" value="0">
 
 <button type="submit" class="feedback-modal-btn">Submit</button> 
-</div>
+</form>
 </div>

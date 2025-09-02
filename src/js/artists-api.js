@@ -17,13 +17,13 @@ export const getArtists = async page => {
 };
 
 export const getArtistById = async id => {
-  const { data } = await axios.get(`${API_ENDPOINTS.ARTIST_BY_Id}${id}`);
+  const { data } = await axios.get(`${API_ENDPOINTS.ARTIST_BY_ID}${id}`);
   return data;
 };
 
 export const getArtistAlbumsById = async id => {
   const { data } = await axios.get(
-    `${API_ENDPOINTS.ARTIST_BY_Id}${id}${API_ENDPOINTS.ARTIST_ALBUMS_BY_ID}`
+    `${API_ENDPOINTS.ARTIST_BY_ID}${id}${API_ENDPOINTS.ARTIST_ALBUMS_BY_ID}`
   );
   return data;
 };
@@ -43,14 +43,14 @@ export const getGenres = async () => {
 export const searchArtist = async ({
   name,
   page = 1,
-  sorted = 0,
+  sorted = '0',
   genre = '',
 }) => {
   const { data } = await axios.get(
-    `${
-      API_ENDPOINTS.ARTISTS
-    }?limit=${ARTISTS_PER_PAGE}&page=${page}&name=${name}${
-      sorted === 2 ? `&sortName=desc` : sorted === 1 ? `&sortName=asc` : ''
+    `${API_ENDPOINTS.ARTISTS}?limit=${ARTISTS_PER_PAGE}&page=${page}${
+      name?.length ? `&name=${name}` : ''
+    }${
+      sorted === '2' ? `&sortName=desc` : sorted === '1' ? `&sortName=asc` : ''
     }${genre ? `&genre=${genre}` : ''}`
   );
   return data;

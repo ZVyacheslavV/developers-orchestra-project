@@ -1,4 +1,36 @@
-<!-- Feedback -->
-<section class="feedback" id="reviews">
-  <div class="container"></div>
+<section class="feedback" id="reviews" role="region" aria-label="User feedback carousel">
+  <div class="container">
+
+    <h2 class="title-feedback visually-hidden">Feedbacks our visitors</h2>
+
+    <div class="swiper">
+      <div class="swiper-wrapper feedbacks-container"></div>
+      <div class="swiper-pagination" aria-hidden="true"></div>
+
+      <div class="swiper-nav">
+        <button class="swiper-button-prev" type="button" aria-label="Previous slide">
+          <span class="arrow">
+            <svg class="icon-arrow" width="24" height="24" aria-hidden="true" focusable="false">
+              <use href="img/icons.svg#icon-arrow-2"></use>
+            </svg>
+          </span>
+        </button>
+
+        <button class="swiper-button-next" type="button" aria-label="Next slide">
+          <span class="arrow">
+            <svg class="icon-arrow" width="24" height="24" aria-hidden="true" focusable="false">
+              <use href="img/icons.svg#icon-arrow-2"></use>
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="feedback-loader-container hidden">
+      <span class="feedback-loader hidden" aria-hidden="true"></span>
+    </div>
+
+    <button class="leave-feedback-button" type="button" data-modal-open="">Leave feedback</button>
+
+  </div>
 </section>
