@@ -24,7 +24,7 @@ window.addEventListener('scroll', () => {
       hideTimeout = setTimeout(() => {
         scrollBtn.classList.remove('visible');
         isVisible = false;
-      }, 2000);
+      }, 3700);
     } else if (!shouldShow && isVisible) {
       scrollBtn.classList.remove('visible');
       isVisible = false;

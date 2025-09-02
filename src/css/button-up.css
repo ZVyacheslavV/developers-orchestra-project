@@ -20,3 +20,7 @@
 .scroll-to-top.visible {
   display: flex;
 }
+
+.scroll-to-top:hover {
+  background-color: var(--opacity-white-15);
+}
