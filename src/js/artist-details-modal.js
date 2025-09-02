@@ -77,11 +77,15 @@ async function showArtistDetails(artistId) {
             return `${min}:${sec}`;
         };
 
+        const imageUrl = artist.strArtistThumb 
+            ? artist.strArtistThumb 
+            : 'https://placehold.co/736x414?text=No+Image';
+
         const sprite = new URL('../img/icons.svg', import.meta.url).href;
 
         const markup = `
         <div class="artist-details-modal-content">
-            <button class="artist-details-modal-close-btn" type="button">
+            <button class="artist-details-modal-close-btn" type="button" aria-label="Close the detailed information window">
                 <svg class="modal-svg" width="32" height="32">
                     <use href="${sprite}#icon-close"></use>
                 </svg>
@@ -89,7 +93,7 @@ async function showArtistDetails(artistId) {
 
             <h2 class="artist-details-modal-main-title">${strArtist}</h2>
             <div class="artist-details-modal-main-block">
-                <img class="artist-details-modal-img" src="${strArtistThumb}" alt="${artist.name}" />
+                <img class="artist-details-modal-img" src="${imageUrl}" alt="${artist.name}" />
 
                 <div class="artist-details-modal-info">
                 <ul class="artist-details-modal-list">
@@ -148,7 +152,7 @@ async function showArtistDetails(artistId) {
                         <td class="artist-details-modal-albums-list-table-text col-2">${formatDuration(track.intDuration)}</td>
                         <td class= "col-3">
                             ${track.movie && track.movie !== 'null' ? `
-                                <a class="modal-link-youtube" href="${track.movie}" target="_blank">
+                                <a class="modal-link-youtube" href="${track.movie}" target="_blank" aria-label="Watch a video on YouTube">
                                     <svg class="modal-youtube" width="24" height="20">
                                         <use href="${sprite}#icon-youtube"></use>
                                     </svg>
