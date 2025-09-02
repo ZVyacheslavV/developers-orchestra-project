@@ -17,8 +17,8 @@
   align-items: center;
   margin: 0 auto;
   height: 100%;
-  width: 100%;
-  padding: 0;
+  width: 288px;
+  padding: 0 30px;
 }
 
 .logo {
@@ -27,7 +27,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 26px;
 }
 
 .logo svg {
@@ -75,7 +74,6 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  margin-right: 20px;
   z-index: 3001;
 }
 
@@ -178,7 +176,7 @@
   }
 
   .header-container {
-    max-width: 704px;
+    width: 704px;
     padding: 0 40px;
     margin: 0 auto;
   }
