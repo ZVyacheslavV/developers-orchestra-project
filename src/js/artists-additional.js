@@ -7,6 +7,7 @@ import {
   showLoaderArtists,
   toastError,
   toastSuccess,
+  toastSuccessFeedbacks,
 } from './helpers';
 import { refs } from './refs.js';
 import { gsap } from 'gsap';
@@ -40,7 +41,7 @@ function initSearchRequest() {
 
   const handleSearchBtnRequest = async () => {
     if (!query.name?.length) {
-      toastError('Silence from you');
+      toastSuccess('Silence from you', 'topCenter', null);
       return;
     }
     showLoaderArtists();
@@ -375,28 +376,28 @@ function initSearchAndFilters() {
   }); */
 }
 
+export async function handleResetQuery() {
+  query = { name: '', page: 1, sorted: 0, genre: '' };
+  refs.btnGenres.querySelector('.dropdown-label').textContent = 'Genre';
+  refs.btnSort.querySelector('.dropdown-label').textContent = 'Sorting';
+  refs.searchInput.value = '';
+
+  showLoaderArtists();
+  try {
+    refs.artistsList.innerHTML = '';
+    // loadArtists();
+    const { artists } = await searchArtist(query);
+    renderArtists(artists);
+  } catch (err) {
+    toastError(`Silence due problem ${err}`);
+  }
+  hideLoaderArtists();
+
+  timeLines.tlCloseGenres.play(0);
+  timeLines.tlCloseSort.play(0);
+}
+
 function initReset() {
-  const handleResetQuery = async () => {
-    query = { name: '', page: 1, sorted: 0, genre: '' };
-    refs.btnGenres.querySelector('.dropdown-label').textContent = 'Genre';
-    refs.btnSort.querySelector('.dropdown-label').textContent = 'Sorting';
-    refs.searchInput.value = '';
-
-    showLoaderArtists();
-    try {
-      refs.artistsList.innerHTML = '';
-      // loadArtists();
-      const { artists } = await searchArtist(query);
-      renderArtists(artists);
-    } catch (err) {
-      toastError(`Silence due problem ${err}`);
-    }
-    hideLoaderArtists();
-
-    timeLines.tlCloseGenres.play(0);
-    timeLines.tlCloseSort.play(0);
-  };
-
   refs.resetBtn.addEventListener('click', handleResetQuery);
 }
 
