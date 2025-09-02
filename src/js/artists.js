@@ -363,3 +363,106 @@ document.addEventListener('artists:updated', async () => {
     togglePager(false, 0);
   }
 });
+
+/* ================= Filters follow (desktop) ================= */
+
+const FILTERS_STICKY_TOP = 112;
+const filtersState = {
+  enabled: false,
+  firstTop: 0,
+  lastRowTop: 0,
+  maxShift: 0,
+  rafId: 0,
+};
+
+function getColumnsCount(listEl) {
+  const gtc = getComputedStyle(listEl).gridTemplateColumns || '';
+  const cols = gtc.split(' ').filter(Boolean).length;
+  return Math.max(1, cols || 1);
+}
+
+function absTop(el) {
+  const r = el.getBoundingClientRect();
+  return Math.round(r.top + window.pageYOffset);
+}
+
+function enableFiltersFollow() {
+  if (filtersState.enabled) return;
+  filtersState.enabled = true;
+  onScrollFiltersFollow();
+  window.addEventListener('scroll', scheduleFiltersRaf, { passive: true });
+  window.addEventListener('resize', recomputeFiltersBounds, { passive: true });
+}
+
+function disableFiltersFollow() {
+  if (!filtersState.enabled) return;
+  filtersState.enabled = false;
+  window.removeEventListener('scroll', scheduleFiltersRaf);
+  window.removeEventListener('resize', recomputeFiltersBounds);
+  cancelAnimationFrame(filtersState.rafId);
+  document
+    .querySelector('.filters-panel')
+    ?.style.setProperty('--filters-shift', '0px');
+}
+
+function scheduleFiltersRaf() {
+  cancelAnimationFrame(filtersState.rafId);
+  filtersState.rafId = requestAnimationFrame(onScrollFiltersFollow);
+}
+
+function onScrollFiltersFollow() {
+  if (!filtersState.enabled) return;
+  const panel = document.querySelector('.filters-panel');
+  if (!panel) return;
+
+  const rawShift =
+    window.pageYOffset + FILTERS_STICKY_TOP - filtersState.firstTop;
+  const clamped = Math.max(0, Math.min(rawShift, filtersState.maxShift));
+
+  panel.style.setProperty('--filters-shift', `${clamped}px`);
+}
+
+function recomputeFiltersBounds() {
+  if (!window.matchMedia('(min-width:1440px)').matches) {
+    disableFiltersFollow();
+    return;
+  }
+
+  const list = refs.artistsList;
+  const panel = document.querySelector('.filters-panel');
+  if (!list || !panel || list.children.length === 0) {
+    disableFiltersFollow();
+    return;
+  }
+
+  const cols = getColumnsCount(list);
+  const total = list.children.length;
+
+  if (total <= cols) {
+    disableFiltersFollow();
+    return;
+  }
+
+  const firstTop = absTop(list.children[0]);
+
+  const lastRowFirstIndex = total - (total % cols || cols);
+  const lastRowTop = absTop(list.children[lastRowFirstIndex]);
+
+  filtersState.firstTop = firstTop;
+  filtersState.lastRowTop = lastRowTop;
+  filtersState.maxShift = Math.max(0, lastRowTop - firstTop);
+
+  enableFiltersFollow();
+  scheduleFiltersRaf();
+}
+
+document.addEventListener('artists:updated', () => {
+  const hasCards = refs.artistsList?.children.length > 0;
+  if (!hasCards) {
+    disableFiltersFollow();
+    return;
+  }
+  requestAnimationFrame(() => {
+    setTimeout(recomputeFiltersBounds, 50);
+  });
+});
