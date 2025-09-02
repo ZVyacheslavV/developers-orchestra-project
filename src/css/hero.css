@@ -81,16 +81,15 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: last baseline baseline;
   transition: background-color 0.3s;
 }
 
 .hero-icon {
-margin-left: 12px;
-    width: 24px;
-    height: 24px;
-    fill: #fff;
-    stroke: #fff;
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+  stroke: #fff;
 }
 
 .hero-btn:hover,
