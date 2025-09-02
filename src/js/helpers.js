@@ -7,7 +7,7 @@ import { refs } from './refs';
 /* Helpers */
 export function toastError(
   message = 'Something went wrong. Please try again later.',
-  position = 'topCenter'
+  position = 'topRight'
 ) {
   iziToast.error({
     title: '',
