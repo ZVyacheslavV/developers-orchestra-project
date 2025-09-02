@@ -142,6 +142,8 @@
 }
 
 .artist-cta-icon {
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
     display: inline-block;
     vertical-align: middle;
@@ -346,6 +348,10 @@
     background: var(--pg-hover-bg);
 }
 
+#tui-pagination .tui-page-btn:not(.is-disabled):not(.tui-ellipsis) {
+    cursor: pointer;
+}
+
 #tui-pagination .tui-page-btn.is-active,
 #tui-pagination .tui-is-selected {
     background: var(--pg-active-bg);
@@ -357,6 +363,11 @@
 #tui-pagination .tui-ellipsis {
     border: none;
     padding: 0 8px;
+}
+
+#tui-pagination .tui-page-btn.is-disabled,
+#tui-pagination .tui-ellipsis {
+    cursor: default;
 }
 
 #tui-pagination .tui-prev .tui-ico-prev::before {
