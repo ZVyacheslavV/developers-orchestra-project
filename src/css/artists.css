@@ -2,8 +2,8 @@
 
 .js-artists-top {
     display: block;
-    height: 0;
-    margin: 0;
+    height: 1px;
+    margin-top: -1px;
     padding: 0;
     overflow: hidden;
     visibility: hidden;
@@ -471,6 +471,16 @@
     transform: translateY(1px);
 }
 
+.btn-reset-filters:hover,
+.btn-reset-filters:focus-visible {
+    opacity: .6;
+}
+
+.btn-reset-filters:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, .35);
+    outline-offset: 2px;
+}
+
 @media (min-width: 768px) and (max-width: 1439.98px) {
     .no-artists {
         max-width: 704px;
@@ -481,7 +491,8 @@
 
 @media (min-width:1280px) {
     .no-artists {
-        gap: 24px;
+        margin-top: 0;
+        align-self: start;
     }
 
     .no-artists-title {
@@ -496,8 +507,9 @@
 @media (min-width: 1440px) {
     .no-artists {
         grid-column: 2;
+        grid-row: 1;
         justify-self: stretch;
-
+        align-self: start;
         max-width: 976px;
         padding: 32px;
         margin: 0;

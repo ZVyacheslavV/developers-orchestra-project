@@ -1,25 +1,28 @@
-/* Artists */
+/*----------- Imports ------------*/
 
 import Pagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.css';
 import '../css/artists.css';
 
 import { getArtists, searchArtist } from './artists-api.js';
-import { query } from './artists-additional.js';
+import { handleResetQuery, query } from './artists-additional.js';
 import { refs } from './refs.js';
 import { toastError, showLoaderArtists, hideLoaderArtists } from './helpers.js';
 import { ARTISTS_PER_PAGE } from './constants.js';
+
+/*------------ Globals ------------*/
 
 const isMobile = window.matchMedia('(max-width: 767.98px)').matches;
 const visiblePages = isMobile ? 3 : 5;
 
 let pager = null;
 let inFlight = false;
-let suppressScroll = false;
+let skipScrollOnce = false;
+let suppressExternalNormalize = false;
 
-// -------------- Placeholder ------------//
+/*------------ Placeholder ----------- */
 
-function getNoArtistsMarkup() {
+function noArtistsMarkup() {
   const sprite = new URL('../img/icons.svg', import.meta.url).href;
   return `
     <div class="no-artists is-hidden" data-no-artists>
@@ -39,41 +42,76 @@ function getNoArtistsMarkup() {
 function ensureNoArtistsBlock() {
   let el = document.querySelector('[data-no-artists]');
   if (!el) {
-    refs.artistsList.insertAdjacentHTML('afterend', getNoArtistsMarkup());
+    refs.artistsList.insertAdjacentHTML('afterend', noArtistsMarkup());
     el = document.querySelector('[data-no-artists]');
-    el.addEventListener('click', e => {
-      if (!e.target.closest('.btn-reset-filters')) return;
-      document.querySelector('[data-action="filters-reset"]')?.click();
-      document.dispatchEvent(new CustomEvent('filters:reset'));
-    });
   }
   return el;
 }
 
 function showNoArtists() {
   ensureNoArtistsBlock().classList.remove('is-hidden');
+  const btn = document.querySelector('.btn-reset-filters');
+  if (btn) {
+    btn.addEventListener('click', handleResetQuery, { once: true });
+  }
 }
-
 function hideNoArtists() {
   document.querySelector('[data-no-artists]')?.classList.add('is-hidden');
 }
 
+/*--------------- Helpers ---------------*/
+
 function togglePager(visible, totalItems = 0) {
   const box = document.querySelector('#tui-pagination');
   if (!box) return;
-
   box.classList.toggle('hidden', !visible || totalItems <= 0);
 }
 
 function isSearchActive() {
   return Boolean(
     (query.name && query.name.trim().length) ||
-      (query.genre && query.genre !== 'all') ||
+      (query.genre && query.genre !== 'all' && query.genre !== '') ||
       (query.sorted && Number(query.sorted) !== 0)
   );
 }
 
-//---------------- Data flow -------------//
+function ensurePager(total = 0) {
+  if (pager) return;
+  pager = new Pagination('#tui-pagination', {
+    totalItems: total,
+    itemsPerPage: ARTISTS_PER_PAGE,
+    page: query.page || 1,
+    visiblePages,
+    centerAlign: true,
+    usageStatistics: false,
+    template: {
+      page: '<a href="#" class="tui-page-btn">{{page}}</a>',
+      currentPage:
+        '<strong class="tui-page-btn is-active" aria-current="page">{{page}}</strong>',
+      moveButton:
+        '<a href="#" class="tui-page-btn tui-{{type}}"><span class="tui-ico-{{type}}"></span></a>',
+      disabledMoveButton:
+        '<span class="tui-page-btn is-disabled tui-{{type}}"><span class="tui-ico-{{type}}"></span></span>',
+      moreButton: '<span class="tui-page-btn tui-ellipsis">…</span>',
+    },
+  });
+
+  pager.on('afterMove', handlePagerMove);
+}
+
+function normalizeAndMovePager(total) {
+  if (!pager) return;
+  const totalPages = Math.max(1, Math.ceil(total / ARTISTS_PER_PAGE));
+  const target = Math.min(Math.max(query.page || 1, 1), totalPages);
+
+  if (pager.getCurrentPage() !== target) {
+    skipScrollOnce = true;
+    pager.movePageTo(target);
+  }
+  togglePager(totalPages > 1, total);
+}
+
+/*---------------- loader ------------------*/
 
 export async function loadArtists({ init = false } = {}) {
   showLoaderArtists();
@@ -88,94 +126,20 @@ export async function loadArtists({ init = false } = {}) {
     const artists = payload.artists ?? [];
     const totalArtists = Number(payload.totalArtists) || 0;
 
-    if (totalArtists === 0) {
-      if (pager) pager.reset(0);
-      togglePager(false, 0);
-    }
-
+    suppressExternalNormalize = true;
     refs.artistsList.innerHTML = '';
     renderArtists(artists);
+    suppressExternalNormalize = false;
 
-    if (init) {
-      if (!pager) {
-        suppressScroll = true;
+    ensurePager(totalArtists);
+    pager.setTotalItems(totalArtists);
+    normalizeAndMovePager(totalArtists);
 
-        pager = new Pagination('#tui-pagination', {
-          totalItems: totalArtists,
-          itemsPerPage: ARTISTS_PER_PAGE,
-          page: query.page || 1,
-          visiblePages,
-          centerAlign: true,
-          usageStatistics: false,
-          template: {
-            page: '<a href="#" class="tui-page-btn">{{page}}</a>',
-            currentPage:
-              '<strong class="tui-page-btn is-active" aria-current="page">{{page}}</strong>',
-            moveButton:
-              '<a href="#" class="tui-page-btn tui-{{type}}"><span class="tui-ico-{{type}}"></span></a>',
-            disabledMoveButton:
-              '<span class="tui-page-btn is-disabled tui-{{type}}"><span class="tui-ico-{{type}}"></span></span>',
-            moreButton: '<span class="tui-page-btn tui-ellipsis">…</span>',
-          },
-        });
-
-        pager.on('afterMove', async ({ page: next }) => {
-          if (inFlight) return;
-          inFlight = true;
-          showLoaderArtists();
-
-          try {
-            query.page = next;
-            refs.artistsList.innerHTML = '';
-
-            const searchNow = isSearchActive();
-            const nextPayload = searchNow
-              ? await searchArtist(query)
-              : await getArtists(next);
-
-            const nextArtists = nextPayload.artists ?? [];
-            renderArtists(nextArtists);
-
-            togglePager(
-              nextArtists.length > 0,
-              Number(nextPayload?.totalArtists) || 0
-            );
-
-            if (!suppressScroll) requestAnimationFrame(scrollToArtistsTop);
-          } catch (e) {
-            toastError('Failed to fetch artists');
-            renderArtists([]);
-            togglePager(false, 0);
-          } finally {
-            inFlight = false;
-            suppressScroll = false;
-            hideLoaderArtists();
-          }
-        });
-      }
-
-      pager.reset(totalArtists);
-      const target = query.page || 1;
-      if (pager.getCurrentPage() !== target) {
-        suppressScroll = true;
-        pager.movePageTo(target);
-      } else {
-        suppressScroll = true;
-      }
-    } else {
-      if (pager) {
-        pager.reset(totalArtists);
-        const target = query.page || 1;
-        if (pager.getCurrentPage() !== target) {
-          suppressScroll = true;
-          pager.movePageTo(target);
-        } else {
-          suppressScroll = true;
-        }
-      }
+    if (!init) {
+      const totalPages = Math.ceil(totalArtists / ARTISTS_PER_PAGE);
+      togglePager(totalPages > 1, totalArtists);
+      if (!skipScrollOnce) smartScrollAfterRender();
     }
-
-    togglePager(totalArtists > 0, totalArtists);
   } catch (e) {
     if (isSearchActive()) toastError('Failed to fetch artists');
     refs.artistsList.innerHTML = '';
@@ -186,6 +150,48 @@ export async function loadArtists({ init = false } = {}) {
   }
 }
 
+/*---------------------- Pager ------------------------*/
+
+async function handlePagerMove({ page: next }) {
+  if (inFlight) return;
+  inFlight = true;
+  showLoaderArtists();
+  try {
+    query.page = next;
+    refs.artistsList.innerHTML = '';
+
+    const usingSearch = isSearchActive();
+    const payload = usingSearch
+      ? await searchArtist(query)
+      : await getArtists(next);
+
+    const nextArtists = payload.artists ?? [];
+    const nextTotal = Number(payload.totalArtists) || 0;
+
+    suppressExternalNormalize = true;
+    renderArtists(nextArtists);
+    suppressExternalNormalize = false;
+
+    pager.setTotalItems(nextTotal);
+    normalizeAndMovePager(nextTotal);
+
+    if (!skipScrollOnce) {
+      smartScrollAfterRender();
+    } else {
+      skipScrollOnce = false;
+    }
+  } catch (e) {
+    toastError('Failed to fetch artists');
+    renderArtists([]);
+    togglePager(false, 0);
+  } finally {
+    inFlight = false;
+    hideLoaderArtists();
+  }
+}
+
+/*---------------- Render --------------------*/
+
 export function renderArtists(artists = []) {
   const sprite = new URL('../img/icons.svg', import.meta.url).href;
 
@@ -193,6 +199,7 @@ export function renderArtists(artists = []) {
     hideNoArtists();
     refs.artistsList.innerHTML = '';
     showNoArtists();
+    pager?.setTotalItems(0);
     togglePager(false, 0);
     document.dispatchEvent(new Event('artists:updated'));
     return;
@@ -263,26 +270,70 @@ if (document.readyState === 'loading') {
   loadArtists({ init: true });
 }
 
-// --------- Smooth scroll ----------
+/*----------------- Scroll -------------------*/
 
 function scrollToArtistsTop() {
-  const anchor = document.querySelector('.js-artists-top');
+  const anchor =
+    document.querySelector('.js-artists-top') ||
+    document.querySelector('#artists');
   if (!anchor) return;
 
-  let cssOffset = parseFloat(getComputedStyle(anchor).scrollMarginTop) || 0;
-  if (!cssOffset) {
-    cssOffset = window.matchMedia('(min-width:1440px)').matches
+  let offset = parseFloat(getComputedStyle(anchor).scrollMarginTop) || 0;
+  if (!offset) {
+    offset = window.matchMedia('(min-width:1440px)').matches
       ? 112
       : window.matchMedia('(min-width:768px)').matches
       ? 96
       : 120;
-    anchor.style.scrollMarginTop = `${cssOffset}px`;
+  }
+
+  let targetY = Math.round(
+    anchor.getBoundingClientRect().top + window.pageYOffset - offset
+  );
+
+  if (Math.abs(window.pageYOffset - targetY) < 2) {
+    targetY = Math.max(0, targetY - 1);
   }
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  anchor.scrollIntoView({
-    block: 'start',
-    inline: 'nearest',
+
+  window.scrollTo({
+    top: targetY,
+    left: 0,
     behavior: reduced ? 'auto' : 'smooth',
   });
+}
+
+function scrollAfterImages() {
+  const container = document.querySelector('.artists-list');
+  if (!container) return;
+
+  const images = Array.from(container.querySelectorAll('img'));
+  if (images.length === 0) {
+    scrollToArtistsTop();
+    return;
+  }
+
+  let loaded = 0;
+  const done = () => {
+    loaded++;
+    if (loaded === images.length) scrollToArtistsTop();
+  };
+
+  images.forEach(img => {
+    if (img.complete) {
+      done();
+    } else {
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+    }
+  });
+}
+
+function smartScrollAfterRender() {
+  requestAnimationFrame(scrollToArtistsTop);
+
+  scrollAfterImages();
+
+  setTimeout(scrollToArtistsTop, 400);
 }
