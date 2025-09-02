@@ -1,7 +1,10 @@
 import { addNewFeedback } from './artists-api.js';
+
 import { toastSuccessFeedbacks, toastErrorFeedbacks} from './helpers.js';
+
 import "css-star-rating/css/star-rating.css";
 import axios from 'axios';   
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const backdrop = document.querySelector(".feedback-backdrop");
@@ -24,12 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function fillStars(value) {
     stars.forEach((s, i) => {
       if (i + 1 <= value) {
-        s.style.background = "linear-gradient(to right, #764191 100%, #ffffff 0%)";
+        s.style.background = "linear-gradient(to right, #764191 100%, #ffffff 100%)";
       } else if (i < value) {
         const fraction = value - i;
         s.style.background = `linear-gradient(to right, #764191 ${fraction * 100}%, #ffffff ${fraction * 100}%)`;
       } else {
-        s.style.background = "linear-gradient(to right, #764191 0%, #ffffff 100%)";
+        s.style.background = "linear-gradient(to right, #ffffff 0%, #ffffff 100%)";
       }
     });
   }
