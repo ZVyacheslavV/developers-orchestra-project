@@ -178,7 +178,6 @@
     margin-top: 24px;
 }
 
-
 /* ================ Responsive ================ */
 
 @media (max-width:767.98px) {
@@ -242,6 +241,7 @@
         gap: 0;
     }
 
+    /* як у тебе — transition: none; transform через var(--filters-shift) */
     .filters-panel {
         grid-column: 1;
         width: 304px;
@@ -280,9 +280,7 @@
         margin: 0;
         padding: 0;
     }
-
 }
-
 
 /*============ Pagination ===========*/
 
@@ -321,6 +319,12 @@
     #tui-pagination {
         width: 288px;
         margin-top: 32px;
+        /* щоб влізла компактна верстка */
+        padding: 0 8px;
+        justify-content: space-between;
+        gap: 0;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
 
@@ -370,24 +374,25 @@
 #tui-pagination .tui-ellipsis {
     border: none;
     padding: 0 8px;
-    cursor: pointer;
+    cursor: default;
 }
 
-#tui-pagination .tui-prev .tui-ico-prev::before {
-    content: '←';
-}
-
-#tui-pagination .tui-next .tui-ico-next::before {
-    content: '→';
-}
-
-#tui-pagination .tui-prev .tui-ico-prev,
-#tui-pagination .tui-next .tui-ico-next {
+/* SVG-іконки */
+#tui-pagination .tui-ico-svg {
+    width: 24px;
+    height: 24px;
     display: inline-block;
-    font-size: 16px;
-    line-height: 1;
+    vertical-align: middle;
+    fill: currentColor;
+    pointer-events: none;
 }
 
+/* розвертаємо prev */
+#tui-pagination .tui-prev .tui-ico-svg {
+    transform: rotate(180deg);
+}
+
+/* Фокус/active */
 #tui-pagination .tui-page-btn:focus-visible {
     outline: 2px solid var(--pg-focus);
     outline-offset: 2px;
@@ -397,6 +402,19 @@
     transform: translateY(1px);
 }
 
+/* компакт на мобілці */
+@media (max-width:767.98px) {
+    #tui-pagination .tui-page-btn {
+        height: 40px;
+        min-width: 36px;
+        padding: 0 8px;
+        font-size: 12px;
+    }
+
+    #tui-pagination .tui-ellipsis {
+        padding: 0 4px;
+    }
+}
 
 /* ========= Placeholder =========*/
 
@@ -460,7 +478,6 @@
     font-size: 18px;
     line-height: 1.5;
     color: var(--color-white);
-    ;
 
     background: #764191;
     box-shadow:
@@ -519,7 +536,6 @@
         margin: 0;
     }
 }
-
 
 /*====== Utilities ========*/
 
