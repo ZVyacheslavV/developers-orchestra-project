@@ -224,6 +224,7 @@
 }
 
 @media (min-width:1440px) {
+
     .artists-subcontainer {
         display: grid;
         grid-template-columns: 304px 1fr;
@@ -238,6 +239,7 @@
     .artists,
     .artists-container {
         overflow: visible;
+        gap: 0;
     }
 
     .filters-panel {
@@ -247,7 +249,10 @@
         position: sticky;
         top: 112px;
         align-self: start;
-        z-index: 2;
+        z-index: 5;
+        transform: translateY(var(--filters-shift, 0px));
+        will-change: transform;
+        transition: none;
     }
 
     .artists-list {
@@ -271,11 +276,6 @@
         scroll-margin-top: 112px;
     }
 
-    .filters-panel {
-        position: sticky;
-        top: 112px;
-        transform: translateY(var(--filters-shift, 0px));
-        will-change: transform;}
 }
 
 
@@ -460,7 +460,7 @@
 
 .btn-reset-filters:hover,
 .btn-reset-filters:focus-visible {
-    opacity: .6;
+    background: #6a3a83;
 }
 
 .btn-reset-filters:focus-visible {
@@ -469,7 +469,6 @@
 }
 
 .btn-reset-filters:active {
-    opacity: .6;
     transform: translateY(1px);
 }
 
