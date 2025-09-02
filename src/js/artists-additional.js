@@ -1,13 +1,12 @@
 /* Artists additional */
 import { timeLines } from './animations.js';
-import { getArtists, getGenres, searchArtist } from './artists-api';
-import { loadArtists, renderArtists } from './artists.js';
+import { getGenres, searchArtist } from './artists-api';
+import { renderArtists } from './artists.js';
 import {
   hideLoaderArtists,
   showLoaderArtists,
   toastError,
   toastSuccess,
-  toastSuccessFeedbacks,
 } from './helpers';
 import { refs } from './refs.js';
 import { gsap } from 'gsap';
@@ -16,7 +15,8 @@ export let query = { name: '', page: 1, sorted: 0, genre: '' };
 
 // const allDropdowns = [];
 
-//Inits:
+//================================================================
+/* == Inits == */
 initGenresMarkup();
 
 initSearchAndFilters();
@@ -33,7 +33,8 @@ execHeroBtnClick();
 
 helpClearHoverOnButtons();
 
-//Functions:
+//================================================================
+/* == Functions == */
 function initSearchRequest() {
   refs.searchInput.addEventListener('input', () => {
     query.name = refs.searchInput.value.trim();
@@ -44,6 +45,10 @@ function initSearchRequest() {
       toastSuccess('Silence from you', 'topRight', null);
       return;
     }
+    document
+      .querySelector('.js-artists-top')
+      .scrollIntoView({ behavior: 'smooth' });
+
     showLoaderArtists();
 
     try {
@@ -55,8 +60,8 @@ function initSearchRequest() {
     }
 
     hideLoaderArtists();
-    if (!window.matchMedia('(min-width: 1440px)'))
-      timeLines.tlCloseSearch.play(0);
+    /*     if (!window.matchMedia('(min-width: 1440px)')) */
+    timeLines?.tlCloseSearch?.play(0);
   };
 
   refs.searchBtnRequest.addEventListener('click', handleSearchBtnRequest);
@@ -80,6 +85,253 @@ async function initGenresMarkup() {
   } catch (err) {
     toastError(`While loading genres ${err}`);
   }
+}
+
+/* == Init Sort, Init Genres functions == */
+function initSort() {
+  const outsideClickHandler = e => {
+    if (!document.querySelector('.artists-dropdown-sort').contains(e.target)) {
+      timeLines.tlCloseSort.restart();
+      timeLines.tlCloseGenres.restart(); //try
+      refs.btnSort.classList.remove('open');
+      refs.menuSort.classList.remove('open');
+      // document.body.classList.remove('no-scroll');
+    }
+  };
+
+  refs.btnSort.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpen = refs.menuSort.classList.contains('open');
+
+    if (!isOpen) {
+      //Closing genres
+      timeLines.tlOpenGenres.pause(0);
+      timeLines.tlCloseGenres.restart();
+      refs.btnGenres.classList.remove('open');
+      refs.menuGenres.classList.remove('open');
+
+      timeLines.tlCloseSort.pause(0);
+      timeLines.tlOpenSort.restart();
+      refs.btnSort.classList.add('open');
+      refs.menuSort.classList.add('open');
+      document.addEventListener('click', outsideClickHandler, { once: true });
+      // document.body.classList.add('no-scroll');
+    } else {
+      timeLines.tlOpenSort.pause(0);
+      timeLines.tlCloseSort.restart();
+      refs.btnSort.classList.remove('open');
+      refs.menuSort.classList.remove('open');
+      // document.body.classList.remove('no-scroll');
+    }
+  });
+
+  refs.menuSort.addEventListener('click', async e => {
+    document
+      .querySelector('.js-artists-top')
+      .scrollIntoView({ behavior: 'smooth' });
+
+    const item = e.target.closest('li');
+    if (!item) return;
+
+    refs.btnSort.querySelector('.dropdown-label').textContent =
+      item.textContent;
+    refs.btnSort.dataset.value = item.dataset.value;
+
+    query.sorted = item.dataset.value;
+
+    showLoaderArtists();
+    try {
+      const { artists } = await searchArtist(query);
+      refs.artistsList.innerHTML = '';
+      renderArtists(artists);
+    } catch (err) {
+      toastError(`Silence due problem ${err}`);
+    }
+    hideLoaderArtists();
+
+    timeLines.tlOpenSort.pause(0);
+    timeLines.tlCloseSort.restart();
+    refs.btnSort.classList.remove('open');
+    refs.menuSort.classList.remove('open');
+    timeLines?.tlCloseSearch?.play(0);
+    // document.body.classList.remove('no-scroll');
+  });
+
+  // Saving for closing others in future:
+  // allDropdowns.push({ btn, menu, tlOpen, tlClose });
+}
+
+async function initGenres() {
+  const outsideClickHandler = e => {
+    if (
+      !document.querySelector('.artists-dropdown-genres').contains(e.target)
+    ) {
+      timeLines.tlCloseGenres.restart();
+      timeLines.tlCloseSort.restart(); //try
+      refs.btnGenres.classList.remove('open');
+      refs.menuGenres.classList.remove('open');
+      // document.body.classList.remove('no-scroll');
+    }
+  };
+
+  refs.btnGenres.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpen = refs.menuGenres.classList.contains('open');
+
+    if (!isOpen) {
+      //Closing sort
+      timeLines.tlOpenSort.pause(0);
+      timeLines.tlCloseSort.restart();
+      refs.btnSort.classList.remove('open');
+      refs.menuSort.classList.remove('open');
+
+      timeLines.tlCloseGenres.pause(0);
+      timeLines.tlOpenGenres.restart();
+      refs.btnGenres.classList.add('open');
+      refs.menuGenres.classList.add('open');
+      document.addEventListener('click', outsideClickHandler, { once: true });
+      // document.body.classList.add('no-scroll');
+    } else {
+      timeLines.tlOpenGenres.pause(0);
+      timeLines.tlCloseGenres.restart();
+      refs.btnGenres.classList.remove('open');
+      refs.menuGenres.classList.remove('open');
+      // document.body.classList.remove('no-scroll');
+    }
+  });
+
+  refs.menuGenres.addEventListener('click', async e => {
+    document
+      .querySelector('.js-artists-top')
+      .scrollIntoView({ behavior: 'smooth' });
+
+    const item = e.target.closest('li');
+    if (!item) return;
+
+    refs.btnGenres.querySelector('.dropdown-label').textContent =
+      item.textContent;
+    refs.btnGenres.dataset.value = item.dataset.value;
+
+    query.genre = item.textContent === 'All Genres' ? '' : item.textContent;
+
+    showLoaderArtists();
+    try {
+      const { artists } = await searchArtist(query);
+      refs.artistsList.innerHTML = '';
+      renderArtists(artists);
+    } catch (err) {
+      toastError(`Silence due problem ${err}`);
+    }
+    hideLoaderArtists();
+
+    timeLines.tlOpenGenres.pause(0);
+    timeLines.tlCloseGenres.restart();
+    refs.btnGenres.classList.remove('open');
+    refs.menuGenres.classList.remove('open');
+    timeLines?.tlCloseSearch?.play(0);
+    // document.body.classList.remove('no-scroll');
+  });
+
+  // Saving for closing others in future:
+  // allDropdowns.push({ btn, menu, tlOpen, tlClose });
+}
+
+function initSearchAndFilters() {
+  // no initialization of animation
+  if (window.matchMedia('(min-width: 1440px)').matches) {
+    return;
+  }
+
+  const outsideClickHandler = e => {
+    if (!document.querySelector('.filters-content').contains(e.target)) {
+      timeLines.tlCloseSearch.play(0);
+      document.removeEventListener('click', outsideClickHandler);
+    }
+    // refs.btnSearch.classList.remove('open');
+    // refs.panelSearch.classList.remove('open');
+  };
+
+  refs.btnSearch.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpenSearch =
+      gsap.isTweening(refs.panelSearch) ||
+      refs.panelSearch.style.pointerEvents === 'auto';
+
+    if (!isOpenSearch) {
+      timeLines.tlCloseSearch.pause(0);
+      timeLines.tlOpenSearch.restart();
+      document.addEventListener('click', outsideClickHandler);
+      // refs.btnSearch.classList.add('open');
+      // refs.panelSearch.classList.add('open');
+    } else {
+      timeLines.tlOpenSearch.pause(0);
+      timeLines.tlCloseSearch.restart();
+      document.removeEventListener('click', outsideClickHandler);
+      // refs.btnSearch.classList.remove('open');
+      // refs.panelSearch.classList.remove('open');
+    }
+  });
+
+  /* refs.panelSearch.addEventListener('click', e => {
+    refs.btnSearch.classList.remove('open');
+    refs.panelSearch.classList.remove('open');
+    const item = e.target.closest('li');
+    if (!item) return;
+
+    refs.btnSearch.querySelector('.dropdown-label').textContent =
+      item.textContent;
+    refs.btnSearch.dataset.value = item.dataset.value;
+
+    tlOpen.pause(0);
+    tlClose.restart();
+    document.removeEventListener('click', outsideClickHandler);
+  }); */
+}
+
+export async function handleResetQuery() {
+  query = { name: '', page: 1, sorted: 0, genre: '' };
+  document
+    .querySelector('.js-artists-top')
+    .scrollIntoView({ behavior: 'smooth' });
+
+  refs.btnGenres.querySelector('.dropdown-label').textContent = 'Genre';
+  refs.btnSort.querySelector('.dropdown-label').textContent = 'Sorting';
+  refs.searchInput.value = '';
+
+  showLoaderArtists();
+  try {
+    refs.artistsList.innerHTML = '';
+    // loadArtists();
+    const { artists } = await searchArtist(query);
+    renderArtists(artists);
+  } catch (err) {
+    toastError(`Silence due problem ${err}`);
+  }
+  hideLoaderArtists();
+
+  timeLines.tlCloseGenres.play(0);
+  timeLines.tlCloseSort.play(0);
+}
+
+function initReset() {
+  refs.resetBtn.addEventListener('click', handleResetQuery);
+}
+
+function execHeroBtnClick() {
+  refs.heroBtn.addEventListener('click', e => {
+    e.preventDefault();
+    document
+      .querySelector('.js-artists-top')
+      .scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+function helpClearHoverOnButtons() {
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.blur(); // знімає focus після кліку
+    });
+  });
 }
 
 function initDropdown({ btn, menu, wrapperSelector }) {
@@ -180,240 +432,6 @@ function initDropdown({ btn, menu, wrapperSelector }) {
 
   // Saving for closing others in future:
   allDropdowns.push({ btn, menu, tlOpen, tlClose });
-}
-
-//================================================================
-/* == Init Sort, Init Genres functions == */
-function initSort() {
-  const outsideClickHandler = e => {
-    if (!document.querySelector('.artists-dropdown-sort').contains(e.target)) {
-      timeLines.tlCloseSort.restart();
-      timeLines.tlCloseGenres.restart(); //try
-      refs.btnSort.classList.remove('open');
-      refs.menuSort.classList.remove('open');
-      // document.body.classList.remove('no-scroll');
-    }
-  };
-
-  refs.btnSort.addEventListener('click', e => {
-    e.stopPropagation();
-    const isOpen = refs.menuSort.classList.contains('open');
-
-    if (!isOpen) {
-      //Closing genres
-      timeLines.tlOpenGenres.pause(0);
-      timeLines.tlCloseGenres.restart();
-      refs.btnGenres.classList.remove('open');
-      refs.menuGenres.classList.remove('open');
-
-      timeLines.tlCloseSort.pause(0);
-      timeLines.tlOpenSort.restart();
-      refs.btnSort.classList.add('open');
-      refs.menuSort.classList.add('open');
-      document.addEventListener('click', outsideClickHandler, { once: true });
-      // document.body.classList.add('no-scroll');
-    } else {
-      timeLines.tlOpenSort.pause(0);
-      timeLines.tlCloseSort.restart();
-      refs.btnSort.classList.remove('open');
-      refs.menuSort.classList.remove('open');
-      // document.body.classList.remove('no-scroll');
-    }
-  });
-
-  refs.menuSort.addEventListener('click', async e => {
-    const item = e.target.closest('li');
-    if (!item) return;
-
-    refs.btnSort.querySelector('.dropdown-label').textContent =
-      item.textContent;
-    refs.btnSort.dataset.value = item.dataset.value;
-
-    query.sorted = item.dataset.value;
-
-    showLoaderArtists();
-    try {
-      const { artists } = await searchArtist(query);
-      refs.artistsList.innerHTML = '';
-      renderArtists(artists);
-    } catch (err) {
-      toastError(`Silence due problem ${err}`);
-    }
-    hideLoaderArtists();
-
-    timeLines.tlOpenSort.pause(0);
-    timeLines.tlCloseSort.restart();
-    refs.btnSort.classList.remove('open');
-    refs.menuSort.classList.remove('open');
-    // document.body.classList.remove('no-scroll');
-  });
-
-  // Saving for closing others in future:
-  // allDropdowns.push({ btn, menu, tlOpen, tlClose });
-}
-
-async function initGenres() {
-  const outsideClickHandler = e => {
-    if (
-      !document.querySelector('.artists-dropdown-genres').contains(e.target)
-    ) {
-      timeLines.tlCloseGenres.restart();
-      timeLines.tlCloseSort.restart(); //try
-      refs.btnGenres.classList.remove('open');
-      refs.menuGenres.classList.remove('open');
-      // document.body.classList.remove('no-scroll');
-    }
-  };
-
-  refs.btnGenres.addEventListener('click', e => {
-    e.stopPropagation();
-    const isOpen = refs.menuGenres.classList.contains('open');
-
-    if (!isOpen) {
-      //Closing sort
-      timeLines.tlOpenSort.pause(0);
-      timeLines.tlCloseSort.restart();
-      refs.btnSort.classList.remove('open');
-      refs.menuSort.classList.remove('open');
-
-      timeLines.tlCloseGenres.pause(0);
-      timeLines.tlOpenGenres.restart();
-      refs.btnGenres.classList.add('open');
-      refs.menuGenres.classList.add('open');
-      document.addEventListener('click', outsideClickHandler, { once: true });
-      // document.body.classList.add('no-scroll');
-    } else {
-      timeLines.tlOpenGenres.pause(0);
-      timeLines.tlCloseGenres.restart();
-      refs.btnGenres.classList.remove('open');
-      refs.menuGenres.classList.remove('open');
-      // document.body.classList.remove('no-scroll');
-    }
-  });
-
-  refs.menuGenres.addEventListener('click', async e => {
-    const item = e.target.closest('li');
-    if (!item) return;
-
-    refs.btnGenres.querySelector('.dropdown-label').textContent =
-      item.textContent;
-    refs.btnGenres.dataset.value = item.dataset.value;
-
-    query.genre = item.textContent === 'All Genres' ? '' : item.textContent;
-
-    showLoaderArtists();
-    try {
-      const { artists } = await searchArtist(query);
-      refs.artistsList.innerHTML = '';
-      renderArtists(artists);
-    } catch (err) {
-      toastError(`Silence due problem ${err}`);
-    }
-    hideLoaderArtists();
-
-    timeLines.tlOpenGenres.pause(0);
-    timeLines.tlCloseGenres.restart();
-    refs.btnGenres.classList.remove('open');
-    refs.menuGenres.classList.remove('open');
-    // document.body.classList.remove('no-scroll');
-  });
-
-  // Saving for closing others in future:
-  // allDropdowns.push({ btn, menu, tlOpen, tlClose });
-}
-
-//================================================================
-
-function initSearchAndFilters() {
-  // no initialization of animation
-  if (window.matchMedia('(min-width: 1440px)').matches) {
-    return;
-  }
-
-  const outsideClickHandler = e => {
-    if (!document.querySelector('.filters-content').contains(e.target)) {
-      timeLines.tlCloseSearch.play(0);
-      document.removeEventListener('click', outsideClickHandler);
-    }
-    // refs.btnSearch.classList.remove('open');
-    // refs.panelSearch.classList.remove('open');
-  };
-
-  refs.btnSearch.addEventListener('click', e => {
-    e.stopPropagation();
-    const isOpenSearch =
-      gsap.isTweening(refs.panelSearch) ||
-      refs.panelSearch.style.pointerEvents === 'auto';
-
-    if (!isOpenSearch) {
-      timeLines.tlCloseSearch.pause(0);
-      timeLines.tlOpenSearch.restart();
-      document.addEventListener('click', outsideClickHandler);
-      // refs.btnSearch.classList.add('open');
-      // refs.panelSearch.classList.add('open');
-    } else {
-      timeLines.tlOpenSearch.pause(0);
-      timeLines.tlCloseSearch.restart();
-      document.removeEventListener('click', outsideClickHandler);
-      // refs.btnSearch.classList.remove('open');
-      // refs.panelSearch.classList.remove('open');
-    }
-  });
-
-  /* refs.panelSearch.addEventListener('click', e => {
-    refs.btnSearch.classList.remove('open');
-    refs.panelSearch.classList.remove('open');
-    const item = e.target.closest('li');
-    if (!item) return;
-
-    refs.btnSearch.querySelector('.dropdown-label').textContent =
-      item.textContent;
-    refs.btnSearch.dataset.value = item.dataset.value;
-
-    tlOpen.pause(0);
-    tlClose.restart();
-    document.removeEventListener('click', outsideClickHandler);
-  }); */
-}
-
-export async function handleResetQuery() {
-  query = { name: '', page: 1, sorted: 0, genre: '' };
-  refs.btnGenres.querySelector('.dropdown-label').textContent = 'Genre';
-  refs.btnSort.querySelector('.dropdown-label').textContent = 'Sorting';
-  refs.searchInput.value = '';
-
-  showLoaderArtists();
-  try {
-    refs.artistsList.innerHTML = '';
-    // loadArtists();
-    const { artists } = await searchArtist(query);
-    renderArtists(artists);
-  } catch (err) {
-    toastError(`Silence due problem ${err}`);
-  }
-  hideLoaderArtists();
-
-  timeLines.tlCloseGenres.play(0);
-  timeLines.tlCloseSort.play(0);
-}
-
-function initReset() {
-  refs.resetBtn.addEventListener('click', handleResetQuery);
-}
-
-function execHeroBtnClick() {
-  refs.heroBtn.addEventListener('click', e => {
-    e.preventDefault();
-    document.querySelector('#artists').scrollIntoView({ behavior: 'smooth' });
-  });
-}
-
-function helpClearHoverOnButtons() {
-  document.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.blur(); // знімає focus після кліку
-    });
-  });
 }
 
 /* async function searching() {
