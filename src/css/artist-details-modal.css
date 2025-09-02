@@ -64,13 +64,11 @@ table {
 
 .modal-svg {
   fill: var(--color-white);
-  transition-property: fill;
-  transition-duration: 250ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease;
   }
 
 .artist-details-modal-close-btn:hover .modal-svg, .artist-details-modal-close-btn:focus .modal-svg {
-  fill: var(--color-affair);
+  opacity: 0.6;
 }
 
 .artist-details-modal-main-title {
@@ -91,6 +89,7 @@ table {
   height: auto;
   margin: 0 auto 32px;
   object-fit: contain;
+  border-radius: 16px;
 }
 
 .artist-details-modal-list {
@@ -200,7 +199,7 @@ table {
 }
 .col-3 {
   width: 35px;
-  text-align: center;
+  text-align: start;
 }
 
 .artist-details-modal-albums-list-table {
@@ -212,7 +211,7 @@ table {
 }
 
 .artist-details-modal-albums-list-table-body tr td {
-  padding: 8px 0px 8px 12px;
+  padding: 8px 12px;
   min-height: 34px;
 }
 
@@ -249,17 +248,16 @@ table {
   cursor: pointer;
   align-items: center;
   justify-content: center;
+  margin: -4px;
 }
 
 .modal-youtube {
   fill: var(--color-scheme-1-text);
-  transition-property: fill;
-  transition-duration: 250ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease;
 }
 
 .modal-link-youtube:hover .modal-youtube, .modal-link-youtube:focus .modal-youtube {
-  fill: var(--color-affair);
+  opacity: 0.6;
 }
 
 @media only screen and (min-width: 768px) {
