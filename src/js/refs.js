@@ -22,6 +22,12 @@ export const refs = {
   toggleBtn: document.querySelector('.header-toggle'),
   mobileMenu: document.querySelector('.header-mobile-menu'),
   menuLinks: document.querySelectorAll('.header-mob-nav-link'),
+  lockBodyScroll: () => {
+    document.body.style.overflow = 'hidden';
+  },
+  unlockBodyScroll: () => {
+    document.body.style.overflow = '';
+  },
   artistDetailsModalBackdrope: document.querySelector(
     '.artist-details-backdrop'
   ),
