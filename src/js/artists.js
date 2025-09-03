@@ -1,5 +1,4 @@
-/*----------- Imports ------------*/
-
+/*-------------- Imports ------------*/
 import Pagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.css';
 import '../css/artists.css';
@@ -10,8 +9,7 @@ import { refs } from './refs.js';
 import { toastError, showLoaderArtists, hideLoaderArtists } from './helpers.js';
 import { ARTISTS_PER_PAGE } from './constants.js';
 
-/*------------ Globals ------------*/
-
+/*------------ Globals --------------*/
 const isMobile = window.matchMedia('(max-width: 767.98px)').matches;
 const visiblePages = isMobile ? 3 : 5;
 
@@ -19,16 +17,16 @@ let pager = null;
 let inFlight = false;
 let skipScrollOnce = false;
 let suppressExternalNormalize = false;
-let lastKnownTotal = 0;
 let suppressPagerEventOnce = false;
+let lastKnownTotal = 0;
+let userTriggeredMove = false;
 
 function querySignature(q) {
   return `${q.name?.trim() || ''}|${q.genre || ''}|${Number(q.sorted) || 0}`;
 }
 let lastQuerySig = '';
 
-/*------------ Placeholder ----------- */
-
+/*------------ Placeholder ---------------- */
 function noArtistsMarkup() {
   const sprite = new URL('../img/icons.svg', import.meta.url).href;
   return `
@@ -68,8 +66,8 @@ function showNoArtists() {
         document.querySelector('#tui-pagination')?.classList.remove('hidden');
         if (pager) {
           suppressPagerEventOnce = true;
-          skipScrollOnce = true;
           pager.movePageTo(1);
+          setTimeout(() => (suppressPagerEventOnce = false), 0);
         }
         handleResetQuery();
       },
@@ -82,7 +80,6 @@ function hideNoArtists() {
 }
 
 /*--------------- Helpers ---------------*/
-
 function togglePager(visible, totalItems = 0) {
   const box = document.querySelector('#tui-pagination');
   if (!box) return;
@@ -125,6 +122,15 @@ function ensurePager(total = 0) {
   });
 
   pager.on('afterMove', handlePagerMove);
+
+  const box = document.querySelector('#tui-pagination');
+  if (box) {
+    box.addEventListener('click', e => {
+      const a = e.target.closest('a.tui-page-btn');
+      if (!a || a.classList.contains('is-disabled')) return;
+      userTriggeredMove = true;
+    });
+  }
 }
 
 function normalizeAndMovePager(total) {
@@ -146,7 +152,6 @@ function normalizeAndMovePager(total) {
 }
 
 /*---------------- loader ------------------*/
-
 export async function loadArtists({ init = false } = {}) {
   showLoaderArtists();
   try {
@@ -180,9 +185,8 @@ export async function loadArtists({ init = false } = {}) {
       suppressPagerEventOnce = true;
       skipScrollOnce = true;
       pager.reset(totalArtists);
-      if (pager.getCurrentPage() !== 1) {
-        pager.movePageTo(1);
-      }
+      if (pager.getCurrentPage() !== 1) pager.movePageTo(1);
+      setTimeout(() => (suppressPagerEventOnce = false), 0);
       query.page = 1;
     } else {
       pager.setTotalItems(totalArtists);
@@ -263,6 +267,7 @@ function renderMobilePagerCompact() {
       e.preventDefault();
       const p = Number(a.dataset.page);
       if (Number.isFinite(p) && p >= 1 && p <= totalPages && p !== cur) {
+        userTriggeredMove = true;
         pager.movePageTo(p);
       }
     };
@@ -301,6 +306,7 @@ function renderDesktopEnsureLast() {
   a.textContent = String(totalPages);
   a.addEventListener('click', e => {
     e.preventDefault();
+    userTriggeredMove = true;
     pager.movePageTo(totalPages);
   });
 
@@ -308,11 +314,15 @@ function renderDesktopEnsureLast() {
 }
 
 /*---------------------- Pager ------------------------*/
-
 async function handlePagerMove({ page: next }) {
   if (suppressPagerEventOnce) {
     suppressPagerEventOnce = false;
+    skipScrollOnce = false;
     return;
+  }
+  if (userTriggeredMove) {
+    skipScrollOnce = false;
+    userTriggeredMove = false;
   }
   if (inFlight) return;
   inFlight = true;
@@ -354,7 +364,6 @@ async function handlePagerMove({ page: next }) {
 }
 
 /*---------------- Render --------------------*/
-
 let lastRenderExternal = false;
 
 export function renderArtists(artists = []) {
@@ -437,7 +446,6 @@ if (document.readyState === 'loading') {
 }
 
 /*----------------- Scroll -------------------*/
-
 function scrollToArtistsTop() {
   const anchor =
     document.querySelector('.js-artists-top') ||
@@ -502,7 +510,7 @@ function smartScrollAfterRender() {
   setTimeout(scrollToArtistsTop, 400);
 }
 
-/* ================= Filters animation =============== */
+/* -------------------Filters animation ------------*/
 const FILTERS_STICKY_TOP = 112;
 const filtersState = {
   enabled: false,
@@ -517,12 +525,10 @@ function getColumnsCount(listEl) {
   const cols = gtc.split(' ').filter(Boolean).length;
   return Math.max(1, cols || 1);
 }
-
 function absTop(el) {
   const r = el.getBoundingClientRect();
   return Math.round(r.top + window.pageYOffset);
 }
-
 function enableFiltersFollow() {
   if (filtersState.enabled) return;
   filtersState.enabled = true;
@@ -530,7 +536,6 @@ function enableFiltersFollow() {
   window.addEventListener('scroll', scheduleFiltersRaf, { passive: true });
   window.addEventListener('resize', recomputeFiltersBounds, { passive: true });
 }
-
 function disableFiltersFollow() {
   if (!filtersState.enabled) return;
   filtersState.enabled = false;
@@ -541,12 +546,10 @@ function disableFiltersFollow() {
     .querySelector('.filters-panel')
     ?.style.setProperty('--filters-shift', '0px');
 }
-
 function scheduleFiltersRaf() {
   cancelAnimationFrame(filtersState.rafId);
   filtersState.rafId = requestAnimationFrame(onScrollFiltersFollow);
 }
-
 function onScrollFiltersFollow() {
   if (!filtersState.enabled) return;
   const panel = document.querySelector('.filters-panel');
@@ -559,7 +562,6 @@ function onScrollFiltersFollow() {
   );
   panel.style.setProperty('--filters-shift', `${clamped}px`);
 }
-
 function recomputeFiltersBounds() {
   if (!window.matchMedia('(min-width:1440px)').matches) {
     disableFiltersFollow();
@@ -589,6 +591,34 @@ function recomputeFiltersBounds() {
   scheduleFiltersRaf();
 }
 
+/* ------- Sync after external renders (filters/search) ------- */
+async function syncPagerAfterExternalRender() {
+  const sig = querySignature(query);
+  if (sig === lastQuerySig) return;
+
+  try {
+    const payload = await searchArtist({ ...query, page: 1 });
+    const total = Number(payload.totalArtists) || 0;
+
+    ensurePager(total);
+    lastKnownTotal = total;
+
+    suppressPagerEventOnce = true;
+    skipScrollOnce = true;
+    pager.reset(total);
+    if (pager.getCurrentPage() !== 1) pager.movePageTo(1);
+    setTimeout(() => (suppressPagerEventOnce = false), 0);
+    query.page = 1;
+
+    const totalPages = Math.ceil(total / ARTISTS_PER_PAGE);
+    togglePager(totalPages > 1, total);
+    if (isMobile) renderMobilePagerCompact();
+    else renderDesktopEnsureLast();
+
+    lastQuerySig = sig;
+  } catch {}
+}
+
 document.addEventListener('artists:updated', () => {
   const hasCards = refs.artistsList?.children.length > 0;
   if (!hasCards) {
@@ -604,12 +634,17 @@ document.addEventListener('artists:updated', () => {
   if (lastRenderExternal && query.page === 1 && pager.getCurrentPage() !== 1) {
     suppressPagerEventOnce = true;
     pager.movePageTo(1);
+    setTimeout(() => (suppressPagerEventOnce = false), 0);
   }
 
   if (isMobile) {
     renderMobilePagerCompact();
   } else {
     renderDesktopEnsureLast();
+  }
+
+  if (lastRenderExternal) {
+    syncPagerAfterExternalRender();
   }
 
   lastRenderExternal = false;
