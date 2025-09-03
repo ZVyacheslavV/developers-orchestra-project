@@ -1,3 +1,5 @@
+import '../node_modules/modern-normalize/modern-normalize.css';
+
 import './js/refs';
 import './js/constants';
 import './js/helpers';
