@@ -1,4 +1,5 @@
 /*----------- Imports ------------*/
+
 import Pagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.css';
 import '../css/artists.css';
@@ -10,6 +11,7 @@ import { toastError, showLoaderArtists, hideLoaderArtists } from './helpers.js';
 import { ARTISTS_PER_PAGE } from './constants.js';
 
 /*------------ Globals ------------*/
+
 const isMobile = window.matchMedia('(max-width: 767.98px)').matches;
 const visiblePages = isMobile ? 3 : 5;
 
@@ -18,8 +20,15 @@ let inFlight = false;
 let skipScrollOnce = false;
 let suppressExternalNormalize = false;
 let lastKnownTotal = 0;
+let suppressPagerEventOnce = false;
+
+function querySignature(q) {
+  return `${q.name?.trim() || ''}|${q.genre || ''}|${Number(q.sorted) || 0}`;
+}
+let lastQuerySig = '';
 
 /*------------ Placeholder ----------- */
+
 function noArtistsMarkup() {
   const sprite = new URL('../img/icons.svg', import.meta.url).href;
   return `
@@ -57,6 +66,11 @@ function showNoArtists() {
       () => {
         query.page = 1;
         document.querySelector('#tui-pagination')?.classList.remove('hidden');
+        if (pager) {
+          suppressPagerEventOnce = true;
+          skipScrollOnce = true;
+          pager.movePageTo(1);
+        }
         handleResetQuery();
       },
       { once: true }
@@ -68,6 +82,7 @@ function hideNoArtists() {
 }
 
 /*--------------- Helpers ---------------*/
+
 function togglePager(visible, totalItems = 0) {
   const box = document.querySelector('#tui-pagination');
   if (!box) return;
@@ -123,14 +138,27 @@ function normalizeAndMovePager(total) {
   }
   togglePager(totalPages > 1, total);
 
-  if (isMobile) renderMobilePagerCompact();
+  if (isMobile) {
+    renderMobilePagerCompact();
+  } else {
+    renderDesktopEnsureLast();
+  }
 }
 
 /*---------------- loader ------------------*/
+
 export async function loadArtists({ init = false } = {}) {
   showLoaderArtists();
   try {
     if (init) query.page = 1;
+
+    const sig = querySignature(query);
+    const filtersChanged = sig !== lastQuerySig;
+    const needResetPager = init || filtersChanged;
+
+    if (filtersChanged && query.page !== 1) {
+      query.page = 1;
+    }
 
     const usingSearch = isSearchActive();
     const payload = usingSearch
@@ -146,12 +174,26 @@ export async function loadArtists({ init = false } = {}) {
     suppressExternalNormalize = false;
 
     ensurePager(totalArtists);
-    pager.setTotalItems(totalArtists);
     lastKnownTotal = totalArtists;
-    normalizeAndMovePager(totalArtists);
+
+    if (needResetPager) {
+      suppressPagerEventOnce = true;
+      skipScrollOnce = true;
+      pager.reset(totalArtists);
+      if (pager.getCurrentPage() !== 1) {
+        pager.movePageTo(1);
+      }
+      query.page = 1;
+    } else {
+      pager.setTotalItems(totalArtists);
+      normalizeAndMovePager(totalArtists);
+    }
 
     const totalPages = Math.ceil(totalArtists / ARTISTS_PER_PAGE);
     togglePager(totalPages > 1, totalArtists);
+    if (!isMobile) renderDesktopEnsureLast();
+
+    lastQuerySig = sig;
   } catch (e) {
     if (isSearchActive()) toastError('Failed to fetch artists');
     refs.artistsList.innerHTML = '';
@@ -227,8 +269,51 @@ function renderMobilePagerCompact() {
   } catch {}
 }
 
+function renderDesktopEnsureLast() {
+  if (isMobile || !pager) return;
+  const box = document.querySelector('#tui-pagination');
+  if (!box) return;
+
+  let totalItems = 0;
+  if (typeof pager.getTotalItems === 'function') {
+    totalItems = Number(pager.getTotalItems()) || 0;
+  }
+  if (!totalItems) totalItems = lastKnownTotal || 0;
+
+  const totalPages = Math.max(1, Math.ceil(totalItems / ARTISTS_PER_PAGE));
+  if (totalPages <= 1) return;
+
+  const btns = Array.from(box.querySelectorAll('.tui-page-btn'));
+  const hasLast = btns.some(
+    el =>
+      !el.classList.contains('tui-prev') &&
+      !el.classList.contains('tui-next') &&
+      !el.classList.contains('tui-ellipsis') &&
+      el.textContent.trim() === String(totalPages)
+  );
+  if (hasLast) return;
+
+  const next = box.querySelector('.tui-next');
+
+  const a = document.createElement('a');
+  a.href = '#';
+  a.className = 'tui-page-btn';
+  a.textContent = String(totalPages);
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    pager.movePageTo(totalPages);
+  });
+
+  box.insertBefore(a, next || null);
+}
+
 /*---------------------- Pager ------------------------*/
+
 async function handlePagerMove({ page: next }) {
+  if (suppressPagerEventOnce) {
+    suppressPagerEventOnce = false;
+    return;
+  }
   if (inFlight) return;
   inFlight = true;
   showLoaderArtists();
@@ -251,6 +336,7 @@ async function handlePagerMove({ page: next }) {
     pager.setTotalItems(nextTotal);
     lastKnownTotal = nextTotal;
     normalizeAndMovePager(nextTotal);
+    if (!isMobile) renderDesktopEnsureLast();
 
     if (!skipScrollOnce) {
       smartScrollAfterRender();
@@ -268,7 +354,12 @@ async function handlePagerMove({ page: next }) {
 }
 
 /*---------------- Render --------------------*/
+
+let lastRenderExternal = false;
+
 export function renderArtists(artists = []) {
+  lastRenderExternal = !suppressExternalNormalize;
+
   const sprite = new URL('../img/icons.svg', import.meta.url).href;
 
   if (!Array.isArray(artists) || artists.length === 0) {
@@ -346,6 +437,7 @@ if (document.readyState === 'loading') {
 }
 
 /*----------------- Scroll -------------------*/
+
 function scrollToArtistsTop() {
   const anchor =
     document.querySelector('.js-artists-top') ||
@@ -425,10 +517,12 @@ function getColumnsCount(listEl) {
   const cols = gtc.split(' ').filter(Boolean).length;
   return Math.max(1, cols || 1);
 }
+
 function absTop(el) {
   const r = el.getBoundingClientRect();
   return Math.round(r.top + window.pageYOffset);
 }
+
 function enableFiltersFollow() {
   if (filtersState.enabled) return;
   filtersState.enabled = true;
@@ -436,6 +530,7 @@ function enableFiltersFollow() {
   window.addEventListener('scroll', scheduleFiltersRaf, { passive: true });
   window.addEventListener('resize', recomputeFiltersBounds, { passive: true });
 }
+
 function disableFiltersFollow() {
   if (!filtersState.enabled) return;
   filtersState.enabled = false;
@@ -446,10 +541,12 @@ function disableFiltersFollow() {
     .querySelector('.filters-panel')
     ?.style.setProperty('--filters-shift', '0px');
 }
+
 function scheduleFiltersRaf() {
   cancelAnimationFrame(filtersState.rafId);
   filtersState.rafId = requestAnimationFrame(onScrollFiltersFollow);
 }
+
 function onScrollFiltersFollow() {
   if (!filtersState.enabled) return;
   const panel = document.querySelector('.filters-panel');
@@ -462,6 +559,7 @@ function onScrollFiltersFollow() {
   );
   panel.style.setProperty('--filters-shift', `${clamped}px`);
 }
+
 function recomputeFiltersBounds() {
   if (!window.matchMedia('(min-width:1440px)').matches) {
     disableFiltersFollow();
@@ -490,13 +588,29 @@ function recomputeFiltersBounds() {
   enableFiltersFollow();
   scheduleFiltersRaf();
 }
+
 document.addEventListener('artists:updated', () => {
   const hasCards = refs.artistsList?.children.length > 0;
   if (!hasCards) {
     disableFiltersFollow();
-    return;
+  } else {
+    requestAnimationFrame(() => {
+      setTimeout(recomputeFiltersBounds, 50);
+    });
   }
-  requestAnimationFrame(() => {
-    setTimeout(recomputeFiltersBounds, 50);
-  });
+
+  if (!pager) return;
+
+  if (lastRenderExternal && query.page === 1 && pager.getCurrentPage() !== 1) {
+    suppressPagerEventOnce = true;
+    pager.movePageTo(1);
+  }
+
+  if (isMobile) {
+    renderMobilePagerCompact();
+  } else {
+    renderDesktopEnsureLast();
+  }
+
+  lastRenderExternal = false;
 });
