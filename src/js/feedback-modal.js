@@ -183,8 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
       hasError = true;
     }
 
-    if (rating < 0.25 || rating > 5) {
-      showRatingError('Please provide a rating between 0.25 and 5');
+    if (rating < 0.1 || rating > 5) {
+      showRatingError('Please provide a rating between 0.1 and 5');
       hasError = true;
     }
 
