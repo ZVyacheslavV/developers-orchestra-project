@@ -199,7 +199,7 @@ export async function loadArtists({ init = false } = {}) {
 
     lastQuerySig = sig;
   } catch (e) {
-    if (isSearchActive()) toastError('Failed to fetch artists');
+    if (isSearchActive()) toastError(`Silence due problem ${e}`);
     refs.artistsList.innerHTML = '';
     renderArtists([]);
     togglePager(false, 0);
