@@ -1,7 +1,7 @@
 /* Artists additional */
 import { timeLines } from './animations.js';
 import { getGenres, searchArtist } from './artists-api';
-import { renderArtists } from './artists.js';
+import { loadArtists, renderArtists } from './artists.js';
 import {
   hideLoaderArtists,
   showLoaderArtists,
@@ -52,9 +52,10 @@ function initSearchRequest() {
     showLoaderArtists();
 
     try {
-      const { artists } = await searchArtist(query);
+      /* const { artists } = await searchArtist(query);
       refs.artistsList.innerHTML = '';
-      renderArtists(artists);
+      renderArtists(artists); */
+      await loadArtists({ init: true });
     } catch (err) {
       toastError(`Silence due problem ${err}`);
     }
@@ -141,9 +142,10 @@ function initSort() {
 
     showLoaderArtists();
     try {
-      const { artists } = await searchArtist(query);
+      /* const { artists } = await searchArtist(query);
       refs.artistsList.innerHTML = '';
-      renderArtists(artists);
+      renderArtists(artists); */
+      await loadArtists({ init: true });
     } catch (err) {
       toastError(`Silence due problem ${err}`);
     }
@@ -216,9 +218,10 @@ async function initGenres() {
 
     showLoaderArtists();
     try {
-      const { artists } = await searchArtist(query);
+      /* const { artists } = await searchArtist(query);
       refs.artistsList.innerHTML = '';
-      renderArtists(artists);
+      renderArtists(artists); */
+      await loadArtists({ init: true });
     } catch (err) {
       toastError(`Silence due problem ${err}`);
     }

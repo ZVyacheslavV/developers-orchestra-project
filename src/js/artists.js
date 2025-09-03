@@ -166,9 +166,9 @@ export async function loadArtists({ init = false } = {}) {
     }
 
     const usingSearch = isSearchActive();
-    const payload = usingSearch
+    const payload = await searchArtist(query); /* usingSearch
       ? await searchArtist(query)
-      : await getArtists(query.page);
+      : await getArtists(query.page) */
 
     const artists = payload.artists ?? [];
     const totalArtists = Number(payload.totalArtists) || 0;
@@ -506,7 +506,7 @@ function scrollAfterImages() {
 
 function smartScrollAfterRender() {
   requestAnimationFrame(scrollToArtistsTop);
-  scrollAfterImages();
+  /* scrollAfterImages(); */
   setTimeout(scrollToArtistsTop, 400);
 }
 
