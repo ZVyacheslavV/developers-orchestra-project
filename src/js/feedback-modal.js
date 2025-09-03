@@ -23,19 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
     ratingError.textContent = '';
   }
 
+  const wrapper = document.querySelector('.stars-wrapper');
+
   function fillStars(value) {
     stars.forEach((s, i) => {
       if (i + 1 <= value) {
-        s.style.background =
-          'linear-gradient(to right, #764191 100%, #ffffff 100%)';
+        s.style.setProperty('--star-fill', '#764191');
       } else if (i < value) {
         const fraction = value - i;
-        s.style.background = `linear-gradient(to right, #764191 ${
-          fraction * 100
-        }%, #ffffff ${fraction * 100}%)`;
+        s.style.setProperty(
+          '--star-fill',
+          `linear-gradient(to right, #764191 ${fraction * 100}%, #ffffff ${
+            fraction * 100
+          }%)`
+        );
       } else {
-        s.style.background =
-          'linear-gradient(to right, #ffffff 0%, #ffffff 100%)';
+        s.style.setProperty('--star-fill', '#ffffff');
       }
     });
   }
@@ -45,27 +48,26 @@ document.addEventListener('DOMContentLoaded', () => {
     fillStars(rating);
   }
 
-  stars.forEach((star, idx) => {
-    star.addEventListener('mousemove', e => {
-      const rect = star.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const percent = x / rect.width;
-      const quarter = Math.ceil(percent * 4) / 4;
-      fillStars(idx + quarter);
-    });
-
-    star.addEventListener('click', e => {
-      const rect = star.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const percent = x / rect.width;
-      const quarter = Math.ceil(percent * 4) / 4;
-      ratingInput.value = idx + quarter;
-      updateStars();
-      clearRatingError();
-    });
-
-    star.addEventListener('mouseleave', updateStars);
+  wrapper.addEventListener('mousemove', e => {
+    const rect = wrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const starWidth = rect.width / stars.length;
+    const value = Math.min(stars.length, Math.ceil((x / starWidth) * 10) / 10);
+    fillStars(value);
   });
+
+  wrapper.addEventListener('click', e => {
+    const rect = wrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const starWidth = rect.width / stars.length;
+    const value = Math.min(stars.length, Math.ceil((x / starWidth) * 10) / 10);
+    ratingInput.value = value;
+    updateStars();
+  });
+
+  wrapper.addEventListener('mouseleave', updateStars);
+
+  updateStars();
 
   const openBtn = document.querySelector('.leave-feedback-button');
   if (openBtn) {
