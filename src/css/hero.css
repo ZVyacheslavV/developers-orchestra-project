@@ -84,7 +84,7 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
-  align-items: last baseline baseline;
+  align-items: baseline baseline;
   transition: background-color 0.3s;
 }
 
