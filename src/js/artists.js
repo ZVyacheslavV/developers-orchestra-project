@@ -15,9 +15,9 @@ const visiblePages = isMobile ? 3 : 5;
 
 let pager = null;
 let inFlight = false;
-let skipScrollOnce = false;
-let suppressExternalNormalize = false;
-let suppressPagerEventOnce = false;
+/* let skipScrollOnce = false; */
+/* let suppressExternalNormalize = false; */
+/* let suppressPagerEventOnce = false; */
 let lastKnownTotal = 0;
 let userTriggeredMove = false;
 
@@ -65,9 +65,9 @@ function showNoArtists() {
         query.page = 1;
         document.querySelector('#tui-pagination')?.classList.remove('hidden');
         if (pager) {
-          suppressPagerEventOnce = true;
+          /* suppressPagerEventOnce = true; */
           pager.movePageTo(1);
-          setTimeout(() => (suppressPagerEventOnce = false), 0);
+          /* setTimeout(() => (suppressPagerEventOnce = false), 0); */
         }
         handleResetQuery();
       },
@@ -139,7 +139,7 @@ function normalizeAndMovePager(total) {
   const target = Math.min(Math.max(query.page || 1, 1), totalPages);
 
   if (pager.getCurrentPage() !== target) {
-    skipScrollOnce = true;
+    /* skipScrollOnce = true; */
     pager.movePageTo(target);
   }
   togglePager(totalPages > 1, total);
@@ -171,22 +171,22 @@ export async function loadArtists({ init = false } = {}) {
       : await getArtists(query.page) */
 
     const artists = payload.artists ?? [];
-    const totalArtists = Number(payload.totalArtists) || 0;
+    const totalArtists = +payload.totalArtists || 0;
 
-    suppressExternalNormalize = true;
+    /* suppressExternalNormalize = true; */
     refs.artistsList.innerHTML = '';
     renderArtists(artists);
-    suppressExternalNormalize = false;
+    /* suppressExternalNormalize = false; */
 
     ensurePager(totalArtists);
     lastKnownTotal = totalArtists;
 
     if (needResetPager) {
-      suppressPagerEventOnce = true;
-      skipScrollOnce = true;
+      /* suppressPagerEventOnce = true; */
+      /* skipScrollOnce = true; */
       pager.reset(totalArtists);
       if (pager.getCurrentPage() !== 1) pager.movePageTo(1);
-      setTimeout(() => (suppressPagerEventOnce = false), 0);
+      /* setTimeout(() => (suppressPagerEventOnce = false), 0); */
       query.page = 1;
     } else {
       pager.setTotalItems(totalArtists);
@@ -315,15 +315,16 @@ function renderDesktopEnsureLast() {
 
 /*---------------------- Pager ------------------------*/
 async function handlePagerMove({ page: next }) {
-  if (suppressPagerEventOnce) {
+  scrollToArtistsTop();
+  /*   if (suppressPagerEventOnce) {
     suppressPagerEventOnce = false;
     skipScrollOnce = false;
     return;
-  }
-  if (userTriggeredMove) {
+  } */
+  /*   if (userTriggeredMove) {
     skipScrollOnce = false;
     userTriggeredMove = false;
-  }
+  } */
   if (inFlight) return;
   inFlight = true;
   showLoaderArtists();
@@ -337,22 +338,22 @@ async function handlePagerMove({ page: next }) {
       : await getArtists(next);
 
     const nextArtists = payload.artists ?? [];
-    const nextTotal = Number(payload.totalArtists) || 0;
+    const nextTotal = +payload.totalArtists || 0;
 
-    suppressExternalNormalize = true;
+    /* suppressExternalNormalize = true; */
     renderArtists(nextArtists);
-    suppressExternalNormalize = false;
+    /*  suppressExternalNormalize = false; */
 
     pager.setTotalItems(nextTotal);
     lastKnownTotal = nextTotal;
     normalizeAndMovePager(nextTotal);
     if (!isMobile) renderDesktopEnsureLast();
 
-    if (!skipScrollOnce) {
+    /*     if (!skipScrollOnce) {
       smartScrollAfterRender();
     } else {
       skipScrollOnce = false;
-    }
+    } */
   } catch (e) {
     toastError('Failed to fetch artists');
     renderArtists([]);
@@ -364,10 +365,10 @@ async function handlePagerMove({ page: next }) {
 }
 
 /*---------------- Render --------------------*/
-let lastRenderExternal = false;
+/* let lastRenderExternal = false; */
 
 export function renderArtists(artists = []) {
-  lastRenderExternal = !suppressExternalNormalize;
+  /* lastRenderExternal = !suppressExternalNormalize; */
 
   const sprite = new URL('../img/icons.svg', import.meta.url).href;
 
@@ -598,16 +599,16 @@ async function syncPagerAfterExternalRender() {
 
   try {
     const payload = await searchArtist({ ...query, page: 1 });
-    const total = Number(payload.totalArtists) || 0;
+    const total = +payload.totalArtists || 0;
 
     ensurePager(total);
     lastKnownTotal = total;
 
-    suppressPagerEventOnce = true;
-    skipScrollOnce = true;
+    /* suppressPagerEventOnce = true; */
+    /*  skipScrollOnce = true; */
     pager.reset(total);
     if (pager.getCurrentPage() !== 1) pager.movePageTo(1);
-    setTimeout(() => (suppressPagerEventOnce = false), 0);
+    /* setTimeout(() => (suppressPagerEventOnce = false), 0); */
     query.page = 1;
 
     const totalPages = Math.ceil(total / ARTISTS_PER_PAGE);
@@ -631,10 +632,13 @@ document.addEventListener('artists:updated', () => {
 
   if (!pager) return;
 
-  if (lastRenderExternal && query.page === 1 && pager.getCurrentPage() !== 1) {
-    suppressPagerEventOnce = true;
+  if (
+    /* lastRenderExternal && */ query.page === 1 &&
+    pager.getCurrentPage() !== 1
+  ) {
+    /* suppressPagerEventOnce = true; */
     pager.movePageTo(1);
-    setTimeout(() => (suppressPagerEventOnce = false), 0);
+    /*  setTimeout(() => (suppressPagerEventOnce = false), 0); */
   }
 
   if (isMobile) {
@@ -643,9 +647,9 @@ document.addEventListener('artists:updated', () => {
     renderDesktopEnsureLast();
   }
 
-  if (lastRenderExternal) {
+  /*   if (lastRenderExternal) {
     syncPagerAfterExternalRender();
-  }
+  } */
 
-  lastRenderExternal = false;
+  /* lastRenderExternal = false; */
 });
