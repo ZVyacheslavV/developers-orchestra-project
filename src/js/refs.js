@@ -11,7 +11,7 @@ export const refs = {
   panelSearch: document.querySelector('.filters-content'),
   btnGenres: document.querySelector('.dropdown-toggle-genres'),
   btnSort: document.querySelector('.dropdown-toggle-sort'),
-  loader: document.querySelector('.loader'),
+  
   btnSearch: document.querySelector('.search-and-filters-toggle'),
   searchInput: document.querySelector('.search-input'),
   searchBtnRequest: document.querySelector('.search-btn'),
