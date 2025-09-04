@@ -86,3 +86,23 @@ button:focus:not(:focus-visible) {
   background: #af0404 !important;
   border-color: #af0404 !important;
 }
+
+/* Experimental customization for touch displays */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove highline for touchscreens */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  a {
+    outline: none;
+  }
+}
+
+/* Keep usability for keyboard users */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #764191; /* customizable focus */
+  border-radius: 4px;
+}

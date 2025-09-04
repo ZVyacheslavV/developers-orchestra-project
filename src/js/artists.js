@@ -366,7 +366,7 @@ async function handlePagerMove({ page: next }) {
     inFlight = false;
     hideLoaderArtists();
   }
-  /* scrollToArtistsCeil(); */
+  scrollToArtistsCeil();
 }
 
 /*---------------- Render --------------------*/
