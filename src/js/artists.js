@@ -1,7 +1,7 @@
 /*-------------- Imports ------------*/
 import Pagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.css';
-import '../css/artists.css';
+/* import '../css/artists.css'; */
 
 import { getArtists, searchArtist } from './artists-api.js';
 import {
@@ -23,7 +23,7 @@ let inFlight = false;
 /* let suppressExternalNormalize = false; */
 /* let suppressPagerEventOnce = false; */
 let lastKnownTotal = 0;
-let userTriggeredMove = false;
+/* let userTriggeredMove = false; */
 
 function querySignature(q) {
   return `${q.name?.trim() || ''}|${q.genre || ''}|${Number(q.sorted) || 0}`;
