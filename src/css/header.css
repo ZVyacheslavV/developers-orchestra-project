@@ -132,6 +132,7 @@
 .header-icon.close {
   opacity: 0;
   pointer-events: none;
+  position: absolute;
 }
 
 .header-toggle.active .header-icon.burger {
