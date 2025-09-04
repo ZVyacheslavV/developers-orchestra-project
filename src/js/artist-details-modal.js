@@ -1,5 +1,9 @@
 /* Artist details modal */
 
+import {
+  handleSearchGenresFromCard,
+  scrollToArtistsCeil,
+} from './artists-additional';
 import { getArtistAlbumsById, getArtistById } from './artists-api';
 import { toastError } from './helpers';
 import { refs } from './refs';
@@ -228,8 +232,16 @@ refs.artistsList.addEventListener('click', e => {
   const card = e.target.closest('.artist-card');
   if (!card) return;
 
-  const btn = card.querySelector('.artist-cta');
-  const artistId = btn.dataset.artistId;
+  if (e.target.nodeName === 'LI') {
+    const btnGenres = e.target.closest('.tag');
+    handleSearchGenresFromCard(btnGenres.textContent.trim());
+    scrollToArtistsCeil();
+
+    return;
+  }
+
+  const btnLearnMore = card.querySelector('.artist-cta');
+  const artistId = btnLearnMore.dataset.artistId;
   if (artistId) {
     showArtistDetails(artistId);
   }
