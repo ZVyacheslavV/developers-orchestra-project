@@ -69,12 +69,19 @@
   max-width: 288px;
   width: 100%;
   box-sizing: border-box;
+  transition: border 0.2s ease;
 }
 
-.feedback-modal-user-feedback:focus::placeholder,
+.feedback-modal-user-feedback::placeholder,
+.feedback-modal-username::placeholder {
+  opacity: 1;
+  transition: color 0.4s ease;
+}
+
+/* .feedback-modal-user-feedback:focus::placeholder,
 .feedback-modal-username:focus::placeholder {
   opacity: 0;
-}
+} */
 
 .feedback-modal-user-feedback {
   padding: 12px;
@@ -93,8 +100,15 @@
 
 .feedback-modal-user-feedback:hover::placeholder,
 .feedback-modal-username:hover::placeholder {
-  color: var(--color-scheme-2-text);
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  /* color: var(--color-scheme-2-text); */
+
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
+    opacity 0.4s ease;
+}
+
+.feedback-modal-user-feedback:focus::placeholder,
+.feedback-modal-username:focus::placeholder {
+  color: transparent;
 }
 
 .feedback-modal-username {
