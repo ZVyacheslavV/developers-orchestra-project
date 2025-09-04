@@ -103,6 +103,10 @@
        padding: 0;
       }
       
+    .footer-icons {
+        width: 32px;
+        height: 32px;
+    }
 }
 
 @media screen and (min-width: 1140px) {
@@ -134,5 +138,9 @@
         order: 1;
        padding: 0;
       }
+    .footer-icons {
+        width: 32px;
+        height: 32px;
+    }
 
 }
