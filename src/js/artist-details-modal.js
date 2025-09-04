@@ -17,6 +17,8 @@ function closeModal() {
     document.body.style.overflow = '';
     window.removeEventListener('keydown', onEcsKeyPress);
     refs.artistDetailsModalBackdrope.removeEventListener('click', onBackdropClick);
+    refs.artistDetailsModal.innerHTML = '<span class="loader is-hidden"></span>';
+    refs.artistDetailsModal.innerHTML = '';
 }
 
 function onEcsKeyPress(e) {
@@ -32,18 +34,21 @@ function onBackdropClick(e) {
 }
 
 function showLoader() {
-    refs.loader?.classList.remove('is-hidden');
+    refs.artistDetailsModal.innerHTML = '<span class="loader"></span>';
 }
 
 function hideLoader() {
-    refs.loader?.classList.add('is-hidden');
+    const loader = refs.artistDetailsModal.querySelector('.loader');
+    if (loader) loader.remove();
 }
+    
 
 async function showArtistDetails(artistId) {
     
-    try {
-        showLoader();
-        
+    try {  
+        openModal();
+        showLoader();        
+
         const artist = await getArtistById(artistId);
         const albumsData = await getArtistAlbumsById(artistId);
         const albums = albumsData?.albumsList || [];
@@ -175,11 +180,9 @@ async function showArtistDetails(artistId) {
         const closeBtn = refs.artistDetailsModalBackdrope.querySelector('.artist-details-modal-close-btn');
         closeBtn.addEventListener('click', closeModal);
   
-        openModal();
 
     } catch (err) {
         toastError(err.message);
-        // console.log(err);
     } finally {
         hideLoader();
     }

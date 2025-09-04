@@ -35,16 +35,21 @@ table {
 }
 
 .artist-details-modal { 
+    position: relative;
     border-radius: 16px;
     padding: 52px 8px;
     width: 100%;
     max-width: 288px;
+     display: flex;
+  justify-content: center;
+  align-items: center;
 } 
 
 .artist-details-modal-content {
     max-height: 90vh;
-    overflow: auto; 
-    scrollbar-width: none;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: darkgrey black;
 }
 
 .artist-details-modal-close-btn {
@@ -105,7 +110,8 @@ table {
 .artist-details-modal-list-item {
   max-height: 300px;
   overflow: auto;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: darkgrey black;
 }
 
 .artist-details-modal-title {
