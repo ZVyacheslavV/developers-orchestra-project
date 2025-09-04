@@ -82,7 +82,7 @@ function initSearchRequest() {
       toastSuccess('Silence from you', 'topRight', null);
       return;
     }
-    scrollToArtistsTop();
+    scrollToArtistsCeil();
 
     showLoaderArtists();
 
@@ -162,7 +162,7 @@ function initSort() {
   });
 
   refs.menuSort.addEventListener('click', async e => {
-    scrollToArtistsTop();
+    scrollToArtistsCeil();
 
     const item = e.target.closest('li');
     if (!item) return;
@@ -234,7 +234,7 @@ async function initGenres() {
   });
 
   refs.menuGenres.addEventListener('click', async e => {
-    scrollToArtistsTop();
+    scrollToArtistsCeil();
 
     const item = e.target.closest('li');
     if (!item) return;
@@ -269,7 +269,7 @@ async function initGenres() {
 export async function handleResetQuery() {
   query = { name: '', page: 1, sorted: 0, genre: '' };
 
-  scrollToArtistsTop();
+  scrollToArtistsCeil();
 
   refs.btnGenres.querySelector('.dropdown-label').textContent = 'Genre';
   refs.btnSort.querySelector('.dropdown-label').textContent = 'Sorting';
@@ -278,9 +278,9 @@ export async function handleResetQuery() {
   showLoaderArtists();
   try {
     refs.artistsList.innerHTML = '';
-    // loadArtists();
-    const { artists } = await searchArtist(query);
-    renderArtists(artists);
+    /* const { artists } = await searchArtist(query);
+    renderArtists(artists); */
+    await loadArtists({ init: true });
   } catch (err) {
     toastError(`Silence due problem ${err}`);
   }
@@ -296,26 +296,27 @@ function initReset() {
 
 //============================ Helpers ============================
 /* -- Scroll to top of artists -- */
-export function scrollToArtistsTop() {
+export function scrollToArtistsCeil() {
   const top =
-    refs.artistsList.getBoundingClientRect().top +
-    window.scrollY -
+    /* refs.artistsList */ document
+      .querySelector('.artists-subtitle')
+      .getBoundingClientRect().bottom +
+    window.scrollY +
+    100 -
     (window.matchMedia('(min-width: 1440px)').matches
       ? 100
       : window.matchMedia('(min-width: 768px)').matches
       ? 165
       : 160);
+
   window.scrollTo({ top, behavior: 'smooth' });
-  /* document
-      .querySelector('.js-artists-top')
-      .scrollIntoView({ behavior: 'smooth' }); */
 }
 
 /* -- Hero button scrolling -- */
 function execHeroBtnClick() {
   refs.heroBtn.addEventListener('click', e => {
     e.preventDefault();
-    scrollToArtistsTop();
+    document.querySelector('#artists').scrollIntoView({ behavior: 'smooth' });
   });
 }
 
