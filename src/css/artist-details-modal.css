@@ -223,8 +223,7 @@ table {
   min-height: 34px;
 }
 
-.artist-details-modal-albums-list-table-body tr {
-  border-radius: 8px;
+.artist-details-modal-albums-list-table-body tr td {
   overflow: hidden;
 }
 
@@ -237,7 +236,7 @@ table {
   border-bottom-right-radius: 8px;
 }
 
-.artist-details-modal-albums-list-table-body tr:nth-child(even) {
+.artist-details-modal-albums-list-table-body tr:nth-child(even) td {
   background-color: var(--opacity-white-10);
 }
 
