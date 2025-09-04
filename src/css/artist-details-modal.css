@@ -55,7 +55,7 @@ table {
 
 .artist-details-modal-close-btn {
   width: 36px;
-  height: 36px;
+  height: 30px;
   position: absolute;
   top: 16px;
   right: 16px;
@@ -289,7 +289,7 @@ table {
 
   .artist-details-modal-close-btn {
     width: 60px;
-    height: 57px;
+    height: 52px;
   }
 
   .artist-details-modal-main-title {
