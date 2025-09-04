@@ -559,6 +559,10 @@
   isolation: isolate;
 }
 
+.artist-card:hover {
+  cursor: pointer;
+}
+
 .artist-img {
   transform-origin: center center;
   transform: translateZ(0);
@@ -571,10 +575,10 @@
   transform: scale(var(--card-scale));
 }
 
-.artist-card:hover .artist-name,
+/* .artist-card:hover .artist-name,
 .artist-card:focus-within .artist-name {
   opacity: 0.6;
-}
+} */
 
 .artist-cta {
   transition: opacity 0.2s ease, transform 0.02s ease;
