@@ -236,7 +236,6 @@ refs.artistsList.addEventListener('click', e => {
     const btnGenres = e.target.closest('.tag');
     handleSearchGenresFromCard(btnGenres.textContent.trim());
     scrollToArtistsCeil();
-
     return;
   }
 
