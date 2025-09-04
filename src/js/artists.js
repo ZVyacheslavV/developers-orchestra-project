@@ -4,7 +4,11 @@ import 'tui-pagination/dist/tui-pagination.css';
 import '../css/artists.css';
 
 import { getArtists, searchArtist } from './artists-api.js';
-import { handleResetQuery, query } from './artists-additional.js';
+import {
+  handleResetQuery,
+  query,
+  scrollToArtistsCeil,
+} from './artists-additional.js';
 import { refs } from './refs.js';
 import { toastError, showLoaderArtists, hideLoaderArtists } from './helpers.js';
 import { ARTISTS_PER_PAGE } from './constants.js';
@@ -62,13 +66,13 @@ function showNoArtists() {
     btn.addEventListener(
       'click',
       () => {
-        query.page = 1;
+        /* query.page = 1;
         document.querySelector('#tui-pagination')?.classList.remove('hidden');
         if (pager) {
-          /* suppressPagerEventOnce = true; */
+          suppressPagerEventOnce = true;
           pager.movePageTo(1);
-          /* setTimeout(() => (suppressPagerEventOnce = false), 0); */
-        }
+          setTimeout(() => (suppressPagerEventOnce = false), 0);
+        } */
         handleResetQuery();
       },
       { once: true }
@@ -315,7 +319,7 @@ function renderDesktopEnsureLast() {
 
 /*---------------------- Pager ------------------------*/
 async function handlePagerMove({ page: next }) {
-  scrollToArtistsTop();
+  scrollToArtistsCeil();
   /*   if (suppressPagerEventOnce) {
     suppressPagerEventOnce = false;
     skipScrollOnce = false;
@@ -362,6 +366,7 @@ async function handlePagerMove({ page: next }) {
     inFlight = false;
     hideLoaderArtists();
   }
+  /* scrollToArtistsCeil(); */
 }
 
 /*---------------- Render --------------------*/
@@ -485,14 +490,14 @@ function scrollAfterImages() {
 
   const images = Array.from(container.querySelectorAll('img'));
   if (images.length === 0) {
-    scrollToArtistsTop();
+    scrollToArtistsCeil();
     return;
   }
 
   let loaded = 0;
   const done = () => {
     loaded++;
-    if (loaded === images.length) scrollToArtistsTop();
+    if (loaded === images.length) scrollToArtistsCeil();
   };
 
   images.forEach(img => {
@@ -506,9 +511,9 @@ function scrollAfterImages() {
 }
 
 function smartScrollAfterRender() {
-  requestAnimationFrame(scrollToArtistsTop);
+  requestAnimationFrame(scrollToArtistsCeil);
   /* scrollAfterImages(); */
-  setTimeout(scrollToArtistsTop, 400);
+  setTimeout(scrollToArtistsCeil, 400);
 }
 
 /* -------------------Filters animation ------------*/
