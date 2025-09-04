@@ -265,6 +265,30 @@ async function initGenres() {
   });
 }
 
+/* == Handle genres click on cards == */
+export async function handleSearchGenresFromCard(genre = 'All Genres') {
+  query.page = 1;
+  query.genre = genre;
+
+  refs.btnGenres.querySelector('.dropdown-label').textContent = genre;
+
+  showLoaderArtists();
+  try {
+    await loadArtists({ init: true });
+  } catch (err) {
+    toastError(`Silence due problem ${err}`);
+  }
+  hideLoaderArtists();
+
+  timeLines.tlCloseGenres.restart();
+  timeLines.tlCloseSort.restart();
+  timeLines?.tlCloseSearch?.play(0);
+  refs.btnGenres.classList.remove('open');
+  refs.menuGenres.classList.remove('open');
+  refs.btnSort.classList.remove('open');
+  refs.menuSort.classList.remove('open');
+}
+
 /* == Reset == */
 export async function handleResetQuery() {
   query = { name: '', page: 1, sorted: 0, genre: '' };
