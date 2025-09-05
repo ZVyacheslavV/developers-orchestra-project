@@ -1,7 +1,6 @@
 /* Artist details modal */
 
 import {
-  clearGenreTitle,
   handleSearchGenresFromCard,
   scrollToArtistsCeil,
 } from './artists-additional';
@@ -237,7 +236,7 @@ refs.artistsList.addEventListener('click', e => {
 
   if (e.target.nodeName === 'LI') {
     const btnGenres = e.target.closest('.tag');
-    handleSearchGenresFromCard(clearGenreTitle(btnGenres.textContent));
+    handleSearchGenresFromCard(btnGenres.textContent);
     scrollToArtistsCeil();
     return;
   }
@@ -270,7 +269,7 @@ function removeGenreListeners() {
 function handleGenresClick(e) {
   if (e.target.nodeName !== 'LI') return;
 
-  handleSearchGenresFromCard(clearGenreTitle(e.target.textContent));
+  handleSearchGenresFromCard(e.target.textContent);
   console.log('Click genres');
   closeModal();
 
