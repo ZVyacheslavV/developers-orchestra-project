@@ -270,7 +270,6 @@ function handleGenresClick(e) {
   if (e.target.nodeName !== 'LI') return;
 
   handleSearchGenresFromCard(e.target.textContent);
-  console.log('Click genres');
   closeModal();
 
   scrollToArtistsCeil();
