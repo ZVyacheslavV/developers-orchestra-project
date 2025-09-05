@@ -1,11 +1,12 @@
+// feedback-modal.js
+
 import { addNewFeedback } from './artists-api.js';
-
 import { toastSuccessFeedbacks, toastErrorFeedbacks } from './helpers.js';
-
 import 'css-star-rating/css/star-rating.css';
-import axios from 'axios';
+
 
 document.addEventListener('DOMContentLoaded', () => {
+  
   const backdrop = document.querySelector('.feedback-backdrop');
   const form = document.querySelector('.feedback-modal-form');
   const nameInput = document.getElementById('user-name');
@@ -14,28 +15,148 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitBtn = form.querySelector('.feedback-modal-btn');
   const stars = document.querySelectorAll('.modal-star');
   const ratingError = document.getElementById('ratingError');
-
-  function showRatingError(message) {
-    ratingError.textContent = message;
-  }
-
-  function clearRatingError() {
-    ratingError.textContent = '';
-  }
-
   const wrapper = document.querySelector('.stars-wrapper');
+  const openBtn = document.querySelector('.leave-feedback-button');
+  const closeBtn = document.querySelector('.feedback-modal-close');
+
+
+  const LIMITS = {
+    name: { min: 2, max: 16 },
+    message: { min: 10, max: 512 },
+  };
+
+  const ERROR_TOPS = {
+    name: { desktop: '259px', tablet: '239px', mobile: '169px' },
+    message: { desktop: '448px', tablet: '428px', mobile: '366px' },
+  };
+
+
+  const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
+
+  const currentBreakpoint = () => {
+    if (window.matchMedia('(min-width: 1440px)').matches) return 'desktop';
+    if (window.matchMedia('(min-width: 768px)').matches) return 'tablet';
+    return 'mobile';
+  };
+
+  const errorTopFor = field => {
+    const bp = currentBreakpoint();
+    return ERROR_TOPS[field]?.[bp] ?? '0px';
+  };
+
+  const ensureErrorEl = input => {
+    let el = input.nextElementSibling;
+  if (!el || !el.classList.contains('field-error')) {
+    el = document.createElement('div');
+    el.classList.add('field-error');
+    const counter = input.parentNode.querySelector('.char-counter');
+    if (counter) counter.insertAdjacentElement('afterend', el);
+    else input.insertAdjacentElement('afterend', el);
+  }
+  return el;
+  };
+
+  const showFieldError = (input, message) => {
+    const el = ensureErrorEl(input); 
+    el.textContent = message;
+    input.classList.add('input-error');
+    input.setAttribute('aria-invalid', 'true');
+  };
+
+
+  const clearError = (input) => {
+    const el = input.parentElement.querySelector('.field-error');
+    if (el && el.id !== 'ratingError') {
+      el.remove();
+    }
+    input.classList.remove('input-error');
+    input.removeAttribute('aria-invalid');
+  };
+
+  const showRatingError = (message) => {
+    ratingError.textContent = message;
+    ratingError.style.display = 'block'; 
+  };
+  
+  const clearRatingError = () => {
+    ratingError.textContent = '';
+  };
+  
+  const parseRating = () => {
+    const r = parseFloat(ratingInput.value);
+    return Number.isFinite(r) ? r : 0;
+  };
+
+ 
+  function detectedMaxLength(input, fallbackMax) {
+    const a = parseInt(input.getAttribute('maxlength'), 10);
+    return Number.isFinite(a) && a > 0 ? a : fallbackMax;
+  }
+
+  function enforceMaxLength(input, max) {
+    if (typeof input.value !== 'string') return;
+    if (input.value.length > max) {
+      input.value = input.value.slice(0, max);
+    }
+  }
+
+  function ensureCounterEl(input) {
+    
+    const err = input.nextElementSibling;
+    let placeAfter = input;
+    if (err && err.classList.contains('field-error')) placeAfter = err;
+
+    let el = placeAfter.nextElementSibling;
+    if (!(el && el.classList && el.classList.contains('char-counter'))) {
+      el = document.createElement('div');
+      el.classList.add('char-counter');
+      placeAfter.insertAdjacentElement('afterend', el);
+    }
+    return el;
+  }
+
+  function updateCounter(input, max) {
+    const counter = ensureCounterEl(input);
+    const len = input.value.length;
+    counter.textContent = `${len}/${max}`;
+   
+  }
+
+  function attachMaxLengthGuardWithCounter(input, fallbackMax, minRequired) {
+    const max = detectedMaxLength(input, fallbackMax);
+
+    enforceMaxLength(input, max);
+    updateCounter(input, max);
+
+    input.addEventListener('input', () => {
+      enforceMaxLength(input, max);
+      updateCounter(input, max);
+
+      
+      if (
+        typeof minRequired === 'number' &&
+        input.value.trim().length >= minRequired
+      ) {
+        clearError(input);
+      }
+    });
+
+    input.addEventListener('blur', () => {
+      enforceMaxLength(input, max);
+      updateCounter(input, max);
+    });
+  }
 
   function fillStars(value) {
     stars.forEach((s, i) => {
       if (i + 1 <= value) {
         s.style.setProperty('--star-fill', '#764191');
       } else if (i < value) {
-        const fraction = value - i;
+        const fraction = value - i; 
+        const pct = clamp(fraction * 100, 0, 100);
         s.style.setProperty(
           '--star-fill',
-          `linear-gradient(to right, #764191 ${fraction * 100}%, #ffffff ${
-            fraction * 100
-          }%)`
+          `linear-gradient(to right, #764191 ${pct}%, #ffffff ${pct}%)`
         );
       } else {
         s.style.setProperty('--star-fill', '#ffffff');
@@ -44,52 +165,103 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateStars() {
-    const rating = parseFloat(ratingInput.value) || 0;
-    fillStars(rating);
+    const rating = clamp(parseRating(), 0, 5);
+  fillStars(rating);
+  if (rating >= 0.1) ratingError.textContent = '';
   }
 
-  wrapper.addEventListener('mousemove', e => {
+  function handleStarsMouseMove(e) {
     const rect = wrapper.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const starWidth = rect.width / stars.length;
-    const value = Math.min(stars.length, Math.ceil((x / starWidth) * 10) / 10);
+    const value = clamp(Math.ceil((x / starWidth) * 10) / 10, 0, stars.length);
     fillStars(value);
-  });
+  }
 
-  wrapper.addEventListener('click', e => {
+  function handleStarsClick(e) {
     const rect = wrapper.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const starWidth = rect.width / stars.length;
-    const value = Math.min(stars.length, Math.ceil((x / starWidth) * 10) / 10);
-    ratingInput.value = value;
-    updateStars();
-  });
+    const value = clamp(Math.ceil((x / starWidth) * 10) / 10, 0, stars.length);
+    ratingInput.value = String(value);
+    updateStars(); 
+  }
 
-  wrapper.addEventListener('mouseleave', updateStars);
+  function openModal() {
+    backdrop.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    updateAllCounters(); 
+    updateStars();       
+  }
+  
 
-  updateStars();
+  function closeModal() {
+    backdrop.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
 
-  const openBtn = document.querySelector('.leave-feedback-button');
-  if (openBtn) {
-    openBtn.addEventListener('click', () => {
+  function validateForm() {
+    clearError(nameInput);
+    clearError(messageInput);
+    clearRatingError();
+  
+    let ok = true;
+    const name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+    const rating = parseRating();
+  
+    if (name.length < LIMITS.name.min || name.length > LIMITS.name.max) {
+      showFieldError(nameInput, `Name must be between ${LIMITS.name.min} and ${LIMITS.name.max} characters`);
+      ok = false;
+    }
+  
+    if (message.length < LIMITS.message.min || message.length > LIMITS.message.max) {
+      showFieldError(messageInput, `Message must be between ${LIMITS.message.min} and ${LIMITS.message.max} characters`);
+      ok = false;
+    }
+  
+    if (rating < 0.1) {
+      showRatingError('Please provide a rating');
+      ok = false;
+    }
+  
+    return { ok, name, message, rating };
+  }
+  
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+  
+    const { ok, name, message, rating } = validateForm();
+    if (!ok) return;
+  
+    submitBtn.disabled = true;
+    try {
+      await addNewFeedback(name, rating, message);
+      toastSuccessFeedbacks('Thank you! Your feedback has been submitted.');
+      
+     
       form.reset();
       ratingInput.value = '0';
       updateStars();
-      clearRatingError();
-      clearError(nameInput);
-      clearError(messageInput);
-      backdrop.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    });
+      closeModal();
+    } catch (err) {
+      toastErrorFeedbacks(
+        'Server error: ' + (err?.response?.data?.message || err.message)
+      );
+    } finally {
+      submitBtn.disabled = false;
+    }
   }
 
-  const closeModal = () => {
-    backdrop.classList.remove('is-open');
-    document.body.style.overflow = '';
-  };
-  document
-    .querySelector('.feedback-modal-close')
-    .addEventListener('click', closeModal);
+
+  wrapper.addEventListener('mousemove', handleStarsMouseMove);
+  wrapper.addEventListener('click', handleStarsClick);
+  wrapper.addEventListener('mouseleave', updateStars);
+
+  // ћодалка
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', e => {
     if (e.target === backdrop) closeModal();
   });
@@ -97,116 +269,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') closeModal();
   });
 
-  const showError = (input, message) => {
-    let errorEl = input.nextElementSibling;
-    if (!errorEl || !errorEl.classList.contains('field-error')) {
-      errorEl = document.createElement('div');
-      errorEl.classList.add('field-error');
-      input.insertAdjacentElement('afterend', errorEl);
-    }
+  
+  form.addEventListener('submit', handleSubmit);
 
-    errorEl.textContent = message;
-    input.classList.add('input-error');
-    input.setAttribute('aria-invalid', 'true');
-  };
+  function updateAllCounters() {
+    updateCounter(nameInput, detectedMaxLength(nameInput, LIMITS.name.max));
+    updateCounter(
+      messageInput,
+      detectedMaxLength(messageInput, LIMITS.message.max)
+    );
+  }
 
-  const showErrorMessage = (input, message) => {
-    let errorEl = input.nextElementSibling;
-    if (!errorEl || !errorEl.classList.contains('field-error')) {
-      errorEl = document.createElement('div');
-      errorEl.classList.add('field-error');
-      input.insertAdjacentElement('afterend', errorEl);
-    }
-
-    errorEl.style.position = 'absolute';
-    errorEl.style.top = window.matchMedia('(min-width: 1440px)').matches
-      ? '448px'
-      : window.matchMedia('(min-width: 768px)').matches
-      ? '428px'
-      : '366px';
-
-    errorEl.textContent = message;
-    input.classList.add('input-error');
-    input.setAttribute('aria-invalid', 'true');
-  };
-
-  const showErrorName = (input, message) => {
-    let errorEl = input.nextElementSibling;
-    if (!errorEl || !errorEl.classList.contains('field-error')) {
-      errorEl = document.createElement('div');
-      errorEl.classList.add('field-error');
-      input.insertAdjacentElement('afterend', errorEl);
-    }
-
-    errorEl.style.position = 'absolute';
-    errorEl.style.top = window.matchMedia('(min-width: 1440px)').matches
-      ? '259px'
-      : window.matchMedia('(min-width: 768px)').matches
-      ? '239px'
-      : '169px';
-
-    errorEl.textContent = message;
-    input.classList.add('input-error');
-    input.setAttribute('aria-invalid', 'true');
-  };
-
-  const clearError = input => {
-    let errorEl = input.nextElementSibling;
-    if (errorEl && errorEl.classList.contains('field-error'))
-      errorEl.textContent = '';
-    input.classList.remove('input-error');
-    input.removeAttribute('aria-invalid');
-  };
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    clearError(nameInput);
-    clearError(messageInput);
-    clearRatingError();
-
-    const name = nameInput.value.trim();
-    const message = messageInput.value.trim();
-    const rating = parseFloat(ratingInput.value);
-
-    let hasError = false;
-
-    if (name.length < 2 || name.length > 16) {
-      showErrorName(nameInput, 'Name must be between 2 and 16 characters');
-      hasError = true;
-    }
-
-    if (message.length < 10 || message.length > 512) {
-      showErrorMessage(
-        messageInput,
-        'Message must be between 10 and 512 characters'
-      );
-      hasError = true;
-    }
-
-    if (rating < 0.1 || rating > 5) {
-      showRatingError('Please provide a rating between 0.1 and 5');
-      hasError = true;
-    }
-
-    if (hasError) return;
-
-    submitBtn.disabled = true;
-
-    try {
-      await addNewFeedback(name, rating, message);
-      toastSuccessFeedbacks('Thank you! Your feedback has been submitted.');
-      form.reset();
-      ratingInput.value = '0';
-      updateStars();
-      closeModal();
-    } catch (err) {
-      toastErrorFeedbacks(
-        'Server error: ' + (err.response?.data?.message || err.message)
-      );
-    } finally {
-      submitBtn.disabled = false;
-    }
-  });
+  attachMaxLengthGuardWithCounter(nameInput, LIMITS.name.max, LIMITS.name.min);
+  attachMaxLengthGuardWithCounter(
+    messageInput,
+    LIMITS.message.max,
+    LIMITS.message.min
+  );
 
   updateStars();
 });
+
+function autoResizeTextarea(el) {
+  el.style.height = 'auto';              
+  el.style.height = el.scrollHeight + 'px'; 
+}
+
+const textarea = document.getElementById('user-feedback');
+if (textarea) {
+  textarea.addEventListener('input', () => autoResizeTextarea(textarea));
+  autoResizeTextarea(textarea);
+}
