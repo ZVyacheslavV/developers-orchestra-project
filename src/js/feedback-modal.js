@@ -5,6 +5,7 @@ import { toastSuccessFeedbacks, toastErrorFeedbacks } from './helpers.js';
 import 'css-star-rating/css/star-rating.css';
 
 document.addEventListener('DOMContentLoaded', () => {
+  //TODO Need move several below to refs.js, after changing some Var names to unique for feedback modal:
   const backdrop = document.querySelector('.feedback-backdrop');
   const form = document.querySelector('.feedback-modal-form');
   const nameInput = document.getElementById('user-name');
@@ -29,6 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
 
+  const execErrorsContent = () => {
+    ratingError.textContent = 'Please, provide a rating between 1 and 5';
+    createFieldError(nameInput, `Name must be between 2 and 16 characters`);
+    createFieldError(
+      messageInput,
+      `Message must be between 10 and 512 characters`
+    );
+  };
+  execErrorsContent();
+
+  function createFieldError(input, message) {
+    const el = ensureErrorEl(input);
+    el.textContent = message;
+    input.classList.add('input-error');
+    input.setAttribute('aria-invalid', 'true');
+  }
+
   const currentBreakpoint = () => {
     if (window.matchMedia('(min-width: 1440px)').matches) return 'desktop';
     if (window.matchMedia('(min-width: 768px)').matches) return 'tablet';
@@ -40,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return ERROR_TOPS[field]?.[bp] ?? '0px';
   };
 
-  const ensureErrorEl = input => {
+  function ensureErrorEl(input) {
     const footer = input.parentElement.querySelector('.input-footer');
     let errorEl = footer.querySelector('.field-error');
     if (!errorEl) {
@@ -49,31 +67,35 @@ document.addEventListener('DOMContentLoaded', () => {
       footer.insertAdjacentElement('afterbegin', errorEl);
     }
     return errorEl;
-  };
+  }
 
-  const showFieldError = (input, message) => {
+  function showFieldError(input, message) {
     const el = ensureErrorEl(input);
     el.textContent = message;
     input.classList.add('input-error');
     input.setAttribute('aria-invalid', 'true');
-  };
+    el.style.color = '#af0404';
+  }
 
   const clearError = input => {
     const el = input.parentElement.querySelector('.field-error');
     if (el && el.id !== 'ratingError') {
-      el.remove();
+      /* el.remove(); */
+      el.style.color = 'transparent';
     }
     input.classList.remove('input-error');
     input.removeAttribute('aria-invalid');
   };
 
   const showRatingError = message => {
-    ratingError.textContent = message;
-    ratingError.style.display = 'block';
+    //ratingError.textContent = message; //'Please, provide a rating between 1 and 5'
+    /* ratingError.style.display = 'block'; */
+    ratingError.style.color = '#af0404';
   };
 
   const clearRatingError = () => {
-    ratingError.textContent = '';
+    ratingError.style.color = 'transparent';
+    /* ratingError.textContent = ''; */
   };
 
   const parseRating = () => {
@@ -154,7 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateStars() {
     const rating = clamp(parseRating(), 0, 5);
     fillStars(rating);
-    if (rating >= 0.1) ratingError.textContent = '';
+    if (rating >= 1)
+      ratingError.style.color =
+        'transparent'; /* ratingError.textContent = '' */
   }
 
   function handleStarsMouseMove(e) {
@@ -189,6 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeModal() {
     backdrop.classList.remove('is-open');
     document.body.style.overflow = '';
+
+    //TODO Here need to remove Listeners too!
   }
 
   function validateForm() {

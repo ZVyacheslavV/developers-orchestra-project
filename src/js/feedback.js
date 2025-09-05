@@ -45,7 +45,7 @@ function createFeedbacks(feedbacks) {
   refs.feedbacksContainer.insertAdjacentHTML('beforeend', markup);
 }
 
-// TODO ===================================
+// ===================================
 
 function clamp01to5(x) {
   const n = Number(x);

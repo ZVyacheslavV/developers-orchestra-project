@@ -111,9 +111,9 @@ table {
 
 .artist-details-modal-list-item {
   max-height: 300px;
-  overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: darkgrey black;
+  overflow-y: scroll; /* або auto */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
 }
 
 .artist-details-modal-title {
