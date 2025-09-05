@@ -10,54 +10,55 @@
     <h2 class="feedback-modal-title">Submit feedback</h2>
 
     <div class="field-group">
-    <label 
-    for="user-name"
-    class="feedback-modal-label">
-  Name
-  </label>
-  <div class="input-wrapper">
-  <input
-    id="user-name"
-    class="feedback-modal-username"
-    type="text"
-    name="user-name"
-    placeholder="Emily"
-  />
-  <div class="input-footer">
-    <div class="field-error"></div>      <!-- Ошибка слева -->
-    <div class="char-counter">0/16</div>
-  </div>
-</div>
-  <div class="field-group">
-  <label
-  for="user-feedback"
-  class="feedback-modal-label feedback-modal-message">
-Message
-</label>
-<div class="input-wrapper">
-<textarea
-id="user-feedback"
-name="user-feedback"
-class="feedback-modal-user-feedback"
-placeholder="Type your message..."></textarea>
-<div class="input-footer">
-  <div class="field-error"></div>      <!-- Ошибка слева -->
-  <div class="char-counter">0/512</div>
-  </div>
-</div>
-</div>
-<div class="stars-wrapper-wrapper">
-<div class="stars-wrapper">
-  <div class="modal-star" data-value="1"></div>
-  <div class="modal-star" data-value="2"></div>
-  <div class="modal-star" data-value="3"></div>
-  <div class="modal-star" data-value="4"></div>
-  <div class="modal-star" data-value="5"></div>
-</div>
-<div id="ratingError" class="field-error"></div>
-</div>
+      <label for="user-name" class="feedback-modal-label"> Name </label>
+      <div class="input-wrapper">
+        <input
+          id="user-name"
+          class="feedback-modal-username"
+          type="text"
+          name="user-name"
+          placeholder="Emily"
+        />
+        <div class="input-footer">
+          <div class="field-error"></div>
+          <!-- Ошибка слева -->
+          <div class="char-counter">0/16</div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label
+          for="user-feedback"
+          class="feedback-modal-label feedback-modal-message"
+        >
+          Message
+        </label>
+      </div>
+      <div class="input-wrapper">
+        <textarea
+          id="user-feedback"
+          name="user-feedback"
+          class="feedback-modal-user-feedback"
+          placeholder="Type your message..."
+        ></textarea>
+        <div class="input-footer">
+          <div class="field-error"></div>
+          <!-- Ошибка слева -->
+          <div class="char-counter">0/512</div>
+        </div>
+      </div>
+    </div>
+    <div class="stars-wrapper-wrapper">
+      <div class="stars-wrapper">
+        <div class="modal-star" data-value="1"></div>
+        <div class="modal-star" data-value="2"></div>
+        <div class="modal-star" data-value="3"></div>
+        <div class="modal-star" data-value="4"></div>
+        <div class="modal-star" data-value="5"></div>
+      </div>
+      <div id="ratingError" class="field-error"></div>
+    </div>
 
-<input type="hidden" name="rating" id="ratingValue" value="0">
+    <input type="hidden" name="rating" id="ratingValue" value="0" />
 
     <button type="submit" class="feedback-modal-btn">Submit</button>
   </form>
