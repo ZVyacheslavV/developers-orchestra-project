@@ -105,6 +105,7 @@
 .dropdown-toggle.open {
   position: relative;
   z-index: 20;
+  border-color: var(--color-affair);
 }
 
 .dropdown-toggle:hover,
