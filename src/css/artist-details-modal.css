@@ -152,6 +152,13 @@ table {
   font-size: 16px;
   line-height: 1.5;
   color: var(--color-white);
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.artist-details-modal-block-genres-item:hover {
+  background: var(--opacity-white-10);
+  border-color: var(--opacity-white-30);
+  cursor: pointer;
 }
 
 .artist-details-modal-albums {
