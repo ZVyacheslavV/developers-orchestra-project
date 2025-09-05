@@ -243,7 +243,10 @@ async function initGenres() {
       item.textContent;
     refs.btnGenres.dataset.value = item.dataset.value;
 
-    query.genre = item.textContent === 'All Genres' ? '' : item.textContent;
+    query.genre =
+      item.textContent === 'All Genres'
+        ? ''
+        : clearGenreTitle(item.textContent);
 
     showLoaderArtists();
     try {
@@ -334,6 +337,13 @@ export function scrollToArtistsCeil() {
       : 160);
 
   window.scrollTo({ top, behavior: 'smooth' });
+}
+
+export function clearGenreTitle(genre) {
+  return genre
+    .split('')
+    .map(v => (v === '&' ? (v = '%26') : v))
+    .join('');
 }
 
 /* -- Hero button scrolling -- */
