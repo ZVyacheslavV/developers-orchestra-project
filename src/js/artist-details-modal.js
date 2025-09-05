@@ -19,6 +19,7 @@ function closeModal() {
   refs.artistDetailsModalBackdrope.classList.remove('modal--is-open');
   document.body.style.overflow = '';
   window.removeEventListener('keydown', onEcsKeyPress);
+  removeGenreListeners();
   refs.artistDetailsModalBackdrope.removeEventListener(
     'click',
     onBackdropClick
@@ -221,6 +222,7 @@ async function showArtistDetails(artistId) {
       '.artist-details-modal-close-btn'
     );
     closeBtn.addEventListener('click', closeModal);
+    initGenreListeners();
   } catch (err) {
     toastError(err.message);
   } finally {
@@ -245,3 +247,31 @@ refs.artistsList.addEventListener('click', e => {
     showArtistDetails(artistId);
   }
 });
+
+function initGenreListeners() {
+  const btnsGenres = document.querySelectorAll(
+    '.artist-details-modal-block-genres-item'
+  );
+  btnsGenres.forEach(btn => {
+    btn.addEventListener('click', handleGenresClick);
+  });
+}
+
+function removeGenreListeners() {
+  const btnsGenres = document.querySelectorAll(
+    '.artist-details-modal-block-genres-item'
+  );
+  btnsGenres.forEach(btn => {
+    btn.removeEventListener('click', handleGenresClick);
+  });
+}
+
+function handleGenresClick(e) {
+  if (e.target.nodeName !== 'LI') return;
+
+  handleSearchGenresFromCard(e.target.textContent.trim());
+  console.log('Click genres');
+  closeModal();
+
+  scrollToArtistsCeil();
+}
