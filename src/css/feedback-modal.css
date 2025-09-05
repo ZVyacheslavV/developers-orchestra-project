@@ -35,7 +35,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
   align-items: flex-start; 
   max-width: var(--field-width); 
 }
@@ -112,10 +112,10 @@
 } */
 
 .input-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; 
-  
+  position: relative; 
+  width: 100%;
+  margin-top: 0%;
+  margin-bottom: 16px; 
 }
 
 .feedback-modal-user-feedback {
@@ -261,7 +261,6 @@
   );
   border-radius: 10px;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
-  /* transition: background 0.2s; */
   transition: background 0.25s cubic-bezier(0.55, 0.5, 1, 1);
 }
 
@@ -276,11 +275,9 @@
 
 .field-error {
   font-size: 12px;
-  line-height: 150%;
   color: var(--color-error-red);
-  margin-top: 4px;
-  display: block;
-  position: static; 
+  flex: 1;
+  min-width: 120px;
 }
 
 #ratingError {
@@ -290,6 +287,7 @@
   line-height: 150%;
   display: block;
   position: static; 
+  bottom: 8px;
 }
 
 .feedback-modal-username,
@@ -298,11 +296,23 @@
 }
 
 .char-counter {
-  display: block;        
-  font-size: 10px;       
-  color: #aaa;          
-  margin-top: 8px;       
-  text-align: left;      
+ 
+  right: 0;
+  font-size: 10px;
+  color: #aaa;
+  margin-left: auto;
+ 
+}
+
+
+.input-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px; 
+  width: 100%;
+  font-size: 12px;
+  align-items: center;
+  min-height: 16px;
 }
 
 @media screen and (min-width: 768px) {
@@ -324,9 +334,9 @@
   .feedback-modal-btn {
     max-width: 340px;
   }
-  .feedback-modal-message {
-    margin-top: 24px;
-  }
+.input-wrapper {
+  margin-bottom: 8px;
+}
   .field-error {
     top: 485px;
   }
@@ -352,18 +362,24 @@
   .feedback-modal-btn {
     width: 108px;
   }
-  .feedback-modal-message {
-    margin-top: 24px;
-  }
+ 
   .field-error {
     top: 505px;
   }
+  .input-wrapper {
+    margin-bottom: 8px;
+  }
+
   :root {
     --field-width: 736px;
   }
-
+.input-wrapper {
+  margin-bottom: 8px;
+}
   .feedback-modal-user-feedback {
     min-height: 180px;
   }
-
+.feedback-modal-btn {
+  margin-top: 24px;
+}
 }
