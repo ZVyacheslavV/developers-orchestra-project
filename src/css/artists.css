@@ -570,8 +570,8 @@
   transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.artist-card:hover .artist-img,
-.artist-card:focus-within .artist-img {
+.artist-card:hover:not(:has(li:hover)) .artist-img,
+.artist-card:focus-within:not(:has(li:hover)) .artist-img {
   transform: scale(var(--card-scale));
 }
 
@@ -589,8 +589,8 @@
     opacity 0.32s ease;
 }
 
-.artist-card:hover .artist-cta,
-.artist-card:focus-within .artist-cta {
+.artist-card:hover:not(:has(li:hover)) .artist-cta,
+.artist-card:focus-within:not(:has(li:hover)) .artist-cta {
   opacity: 0.6;
 }
 
