@@ -115,7 +115,7 @@
   position: relative; 
   width: 100%;
   margin-top: 0%;
-  margin-bottom: 16px; 
+  margin-bottom: 6px; 
 }
 
 .feedback-modal-user-feedback {
@@ -182,7 +182,7 @@
   line-height: 150%;
   color: var(--color-white);
   display: block;
-  margin: 32px auto 0;
+  margin: 16px auto 0;
   transition: background-color 0.3s;
 }
 
@@ -288,6 +288,7 @@
   display: block;
   position: static; 
   bottom: 8px;
+  min-height: 16px;
 }
 
 .feedback-modal-username,
@@ -312,7 +313,7 @@
   width: 100%;
   font-size: 12px;
   align-items: center;
-  min-height: 16px;
+  min-height: 26px;
 }
 
 @media screen and (min-width: 768px) {
@@ -333,9 +334,10 @@
   }
   .feedback-modal-btn {
     max-width: 340px;
+    margin-top: 8px;
   }
 .input-wrapper {
-  margin-bottom: 8px;
+  margin-bottom: -2px;
 }
   .field-error {
     top: 485px;
@@ -367,7 +369,7 @@
     top: 505px;
   }
   .input-wrapper {
-    margin-bottom: 8px;
+    margin-bottom: -2px;
   }
 
   :root {
@@ -380,6 +382,6 @@
     min-height: 180px;
   }
 .feedback-modal-btn {
-  margin-top: 24px;
+  margin-top: 8px;
 }
 }
