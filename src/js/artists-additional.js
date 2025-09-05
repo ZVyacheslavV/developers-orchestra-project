@@ -357,10 +357,9 @@ function execHeroBtnClick() {
 /* -- Clear problems with hovers on buttons -- */
 function helpClearHoverOnButtons() {
   document.querySelectorAll('button').forEach(btn => {
-    if (!btn.classList.contains('dropdown-toggle'))
-      btn.addEventListener('click', () => {
-        btn.blur();
-      });
+    btn.addEventListener('click', () => {
+      btn.blur();
+    });
   });
 }
 
