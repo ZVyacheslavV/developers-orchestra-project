@@ -271,7 +271,7 @@ async function initGenres() {
 /* == Handle genres click on cards == */
 export async function handleSearchGenresFromCard(genre = 'All Genres') {
   query.page = 1;
-  query.genre = genre;
+  query.genre = clearGenreTitle(genre);
 
   refs.btnGenres.querySelector('.dropdown-label').textContent = genre;
 
