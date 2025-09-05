@@ -15,6 +15,7 @@
     class="feedback-modal-label">
   Name
   </label>
+  <div class="input-wrapper">
   <input
     id="user-name"
     class="feedback-modal-username"
@@ -22,20 +23,28 @@
     name="user-name"
     placeholder="Emily"
   />
-  <div class="field-error"></div>
-    </div>
+  <div class="input-footer">
+    <div class="char-counter">0/16</div>
+    <div class="field-error"></div>      <!-- Ошибка слева -->
+  </div>
+</div>
   <div class="field-group">
   <label
   for="user-feedback"
   class="feedback-modal-label feedback-modal-message">
 Message
 </label>
+<div class="input-wrapper">
 <textarea
 id="user-feedback"
 name="user-feedback"
 class="feedback-modal-user-feedback"
 placeholder="Type your message..."></textarea>
-<div class="field-error"></div>
+<div class="input-footer">
+  <div class="char-counter">0/512</div>
+  <div class="field-error"></div>      <!-- Ошибка слева -->
+</div>
+</div>
 </div>
 <div class="stars-wrapper-wrapper">
 <div class="stars-wrapper">

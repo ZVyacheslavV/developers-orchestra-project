@@ -44,16 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return ERROR_TOPS[field]?.[bp] ?? '0px';
   };
 
-  const ensureErrorEl = input => {
-    let el = input.nextElementSibling;
-  if (!el || !el.classList.contains('field-error')) {
-    el = document.createElement('div');
-    el.classList.add('field-error');
-    const counter = input.parentNode.querySelector('.char-counter');
-    if (counter) counter.insertAdjacentElement('afterend', el);
-    else input.insertAdjacentElement('afterend', el);
-  }
-  return el;
+  const ensureErrorEl = (input) => {
+    const footer = input.parentElement.querySelector('.input-footer');
+    let errorEl = footer.querySelector('.field-error');
+    if (!errorEl) {
+      errorEl = document.createElement('div');
+      errorEl.classList.add('field-error');
+      footer.insertAdjacentElement('afterbegin', errorEl); 
+    }
+    return errorEl;
   };
 
   const showFieldError = (input, message) => {
@@ -100,26 +99,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function ensureCounterEl(input) {
-    
-    const err = input.nextElementSibling;
-    let placeAfter = input;
-    if (err && err.classList.contains('field-error')) placeAfter = err;
-
-    let el = placeAfter.nextElementSibling;
-    if (!(el && el.classList && el.classList.contains('char-counter'))) {
-      el = document.createElement('div');
-      el.classList.add('char-counter');
-      placeAfter.insertAdjacentElement('afterend', el);
+  const ensureCounterEl = (input) => {
+    const footer = input.parentElement.querySelector('.input-footer');
+    let counterEl = footer.querySelector('.char-counter');
+    if (!counterEl) {
+      counterEl = document.createElement('div');
+      counterEl.classList.add('char-counter');
+      footer.appendChild(counterEl); // справа
     }
-    return el;
-  }
+    return counterEl;
+  };
 
   function updateCounter(input, max) {
     const counter = ensureCounterEl(input);
     const len = input.value.length;
     counter.textContent = `${len}/${max}`;
-   
   }
 
   function attachMaxLengthGuardWithCounter(input, fallbackMax, minRequired) {
@@ -190,6 +184,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function openModal() {
     backdrop.classList.add('is-open');
     document.body.style.overflow = 'hidden';
+  
+    clearError(nameInput);
+    clearError(messageInput);
+    clearRatingError();
+  
     updateAllCounters(); 
     updateStars();       
   }
